@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ----------------- CARTAS BLOQUEADAS---------------------------------
+  // ----------------- CARTAS BLOQUEADAS ---------------------------------
 
-  
-  
   // Agrega animación a las tarjetas
   document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
 
@@ -13,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-  // 🔓 1. DESBLOQUEO POR QR
+  // 🔓 1. DESBLOQUEO AUTOMÁTICO POR URL (opcional, lo dejamos)
   const params = new URLSearchParams(window.location.search);
   const claveQR = params.get("unlock");
   if (claveQR) {
@@ -22,12 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const overlay = wrapper.querySelector(".overlay-bloqueo");
       if (overlay) overlay.remove();
 
-      // Destello y scroll a la carta
       wrapper.classList.add("destello");
       wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
       setTimeout(() => wrapper.classList.remove("destello"), 2000);
 
-      // Abrir el carrusel automáticamente
       const boton = wrapper.querySelector(".cartaejemplo");
       if (boton) {
         const id = boton.getAttribute("data-target");
@@ -42,33 +38,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ 2. AGREGAMOS EVENTO A TODOS LOS OVERLAYS PARA PEDIR CONTRASEÑA
+  // ✅ 2. ESCÁNER DE QR AL TOCAR OVERLAY
   document.querySelectorAll(".overlay-bloqueo").forEach(overlay => {
     overlay.addEventListener("click", e => {
       e.stopPropagation();
 
       const wrapper = overlay.closest(".carta-wrapper");
       const passCorrecta = wrapper.getAttribute("data-pass");
-      const passIngresada = prompt("Introduce la contraseña:");
 
-      if (passIngresada === passCorrecta) {
-        overlay.remove();
+      const qrContainer = document.getElementById("qr-reader");
+      qrContainer.style.display = "block";
 
-        // Abre el carrusel asociado
-        const boton = wrapper.querySelector(".cartaejemplo");
-        if (boton) {
-          const id = boton.getAttribute("data-target");
-          const itemToShow = document.getElementById(id);
-          if (itemToShow) {
-            carouselItems.forEach(item => item.style.display = "none");
-            itemToShow.style.display = "flex";
-            fondonegro.style.display = "block";
-            document.body.style.overflow = "hidden";
+      const html5QrCode = new Html5Qrcode("qr-reader");
+
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        qrCodeMessage => {
+          if (qrCodeMessage === passCorrecta) {
+            html5QrCode.stop().then(() => {
+              qrContainer.style.display = "none";
+              overlay.remove();
+
+              const boton = wrapper.querySelector(".cartaejemplo");
+              if (boton) {
+                const id = boton.getAttribute("data-target");
+                const itemToShow = document.getElementById(id);
+                if (itemToShow) {
+                  carouselItems.forEach(item => item.style.display = "none");
+                  itemToShow.style.display = "flex";
+                  fondonegro.style.display = "block";
+                  document.body.style.overflow = "hidden";
+                }
+              }
+            });
+          } else {
+            alert("QR incorrecto");
           }
+        },
+        errorMessage => {
+          // Silencio
         }
-      } else {
-        alert("Contraseña incorrecta");
-      }
+      ).catch(err => {
+        console.error("Error al iniciar el escáner:", err);
+      });
     });
   });
 
@@ -107,49 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   fondonegro.addEventListener("click", cerrarCarrusel);
-
-
-
-  
 });
 
-
-
-
-// ----------------- ESCANER QR---------------------------------
-
-
-function iniciarScanner() {
-  document.getElementById("reader-container").style.display = "block";
-
-  const html5QrCode = new Html5Qrcode("reader");
-
-  html5QrCode.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    qrCodeMessage => {
-      console.log("QR detectado:", qrCodeMessage);
-      
-      html5QrCode.stop().then(() => {
-        console.log("Escáner detenido, redirigiendo...");
-
-        // ✅ CAMBIO CLAVE AQUÍ
-        window.location.replace(`?unlock=${encodeURIComponent(qrCodeMessage)}`);
-
-      }).catch(err => {
-        console.error("Error al detener el escáner:", err);
-
-        // Fallback igual
-        window.location.replace(`?unlock=${encodeURIComponent(qrCodeMessage)}`);
-      });
-    },
-    errorMessage => {
-      // En silencio mientras escanea
-    }
-  ).catch(err => {
-    console.error("No se pudo iniciar el escáner:", err);
-  });
-}
 
 // ----------------- BANNER FOTOS -----------------
 
