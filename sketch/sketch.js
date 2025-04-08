@@ -117,7 +117,8 @@ function iniciarScanner() {
   // Acceder a la cámara
   Html5Qrcode.getCameras().then(devices => {
     if (devices && devices.length) {
-      const cameraId = devices[0].id;
+      const backCamera = devices.find(device => device.label.toLowerCase().includes("back")) || devices[0];
+      const cameraId = backCamera.id;
 
       html5QrCode.start(
         cameraId,
