@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ----------------- CARTAS BLOQUEADAS---------------------------------
+
+  
+  
   // Agrega animación a las tarjetas
   document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
 
@@ -108,50 +112,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+// ----------------- ESCANER QR---------------------------------
 
 
-document.getElementById("reader-container").style.display = "block";
 function iniciarScanner() {
+  document.getElementById("reader-container").style.display = "block";
+
   const html5QrCode = new Html5Qrcode("reader");
 
-  // Acceder a la cámara
-  Html5Qrcode.getCameras().then(devices => {
-    if (devices && devices.length) {
-      const backCamera = devices.find(device => device.label.toLowerCase().includes("back")) || devices[0];
-      const cameraId = backCamera.id;
-
-      html5QrCode.start(
-        cameraId,
-        {
-          fps: 10,
-          qrbox: 250
-        },
-        qrCodeMessage => {
-          console.log("QR detectado:", qrCodeMessage);
-
-          // Redirige automáticamente con el valor leído
-          window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
-
-          html5QrCode.stop(); // Detiene la cámara
-        },
-        errorMessage => {
-          // Podés mostrar un mensaje mientras escanea
-        }
-      ).catch(err => {
-        console.error("No se pudo iniciar el escáner:", err);
-      });
+  html5QrCode.start(
+    { facingMode: "environment" }, // 🔥 Esta línea elige la cámara trasera
+    {
+      fps: 10,
+      qrbox: 250
+    },
+    qrCodeMessage => {
+      console.log("QR detectado:", qrCodeMessage);
+      window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
+      html5QrCode.stop();
+    },
+    errorMessage => {
+      // Escaneando...
     }
-  }).catch(err => {
-    console.error("No se encontraron cámaras:", err);
+  ).catch(err => {
+    console.error("No se pudo iniciar el escáner:", err);
   });
 }
 
 
 
 
-
-
-
+// ----------------- BANNER FOTOS -----------------
 
 
 
