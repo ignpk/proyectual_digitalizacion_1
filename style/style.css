@@ -133,7 +133,17 @@ background-color:rgba(78, 78, 78, 0.956) ;
     cursor: pointer;
     z-index: 2;
   }
+  .carta-wrapper.destello {
+    animation: brillar 2s ease-out;
+  }
   
+  @keyframes brillar {
+    0%   { box-shadow: 0 0 0px 0px gold; transform: scale(1); }
+    50%  { box-shadow: 0 0 30px 10px gold; transform: scale(1.05); }
+    100% { box-shadow: 0 0 0px 0px transparent; transform: scale(1); }
+  }
+
+
   .carousel-item {
     background-size: cover;
     pointer-events: none;

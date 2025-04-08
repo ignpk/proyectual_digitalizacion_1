@@ -1,36 +1,49 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const overlays = document.querySelectorAll(".overlay-bloqueo");
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const overlays = document.querySelectorAll(".overlay-bloqueo");
+  overlays.forEach(overlay => {
+    overlay.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const wrapper = overlay.parentElement;
+      const contraseñaCorrecta = wrapper.getAttribute("data-pass");
+      const passIngresada = prompt("Introduce la contraseña:");
 
-    overlays.forEach(overlay => {
-      overlay.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const wrapper = overlay.parentElement;
-        const contraseñaCorrecta = wrapper.getAttribute("data-pass");
-        const passIngresada = prompt("Introduce la contraseña:");
-
-        if (passIngresada === contraseñaCorrecta) {
-          overlay.remove();
-        } else {
-          alert("Contraseña incorrecta");
-        }
-      });
-    });
-
-    // 🔓 Desbloqueo automático con QR
-    const params = new URLSearchParams(window.location.search);
-    const claveQR = params.get("unlock");
-
-    if (claveQR) {
-      const wrapper = document.querySelector(`.carta-wrapper[data-pass="${claveQR}"]`);
-      if (wrapper) {
-        const overlay = wrapper.querySelector(".overlay-bloqueo");
-        if (overlay) {
-          overlay.remove();
-        }
+      if (passIngresada === contraseñaCorrecta) {
+        overlay.remove();
+      } else {
+        alert("Contraseña incorrecta");
       }
-    }
+    });
   });
+
+  // 🔓 Desbloqueo automático con QR
+  const params = new URLSearchParams(window.location.search);
+  const claveQR = params.get("unlock");
+
+  if (claveQR) {
+    const wrapper = document.querySelector(`.carta-wrapper[data-pass="${claveQR}"]`);
+    if (wrapper) {
+      const overlay = wrapper.querySelector(".overlay-bloqueo");
+      if (overlay) {
+        overlay.remove();
+      }
+
+      // ✨ AGREGADO: scroll automático y efecto visual
+      wrapper.classList.add("destello");
+      wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      setTimeout(() => {
+        wrapper.classList.remove("destello");
+      }, 2000);
+    }
+  }
+});
+
+
+
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
