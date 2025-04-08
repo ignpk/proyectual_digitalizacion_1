@@ -125,33 +125,34 @@ function iniciarScanner() {
   const html5QrCode = new Html5Qrcode("reader");
 
   html5QrCode.start(
-    { facingMode: "environment" }, // 🔥 Esta línea elige la cámara trasera
+    { facingMode: "environment" }, // Cámara trasera
     {
       fps: 10,
       qrbox: 250
     },
     qrCodeMessage => {
       console.log("QR detectado:", qrCodeMessage);
-      window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
+      
+      // 🔒 Primero detenemos el escáner
       html5QrCode.stop().then(() => {
         console.log("Escáner detenido, redirigiendo...");
+        
+        // ✅ Ahora sí redirigimos una vez que la cámara se cerró correctamente
         window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
       }).catch(err => {
         console.error("Error al detener el escáner:", err);
+        
+        // 🔁 Como fallback, redirigimos igual
         window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
       });
     },
     errorMessage => {
-      // Escaneando...
+      // Silencio: QR no válido aún
     }
   ).catch(err => {
     console.error("No se pudo iniciar el escáner:", err);
-
-
-    
   });
 }
-
 
 
 
