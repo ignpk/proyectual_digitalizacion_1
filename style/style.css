@@ -131,8 +131,45 @@ background-color:rgba(78, 78, 78, 0.956) ;
     font-size: 2rem;
     color: white;
     cursor: pointer;
-    z-index: 2;
+
   }
+
+
+  #reader-container {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #reader {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  .btn-qr {
+    display: inline-block;
+    background-color: #222;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-qr:hover {
+    background-color: #444;
+  }
+
+
+
+
   .carta-wrapper.destello {
     animation: brillar 2s ease-out;
   }

@@ -108,6 +108,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+document.getElementById("reader-container").style.display = "block";
+function iniciarScanner() {
+  const html5QrCode = new Html5Qrcode("reader");
+
+  // Acceder a la cámara
+  Html5Qrcode.getCameras().then(devices => {
+    if (devices && devices.length) {
+      const cameraId = devices[0].id;
+
+      html5QrCode.start(
+        cameraId,
+        {
+          fps: 10,
+          qrbox: 250
+        },
+        qrCodeMessage => {
+          console.log("QR detectado:", qrCodeMessage);
+
+          // Redirige automáticamente con el valor leído
+          window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
+
+          html5QrCode.stop(); // Detiene la cámara
+        },
+        errorMessage => {
+          // Podés mostrar un mensaje mientras escanea
+        }
+      ).catch(err => {
+        console.error("No se pudo iniciar el escáner:", err);
+      });
+    }
+  }).catch(err => {
+    console.error("No se encontraron cámaras:", err);
+  });
+}
+
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const banner = document.querySelector('.banner');
   let currentImageIndex = 0;

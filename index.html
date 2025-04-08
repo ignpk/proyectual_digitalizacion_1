@@ -4,6 +4,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" tipe="text/css" href="style/style.css" />
@@ -17,6 +19,14 @@
   <body>
     <main>
 
+      <div id="reader-container">
+        <div id="reader"></div>
+      </div>
+<!-- Botón para activar el escáner -->
+<button class="btn-qr" onclick="iniciarScanner()">📷 Escanear QR</button>
+
+
+
       <div class="banner">
         <div class="bannerlogo"></div>
       </div>
@@ -29,19 +39,19 @@
     <div class="overlay-bloqueo">🔒</div>
   </div>
   <div class="carta-wrapper" data-pass="002">
-    <button class="cartaejemplo" style="background-image: url(./assets/cartas/002/002.webp);" data-target="carousel-item-1"></button>
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/002/002.webp);" data-target="carousel-item-2"></button>
     <div class="overlay-bloqueo">🔒</div>
   </div>
   <div class="carta-wrapper" data-pass="003">
-    <button class="cartaejemplo" style="background-image: url(./assets/cartas/003/003.webp);" data-target="carousel-item-1"></button>
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/003/003.webp);" data-target="carousel-item-3"></button>
     <div class="overlay-bloqueo">🔒</div>
   </div>
   <div class="carta-wrapper" data-pass="004">
-    <button class="cartaejemplo" style="background-image: url(./assets/cartas/004/004.webp);" data-target="carousel-item-1"></button>
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/004/004.webp);" data-target="carousel-item-4"></button>
     <div class="overlay-bloqueo">🔒</div>
   </div>
   <div class="carta-wrapper" data-pass="005">
-    <button class="cartaejemplo" style="background-image: url(./assets/cartas/005/005.webp);" data-target="carousel-item-1"></button>
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/005/005.webp);" data-target="carousel-item-5"></button>
     <div class="overlay-bloqueo">🔒</div>
   </div>
   
