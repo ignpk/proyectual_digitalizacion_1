@@ -5,65 +5,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const carouselItems = document.querySelectorAll(".carousel-item");
   const fondonegro = document.querySelector(".fondonegro");
 
-  // Oculta los carruseles al inicio
+  // Oculta carruseles al inicio
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-  // Clic en botón .cartaejemplo
-  document.querySelectorAll(".cartaejemplo").forEach(boton => {
-    boton.addEventListener("click", event => {
-      const id = boton.getAttribute("data-target");
-      const itemToShow = document.getElementById(id);
-
-      if (itemToShow) {
-        carouselItems.forEach(item => item.style.display = "none");
-        itemToShow.style.display = "flex";
-        fondonegro.style.display = "block";
-        document.body.style.overflow = "hidden";
-      }
-
-      event.stopPropagation();
-    });
-  });
-
-  // Cierra carrusel al hacer clic fuera
-  document.addEventListener("click", event => {
-    if (![...carouselItems].some(item => item.contains(event.target)) && !fondonegro.contains(event.target)) {
-      cerrarCarrusel();
-    }
-  });
-
-  fondonegro.addEventListener("click", cerrarCarrusel);
-
-  function cerrarCarrusel() {
-    carouselItems.forEach(item => item.style.display = "none");
-    fondonegro.style.display = "none";
-    document.body.style.overflow = "auto";
-  }
-
-  // 🔓 Desbloqueo QR automático
+  // 🔓 1. DESBLOQUEO POR QR
   const params = new URLSearchParams(window.location.search);
   const claveQR = params.get("unlock");
-
   if (claveQR) {
     const wrapper = document.querySelector(`.carta-wrapper[data-pass="${claveQR}"]`);
     if (wrapper) {
-      // Quita overlay negro
       const overlay = wrapper.querySelector(".overlay-bloqueo");
       if (overlay) overlay.remove();
 
-      // Efecto visual + scroll
+      // Destello y scroll a la carta
       wrapper.classList.add("destello");
       wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
-
       setTimeout(() => wrapper.classList.remove("destello"), 2000);
 
-      // Abre el carousel-item automáticamente
+      // Abrir el carrusel automáticamente
       const boton = wrapper.querySelector(".cartaejemplo");
       if (boton) {
         const id = boton.getAttribute("data-target");
         const itemToShow = document.getElementById(id);
-
         if (itemToShow) {
           carouselItems.forEach(item => item.style.display = "none");
           itemToShow.style.display = "flex";
@@ -73,8 +37,73 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
-});
 
+  // ✅ 2. AGREGAMOS EVENTO A TODOS LOS OVERLAYS PARA PEDIR CONTRASEÑA
+  document.querySelectorAll(".overlay-bloqueo").forEach(overlay => {
+    overlay.addEventListener("click", e => {
+      e.stopPropagation();
+
+      const wrapper = overlay.closest(".carta-wrapper");
+      const passCorrecta = wrapper.getAttribute("data-pass");
+      const passIngresada = prompt("Introduce la contraseña:");
+
+      if (passIngresada === passCorrecta) {
+        overlay.remove();
+
+        // Abre el carrusel asociado
+        const boton = wrapper.querySelector(".cartaejemplo");
+        if (boton) {
+          const id = boton.getAttribute("data-target");
+          const itemToShow = document.getElementById(id);
+          if (itemToShow) {
+            carouselItems.forEach(item => item.style.display = "none");
+            itemToShow.style.display = "flex";
+            fondonegro.style.display = "block";
+            document.body.style.overflow = "hidden";
+          }
+        }
+      } else {
+        alert("Contraseña incorrecta");
+      }
+    });
+  });
+
+  // ✅ 3. Si ya está desbloqueada, clic abre directamente
+  document.querySelectorAll(".cartaejemplo").forEach(boton => {
+    boton.addEventListener("click", event => {
+      event.stopPropagation();
+
+      const wrapper = boton.closest(".carta-wrapper");
+      const overlay = wrapper.querySelector(".overlay-bloqueo");
+
+      if (!overlay) {
+        const id = boton.getAttribute("data-target");
+        const itemToShow = document.getElementById(id);
+        if (itemToShow) {
+          carouselItems.forEach(item => item.style.display = "none");
+          itemToShow.style.display = "flex";
+          fondonegro.style.display = "block";
+          document.body.style.overflow = "hidden";
+        }
+      }
+    });
+  });
+
+  // Cierre de carrusel
+  function cerrarCarrusel() {
+    carouselItems.forEach(item => item.style.display = "none");
+    fondonegro.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+
+  document.addEventListener("click", event => {
+    if (![...carouselItems].some(item => item.contains(event.target)) && !fondonegro.contains(event.target)) {
+      cerrarCarrusel();
+    }
+  });
+
+  fondonegro.addEventListener("click", cerrarCarrusel);
+});
 
 
 
