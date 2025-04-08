@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" tipe="text/css" href="style/style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <meta charset="UTF-8" />
+
+    <title>Proyectual Digi I</title>
+    <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+  </head>
+  <body>
+    <main>
+
+      <div class="banner">
+        <div class="bannerlogo"></div>
+      </div>
+
+      <div class="carousel-container">
+
+<div  class="cartasgaleriacontainer" id="galeriacartas">
+  <div class="carta-wrapper" data-pass="001">
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/001/001.webp);" data-target="carousel-item-1"></button>
+    <div class="overlay-bloqueo">🔒</div>
+  </div>
+  <div class="carta-wrapper" data-pass="001">
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/002/002.webp);" data-target="carousel-item-1"></button>
+    <div class="overlay-bloqueo">🔒</div>
+  </div>
+  <div class="carta-wrapper" data-pass="001">
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/003/003.webp);" data-target="carousel-item-1"></button>
+    <div class="overlay-bloqueo">🔒</div>
+  </div>
+  <div class="carta-wrapper" data-pass="001">
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/004/004.webp);" data-target="carousel-item-1"></button>
+    <div class="overlay-bloqueo">🔒</div>
+  </div>
+  <div class="carta-wrapper" data-pass="001">
+    <button class="cartaejemplo" style="background-image: url(./assets/cartas/005/005.webp);" data-target="carousel-item-1"></button>
+    <div class="overlay-bloqueo">🔒</div>
+  </div>
+  
+
+</div>
+
+        <div class="fondonegro"></div>
+
+<!-------------------------------------001---------------------------------------->  
+         <div class="carousel-item" id="carousel-item-1" >
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle4 circle2">
+              <img class="medio" src="assets/cartas/001/001fondo.webp" style="filter: opacity(100%);" />                
+              <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(-135deg) scale(2);">
+                <div class="line-container" style="justify-content: first baseline;" >
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(253, 237, 9);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(0, 240, 192);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(255, 213, 3);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(250, 90, 255);"></div>
+                </div>
+                <div class="line-container" style="justify-content: end;">
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(144, 185, 255);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(255, 132, 241);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(14, 255, 34);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 10px rgb(255, 131, 226);"></div>
+                </div>
+                </div>  
+              <div class="michi" style="
+              z-index: 16;
+              background-image: url('/assets/cartas/001/001animacion.webp'); 
+              animation: animacion 0.5s steps(4) forwards infinite;
+              background-size: 1368px 500px;
+          "></div>
+                <img class="sombra" src="assets/cartas/001/001papel.webp"  />
+                <img class="capaholograficaestrellas" src="assets/cartas/001/001fondoTROQUEL.webp" style="z-index: 16; opacity: 30%;" />
+
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+<!--------------------------------------002---------------------------------------> 
+
+
+        <div class="carousel-item" id="carousel-item-2" >
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle4 circle2">
+              <div class="fondo-rainbow" ></div>
+              <img class="medio" src="assets/cartas/002/002fondo.webp" />                
+              <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) scale(1.5);">
+                <div class="line-container" style="justify-content: first baseline;" >
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(253, 237, 9);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(0, 240, 192);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 213, 3);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 0, 187);"></div>
+                </div>
+                <div class="line-container" style="justify-content: end;">
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(140, 144, 255);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 76, 76);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(14, 255, 34);"></div>
+                  <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 0, 195);"></div>
+                </div>
+                </div>
+                <div class="michi" style="
+                z-index: 19;
+                background-image: url('/assets/cartas/002/002michi.webp'); 
+                animation: animacion 0.2s steps(4) forwards infinite , flotar 1.5s ease-in-out alternate infinite;
+                background-size: 1368px 500px;
+            "></div>
+                <img class="arriba" src="./assets/cartas/002/002fondo02.webp" />
+                <img class="sombra" src="assets/cartas/002/002PAPEL.webp"  />
+                <img class="bordecarta">
+                <img class="capaholograficaestrellas" src="assets/cartas/005arriba.webp"  />
+                
+                
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+
+<!-------------------------------------003---------------------------------------->        
+        <div class="carousel-item" id="carousel-item-3" > 
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle4 circle5">
+              <img class="medio" src="assets/cartas/003/003fondo.webp" />  
+              <div class="michi" style="background-image: url(./assets/cartas/003/003fondo_troquel.webp); z-index: 10;"></div>
+              <div class="efectoholograficolineas" style="z-index: 9; transform: rotate(45deg) scale(2); filter: opacity(60%);">
+                <div class="line-container" style="justify-content: first baseline;" >
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                </div>
+                <div class="line-container" style="justify-content: end;">
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                </div>
+                </div>
+                <div class="efectoholograficolineas" style="z-index: 15; transform: rotate(45deg) scale(2); filter: opacity(30%);">
+                  <div class="line-container" style="justify-content: first baseline;" >
+                    <div class="line line-white"></div>
+                    <div class="line line-white"></div>
+                    <div class="line line-white"></div>
+                    <div class="line line-white"></div>
+                  </div>
+                  <div class="line-container" style="justify-content: end;">
+                    <div class="line line-white"></div>
+                    <div class="line line-white"></div>
+                    <div class="line line-white"></div>
+                    <div class="line line-white"></div>
+                  </div>
+                  </div>
+              <img class="michi" src="assets/cartas/003/003michi00.webp" style=" z-index: 10">
+           
+                <img class="michi" src="assets/cartas/003/003michi01.webp" style=" z-index: 10;  animation: flotar 5s ease-in-out alternate infinite">
+                <img class="michi" src="assets/cartas/003/003michi02.webp" style=" z-index: 11;  animation: flotar 3s ease-in-out alternate-reverse infinite">
+                <img class="michi" src="assets/cartas/003/003michi03.webp" style=" z-index: 12;  animation: flotar 4s ease-in-out alternate infinite">
+                <img class="michi" src="assets/cartas/003/003michi04.webp" style=" z-index: 13;  animation: flotar 2s ease-in-out alternate infinite">
+                <img class="michi" src="assets/cartas/003/003michi05.webp" style=" z-index: 14;  animation: flotar 1.5s ease-in-out alternate infinite">
+                <img class="michi" src="assets/cartas/003/003michi06.webp" style=" z-index: 15">
+
+                <img class="sombra" src="assets/cartas/003/003papel.webp"   />
+                
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+
+<!------------------------------------004-----------------------------------------> 
+
+
+        <div class="carousel-item" id="carousel-item-4">
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle6 circle4">
+              <img class="medio" src="assets/cartas/004/004fondo.webp" />  
+
+                <div class="michi" style="
+                z-index: 6;
+                background-image: url(./assets/cartas/004/004fondoTROQUELADO.webp);
+            "></div>
+              <div class="michi" style="
+              filter: opacity(80%);
+              z-index: 7;
+              background-image: url('/assets/cartas/004/004animacionfondo.webp'); 
+              animation: animacion 0.2s steps(4) forwards infinite;
+              background-size: 1368px 500px;
+          "></div>
+          <div class="michi" style="background-image: url(./assets/cartas/borde.webp); z-index: 7;"></div>
+              <div class="michi" style="
+              z-index: 19;
+                  width: 342px; 
+                  height: 500px;
+              background-image: url('/assets/cartas/004/004animacion00002.webp'); 
+              animation: animacion 0.2s steps(4) forwards infinite , flotar 1.5s ease-in-out alternate infinite;
+              background-size: 1368px 500px;
+          "></div>
+              <img class="arriba" src="./assets/cartas/rydon2.webp" />
+                <img class="sombra" src="assets/cartas/004/004papel.webp"  />
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+<!-------------------------------------005----------------------------------------> 
+
+         <div class="carousel-item" id="carousel-item-5">
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle4 circle2">
+              <div class="fondo-rainbow" ></div>
+              <img class="medio" src="assets/cartas/005/005fondo.webp" style="filter: opacity(70%);" />                
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(135deg) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                    </div>
+                    </div>
+              <img class="arriba" src="./assets/cartas/005/005fondobrillos.webp" style="z-index: 10; filter: opacity(50%);" />
+                <img class="sombra" src="assets/cartas/005/005papel.webp"  />
+                <img class="michi" src="assets/cartas/005/005michi02.webp" style=" z-index: 11;  animation: flotar 5s ease-in-out alternate-reverse infinite, blur alternate-reverse 5s infinite;">
+                <img class="michi" src="assets/cartas/005/005michi.webp" style=" z-index: 12;  animation: flotar 3s ease-in-out alternate infinite, blur alternate 5s infinite;">
+                <img class="michi" src="assets/cartas/005/005luz.webp" style="z-index: 13;">
+                <img class="bordecarta">
+                <img class="capaholograficaestrellas" src="assets/cartas/005/005estrellas.webp"   />
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+<!--------------------------------------006---------------------------------------> 
+
+
+        <div class="carousel-item" id="carousel-item-6" data-bg-base="logoprograma13">
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle2 circle4">
+              <div class="fondo-rainbow"></div> 
+              <img class="medio" src="assets/cartas/san1.webp" />
+              <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(90deg) translateX(-30px);">
+                <div class="line-container" style="justify-content: first baseline;">
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                </div>
+                <div class="line-container" style="justify-content: end;">
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                </div>
+              </div>
+              <img class="arriba" src="assets/cartas/san2.webp" />
+              <img class="sombra" id="eng" src="assets/cartas/san3.webp" />
+              
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+        <!--------------------------------007---------------------------------------------> 
+       
+        <div class="carousel-item" id="carousel-item-7">
+          <div class="tarjeta">
+            <div class="carta frente" data-circle="circle2 circle4">
+              <div class="fondo-rainbow" style="background: url(./assets/cartas/lugia0.webp); background-size: cover;"></div> 
+              <img class="medio" src="assets/cartas/lugia1.webp" />
+              <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(90deg) translateX(-30px);">
+                <div class="line-container" style="justify-content: first baseline;">
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                </div>
+                <div class="line-container" style="justify-content: end;">
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                  <div class="line line-white"></div>
+                </div>
+              </div>
+              <img class="arriba" src="assets/cartas/lugia2.webp" />
+              <img class="sombra" id="eng" src="assets/cartas/lugia3.webp" style="filter: brightness(0.7);" />
+              
+            </div>
+            <div class="carta trasera"> </div>
+          </div>
+        </div>
+        <!------------------------------------008-----------------------------------------> 
+        
+  
+            <div class="carousel-item" id="carousel-item-8">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle1">
+                  <div class="fondo-rainbow" ></div>
+                  <img class="medio" src="assets/cartas/spok1.webp" style="filter: opacity(80%) brightness(0.8); "/>                
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(90deg) scale(1.3);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+  
+                      <div class="line line-violet" style="filter: opacity(50%);"></div>
+                      <div class="line line-violet" style="filter: opacity(30%);"></div>
+                      <div class="line line-violet" style="filter: opacity(50%);"></div>
+                      <div class="line line-violet" style="filter: opacity(70%);"></div>
+                    </div>
+      
+                    <div class="line-container" style="justify-content: end;">
+  
+                      <div class="line line-violet" style="filter: opacity(20%);"></div>
+                      <div class="line line-violet" style="filter: opacity(76%);"></div>
+                      <div class="line line-violet" style="filter: opacity(30%);"></div>
+                      <div class="line line-violet" style="filter: opacity(15%);"></div>
+                    </div>
+                    </div>
+                    <img class="sombra" src="assets/cartas/spok2.webp"   />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>     
+            </div>
+<!------------------------------------------009-----------------------------------> 
+
+
+            <div class="carousel-item" id="carousel-item-9">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle4 circle5">
+                  <div class="fondo-rainbow" ></div>
+                  <img class="medio" src="assets/cartas/jira1.webp"/>  
+                  <img class="medio" src="assets/cartas/jira-1.webp"  style="z-index: 20;"/>   
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) translateX(-30px) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                    </div>
+                    </div>            
+        
+                  <img class="arriba" src="./assets/cartas/jira2.webp"  />
+                    <img class="sombra" src="assets/cartas/jira3.webp"   />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>     
+            </div>
+<!----------------------------------------010-------------------------------------> 
+
+
+            <div class="carousel-item" id="carousel-item-10">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle6 circle4">
+                  <div class="fondo-rainbow" ></div>
+                  <img class="medio" src="assets/cartas/mewrainbow0.webp" />                
+                  <div class="efectoholograficolineas" style="z-index: 2; transform: rotate(135deg) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                    </div>
+                    </div>
+
+                  <img class="arriba" src="./assets/cartas/mewrainbow1.webp" style="filter: brightness(1);"/>
+                    <img class="sombra" src="assets/cartas/mewrainbow2.webp" />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!----------------------------------------011-------------------------------------> 
+
+            <div class="carousel-item" id="carousel-item-11">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle1 circle4">
+                  <div class="fondo-rainbow" ></div>
+                  <img class="medio" src="assets/cartas/pory2-1.webp" />                
+                  <div class="efectoholograficolineas" style="z-index: 2; transform: rotate(135deg) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);"></div>
+                    </div>
+                    </div>
+
+                  <img class="arriba" src="./assets/cartas/pory2-2.webp" style="filter: brightness(0.7);"/>
+                    <img class="sombra" src="assets/cartas/pory2-3.webp" />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!-----------------------------------------012------------------------------------> 
+
+
+            <div class="carousel-item" id="carousel-item-12">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle1 circle4">
+                  <div class="fondo-rainbow" ></div>
+              
+                  <div class="efectoholograficolineas" style="z-index: 2; transform: rotate(135deg) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(136, 136, 136);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(136, 136, 136);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(136, 136, 136);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 20px 20px rgb(136, 136, 136);"></div>
+
+
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 255, 255);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 255, 255);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 255, 255);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 255, 255);"></div>
+
+
+                    </div>
+                    </div>
+
+                  <img class="arriba" src="./assets/cartas/magne1.webp" style="filter: opacity(50%);"/>
+                    <img class="sombra" src="assets/cartas/magne2.webp" />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!-----------------------------------------013------------------------------------> 
+   
+
+            <div class="carousel-item" id="carousel-item-13">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle1 circle2">
+                  <div class="fondo-rainbow" ></div>
+                  <img class="medio" src="assets/cartas/STEE1.webp" style="filter: brightness(0.8);"; />                
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(135deg) scale(1.5);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(253, 237, 9);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(0, 240, 192);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 213, 3);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 0, 187);"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(140, 144, 255);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 76, 76);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(14, 255, 34);"></div>
+                      <div class="line line-rainbow" style=" box-shadow: 0px 0px 8px 4px rgb(255, 0, 195);"></div>
+                    </div>
+                    </div>
+                  <img class="arriba" src="./assets/cartas/STEE2.webp";" style="z-index: 10;" />
+                    <img class="sombra" src="assets/cartas/STEE3.webp" ;"  />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!-----------------------------------------014------------------------------------> 
+
+
+
+            <div class="carousel-item" id="carousel-item-14">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle3 circle4">
+                  <div class="fondo-rainbow" style="background-image: url(./assets/colores.webp);"></div>
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) translateX(-30px) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                    </div>
+                    </div>
+                  <img class="arriba" src="assets/cartas/fuecoco2.webp"  />
+                  <img class="arriba" src="assets/cartas/fuecoco3.webp"  />
+                  <img class="arriba" src="assets/cartas/fuecoco4.webp"  style="z-index: 15; filter: opacity(50%);" />
+  
+                    <img class="sombra" src="assets/cartas/fuecoco3.png"   />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!-----------------------------------------015------------------------------------> 
+
+            <div class="carousel-item" id="carousel-item-15">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle2";>
+                  <div class="fondo-rainbow"></div>
+                  <img class="medio" src="assets/cartas/pika.webp" style="filter: opacity(90%) brightness(0.9);"/>                
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(-25deg) translateX(-30px) scale(2);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-yellow"></div>
+                      <div class="line line-yellow"></div>
+                      <div class="line line-yellow"></div>
+            
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-yellow"></div>
+                      <div class="line line-yellow"></div>
+                      <div class="line line-yellow"></div>
+
+                    </div>
+                    </div>
+                  <img class="arriba" src="assets/cartas/pika2.webp"  style="z-index: 15; filter: opacity(100%) brightness(0.9);" />
+  
+                    <img class="sombra" src="assets/cartas/pika3.webp"   />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!-----------------------------------------016------------------------------------> 
+
+
+            <div class="carousel-item" id="carousel-item-16">
+              <div class="tarjeta">
+                <div class="carta frente" data-circle="circle1 circle4">
+                  <div class="fondo-rainbow" ></div>
+                  <img class="medio" src="assets/cartas/gyara0.webp" style="filter: opacity(70%) brightness(0.3);" />                
+                  <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) translateX(-30px) scale(2); filter: opacity(70%);">
+                    <div class="line-container" style="justify-content: first baseline;" >
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                    </div>
+                    <div class="line-container" style="justify-content: end;">
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                      <div class="line line-white"></div>
+                    </div>
+                    </div>
+                  <img class="arriba" src="assets/cartas/gyara1.webp"  style="z-index: 10; filter: opacity(100%);" />
+  
+                    <img class="sombra" src="assets/cartas/gyara3.webp"   />
+                </div>
+                <div class="carta trasera"> </div>
+              </div>
+            </div>
+<!-----------------------------------------017------------------------------------> 
+
+<div class="carousel-item" id="carousel-item-17">
+  <div class="tarjeta">
+    <div class="carta frente" data-circle="circle4">
+      <div class="fondo-rainbow"></div>
+      <img class="medio" src="assets/cartas/alaka01.webp" style="filter: opacity(80%) brightness(0.8);"/>                
+      <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) translateX(-30px) scale(2);">
+        <div class="line-container" style="justify-content: first baseline;" >
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>   
+        </div>
+        <div class="line-container" style="justify-content: end; transform: rotate(90deg);">
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+        </div>
+        </div>
+        <img class="arriba" src="assets/cartas/alaka2.webp" />
+        <img class="sombra" src="assets/cartas/alaka2.webp" style="filter: opacity(70%);"  />
+    </div>
+    <div class="carta trasera"> </div>
+  </div>
+</div>
+<!---------------------------------------018--------------------------------------> 
+<div class="carousel-item" id="carousel-item-18">
+  <div class="tarjeta">
+    <div class="carta frente" data-circle="circle4 circlenegativo">
+      <div class="fondo-rainbow"></div>
+      <img class="medio" src="assets/cartas/mew.webp" style="filter: opacity(0%);"/>                
+
+        <img class="arriba" src="assets/cartas/mew-19.webp" />
+        <img class="sombra" src="assets/cartas/mew2.webp" style="filter: opacity(70%);"  />
+    </div>
+    <div class="carta trasera"> </div>
+  </div>
+</div>
+<!--------------------------------------019--------------------------------------->
+
+<div class="carousel-item" id="carousel-item-19">
+  <div class="tarjeta">
+    <div class="carta frente" data-circle="circle4">
+      <div class="fondo-rainbow"></div>
+      <img class="medio" src="assets/cartas/alaka01.webp" style="filter: opacity(80%) brightness(0.8);"/>                
+      <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) translateX(-30px) scale(2);">
+        <div class="line-container" style="justify-content: first baseline;" >
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>   
+        </div>
+        <div class="line-container" style="justify-content: end; transform: rotate(90deg);">
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+        </div>
+        </div>
+        <img class="arriba" src="assets/cartas/alaka2.webp" />
+        <img class="sombra" src="assets/cartas/alaka2.webp" style="filter: opacity(70%);"  />
+    </div>
+    <div class="carta trasera"> </div>
+  </div>
+</div>
+<!-----------------------------------------020------------------------------------>
+
+<div class="carousel-item" id="carousel-item-20">
+  <div class="tarjeta">
+    <div class="carta frente" data-circle="circle4">
+      <div class="fondo-rainbow"></div>
+      <img class="medio" src="assets/cartas/alaka01.webp" style="filter: opacity(80%) brightness(0.8);"/>                
+      <div class="efectoholograficolineas" style="z-index: 8; transform: rotate(45deg) translateX(-30px) scale(2);">
+        <div class="line-container" style="justify-content: first baseline;" >
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>   
+        </div>
+        <div class="line-container" style="justify-content: end; transform: rotate(90deg);">
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+          <div class="line line-recta"></div>
+        </div>
+        </div>
+        <img class="arriba" src="assets/cartas/alaka2.webp" />
+        <img class="sombra" src="assets/cartas/alaka2.webp" style="filter: opacity(70%);"  />
+    </div>
+    <div class="carta trasera"> </div>
+  </div>
+</div>
+<!-----------------------------------------------------------------------------> 
+      </div>
+
+
+
+
+    </main>
+    <script>
+      AOS.init();
+    </script>
+    <script src="sketch/sketch.js"></script>
+  </body>
+</html>
