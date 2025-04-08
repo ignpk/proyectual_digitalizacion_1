@@ -113,41 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
 });
 
-// 🔓 Desbloqueo QR automático
-const params = new URLSearchParams(window.location.search);
-const claveQR = params.get("unlock");
-
-if (claveQR) {
-  const wrapper = document.querySelector(`.carta-wrapper[data-pass="${claveQR}"]`);
-  if (wrapper) {
-    // 1. Quitar overlay si existe
-    const overlay = wrapper.querySelector(".overlay-bloqueo");
-    if (overlay) overlay.remove();
-
-    // 2. Agregar efecto visual
-    wrapper.classList.add("destello");
-    wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    setTimeout(() => wrapper.classList.remove("destello"), 2000);
-
-    // 3. Abrir automáticamente el carousel
-    const boton = wrapper.querySelector(".cartaejemplo");
-    if (boton) {
-      const id = boton.getAttribute("data-target");
-      const itemToShow = document.getElementById(id);
-
-      if (itemToShow) {
-        document.querySelectorAll(".carousel-item").forEach(item => item.style.display = "none");
-        itemToShow.style.display = "flex";
-
-        const fondonegro = document.querySelector(".fondonegro");
-        if (fondonegro) fondonegro.style.display = "block";
-
-        document.body.style.overflow = "hidden";
-      }
-    }
-  }
-}
 
 
 
@@ -168,7 +133,13 @@ function iniciarScanner() {
     qrCodeMessage => {
       console.log("QR detectado:", qrCodeMessage);
       window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
-      html5QrCode.stop();
+      html5QrCode.stop().then(() => {
+        console.log("Escáner detenido, redirigiendo...");
+        window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
+      }).catch(err => {
+        console.error("Error al detener el escáner:", err);
+        window.location.href = `?unlock=${encodeURIComponent(qrCodeMessage)}`;
+      });
     },
     errorMessage => {
       // Escaneando...
