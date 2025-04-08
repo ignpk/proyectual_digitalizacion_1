@@ -1,46 +1,79 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const overlays = document.querySelectorAll(".overlay-bloqueo");
+  // Agrega animación a las tarjetas
+  document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
 
-  overlays.forEach(overlay => {
-    overlay.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const wrapper = overlay.parentElement;
-      const contraseñaCorrecta = wrapper.getAttribute("data-pass");
-      const passIngresada = prompt("Introduce la contraseña:");
+  const carouselItems = document.querySelectorAll(".carousel-item");
+  const fondonegro = document.querySelector(".fondonegro");
 
-      if (passIngresada === contraseñaCorrecta) {
-        overlay.remove();
-      } else {
-        alert("Contraseña incorrecta");
+  // Oculta los carruseles al inicio
+  carouselItems.forEach(item => item.style.display = "none");
+  fondonegro.style.display = "none";
+
+  // Clic en botón .cartaejemplo
+  document.querySelectorAll(".cartaejemplo").forEach(boton => {
+    boton.addEventListener("click", event => {
+      const id = boton.getAttribute("data-target");
+      const itemToShow = document.getElementById(id);
+
+      if (itemToShow) {
+        carouselItems.forEach(item => item.style.display = "none");
+        itemToShow.style.display = "flex";
+        fondonegro.style.display = "block";
+        document.body.style.overflow = "hidden";
       }
+
+      event.stopPropagation();
     });
   });
 
-  // 🔓 Desbloqueo automático con QR
+  // Cierra carrusel al hacer clic fuera
+  document.addEventListener("click", event => {
+    if (![...carouselItems].some(item => item.contains(event.target)) && !fondonegro.contains(event.target)) {
+      cerrarCarrusel();
+    }
+  });
+
+  fondonegro.addEventListener("click", cerrarCarrusel);
+
+  function cerrarCarrusel() {
+    carouselItems.forEach(item => item.style.display = "none");
+    fondonegro.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+
+  // 🔓 Desbloqueo QR automático
   const params = new URLSearchParams(window.location.search);
   const claveQR = params.get("unlock");
 
   if (claveQR) {
     const wrapper = document.querySelector(`.carta-wrapper[data-pass="${claveQR}"]`);
     if (wrapper) {
+      // Quita overlay negro
       const overlay = wrapper.querySelector(".overlay-bloqueo");
-      if (overlay) {
-        overlay.remove();
-      }
+      if (overlay) overlay.remove();
 
-      // ✨ AGREGADO: scroll automático y efecto visual
+      // Efecto visual + scroll
       wrapper.classList.add("destello");
       wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
 
-      setTimeout(() => {
-        wrapper.classList.remove("destello");
-      }, 2000);
+      setTimeout(() => wrapper.classList.remove("destello"), 2000);
+
+      // Abre el carousel-item automáticamente
+      const boton = wrapper.querySelector(".cartaejemplo");
+      if (boton) {
+        const id = boton.getAttribute("data-target");
+        const itemToShow = document.getElementById(id);
+
+        if (itemToShow) {
+          carouselItems.forEach(item => item.style.display = "none");
+          itemToShow.style.display = "flex";
+          fondonegro.style.display = "block";
+          document.body.style.overflow = "hidden";
+        }
+      }
     }
   }
 });
-
-
-
 
 
 
@@ -231,51 +264,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // ----------------------------------
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Aplica la clase flip a todas las tarjetas
-  document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
-
-  // Oculta todos los carousel-item y fondonegro por defecto
-  const carouselItems = document.querySelectorAll(".carousel-item");
-  const fondonegro = document.querySelector(".fondonegro");
-
-  carouselItems.forEach(item => item.style.display = "none");
-  fondonegro.style.display = "none";
-
-  // Manejo de clic en cartaejemplo
-  document.querySelectorAll(".cartaejemplo").forEach(boton => {
-      boton.addEventListener("click", event => {
-          const id = boton.getAttribute("data-target");
-          const itemToShow = document.getElementById(id);
-
-          if (itemToShow) {
-              carouselItems.forEach(item => item.style.display = "none");
-              itemToShow.style.display = "flex";
-              fondonegro.style.display = "block";
-              document.body.style.overflow = "hidden";
-          }
-
-          event.stopPropagation(); // Evita el cierre inmediato al hacer clic
-      });
-  });
-
-  // Cerrar al hacer clic fuera del carrusel
-  document.addEventListener("click", event => {
-      if (![...carouselItems].some(item => item.contains(event.target)) && !fondonegro.contains(event.target)) {
-          cerrarCarrusel();
-      }
-  });
-
-  // Cerrar al hacer clic en fondonegro
-  fondonegro.addEventListener("click", cerrarCarrusel);
-
-  function cerrarCarrusel() {
-      carouselItems.forEach(item => item.style.display = "none");
-      fondonegro.style.display = "none";
-      document.body.style.overflow = "auto";
-  }
-});
 
 
 
