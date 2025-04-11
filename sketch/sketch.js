@@ -7,85 +7,68 @@ document.addEventListener("DOMContentLoaded", () => {
   const carouselItems = document.querySelectorAll(".carousel-item");
   const fondonegro = document.querySelector(".fondonegro");
 
+  // 🔳 Creamos y agregamos pantalla negra si no existe
+  let pantallaNegra = document.getElementById("pantallaNegra");
+  if (!pantallaNegra) {
+    pantallaNegra = document.createElement("div");
+    pantallaNegra.id = "pantallaNegra";
+    pantallaNegra.style.cssText = `
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 9999;
+    `;
+    document.body.appendChild(pantallaNegra);
+  }
+
   // Oculta carruseles al inicio
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-  // 🔓 1. DESBLOQUEO AUTOMÁTICO POR URL (opcional, lo dejamos)
-  const params = new URLSearchParams(window.location.search);
-  const claveQR = params.get("unlock");
-  if (claveQR) {
-    const wrapper = document.querySelector(`.carta-wrapper[data-pass="${claveQR}"]`);
-    if (wrapper) {
-      const overlay = wrapper.querySelector(".overlay-bloqueo");
-      if (overlay) overlay.remove();
-
-      wrapper.classList.add("destello");
-      wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => wrapper.classList.remove("destello"), 2000);
-
-      const boton = wrapper.querySelector(".cartaejemplo");
-      if (boton) {
-        const id = boton.getAttribute("data-target");
-        const itemToShow = document.getElementById(id);
-        if (itemToShow) {
-          carouselItems.forEach(item => item.style.display = "none");
-          itemToShow.style.display = "flex";
-          fondonegro.style.display = "block";
-          document.body.style.overflow = "hidden";
-        }
-      }
-    }
-  }
-
-  // ✅ 2. ESCÁNER DE QR AL TOCAR OVERLAY
+  // ✅ 1. AGREGAMOS EVENTO A TODOS LOS OVERLAYS PARA PEDIR CONTRASEÑA
   document.querySelectorAll(".overlay-bloqueo").forEach(overlay => {
     overlay.addEventListener("click", e => {
       e.stopPropagation();
 
       const wrapper = overlay.closest(".carta-wrapper");
       const passCorrecta = wrapper.getAttribute("data-pass");
+      const passIngresada = prompt("Introduce la contraseña:");
 
-      const qrContainer = document.getElementById("qr-reader");
-      qrContainer.style.display = "block";
+      if (passIngresada === passCorrecta) {
+        overlay.remove();
 
-      const html5QrCode = new Html5Qrcode("qr-reader");
+        // Mostrar pantalla negra
+        pantallaNegra.style.display = "block";
 
-      html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        qrCodeMessage => {
-          if (qrCodeMessage === passCorrecta) {
-            html5QrCode.stop().then(() => {
-              qrContainer.style.display = "none";
-              overlay.remove();
+        // Esperar 2 segundos y ocultar pantalla negra + abrir carrusel
+        setTimeout(() => {
+          pantallaNegra.style.display = "none";
 
-              const boton = wrapper.querySelector(".cartaejemplo");
-              if (boton) {
-                const id = boton.getAttribute("data-target");
-                const itemToShow = document.getElementById(id);
-                if (itemToShow) {
-                  carouselItems.forEach(item => item.style.display = "none");
-                  itemToShow.style.display = "flex";
-                  fondonegro.style.display = "block";
-                  document.body.style.overflow = "hidden";
-                }
-              }
-            });
-          } else {
-            alert("QR incorrecto");
+          // Abre el carrusel asociado
+          const boton = wrapper.querySelector(".cartaejemplo");
+          if (boton) {
+            const id = boton.getAttribute("data-target");
+            const itemToShow = document.getElementById(id);
+            if (itemToShow) {
+              carouselItems.forEach(item => item.style.display = "none");
+              itemToShow.style.display = "flex";
+              fondonegro.style.display = "block";
+              document.body.style.overflow = "hidden";
+            }
           }
-        },
-        errorMessage => {
-          // Silencio
-        }
-      ).catch(err => {
-        console.error("Error al iniciar el escáner:", err);
-      });
+        }, 2000);
+
+      } else {
+        alert("Contraseña incorrecta");
+      }
     });
   });
 
-  // ✅ 3. Si ya está desbloqueada, clic abre directamente
+  // ✅ 2. Si ya está desbloqueada, clic abre directamente
   document.querySelectorAll(".cartaejemplo").forEach(boton => {
     boton.addEventListener("click", event => {
       event.stopPropagation();

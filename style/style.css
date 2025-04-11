@@ -1,7 +1,7 @@
 
 *{
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Covered By Your Grace";
 }
 html {
   scroll-behavior: smooth; /* Desplazamiento suave */
@@ -110,7 +110,6 @@ background-size: contain;
     background-size: cover;
     width: 150px;
     height: 217px;
-    box-shadow: 0px 7px 4px 3px rgba(0, 0, 0, 0.179) inset;
     border: none;
   }
 
@@ -124,62 +123,35 @@ background-size: contain;
     left: 0;
     width: 100%;
     height: 100%;
-background-color:rgba(78, 78, 78, 0.956) ;
+background-color: rgb(77, 69, 84);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
-    color: white;
+    font-size: 180%;
+    padding: 10%;
+    color: rgb(147, 147, 147);
     cursor: pointer;
-
+border-radius: 5px;
+box-shadow: inset 0px 3px 8px 1px rgb(0, 0, 0);
   }
+.pantallaNegra{
+  position: fixed;
+  display: none;
+width: 100%;
+height: 100%;
+z-index: 999999;
+background-color: black;
 
-
-  #reader-container {
-    display: none;
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  #reader {
-    width: 100%;
-    max-width: 350px;
-    margin: 0 auto;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  }
-
-  .btn-qr {
-    display: inline-block;
-    background-color: #222;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-  }
-
-  .btn-qr:hover {
-    background-color: #444;
-  }
-
-
-
-
-  .carta-wrapper.destello {
-    animation: brillar 2s ease-out;
-  }
-  
-  @keyframes brillar {
-    0%   { box-shadow: 0 0 0px 0px gold; transform: scale(1); }
-    50%  { box-shadow: 0 0 30px 10px gold; transform: scale(1.05); }
-    100% { box-shadow: 0 0 0px 0px transparent; transform: scale(1); }
-  }
-
+}
+.candado{
+  background-size: cover;
+  width: 200px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
   .carousel-item {
     background-size: cover;
