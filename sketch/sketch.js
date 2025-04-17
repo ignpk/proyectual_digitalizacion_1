@@ -160,14 +160,15 @@ document.addEventListener("DOMContentLoaded", function() {
       circle.classList.add(circleClass);
       elemento.appendChild(circle);
 
-      const circleNegativo = document.createElement("div");
-      circleNegativo.classList.add(`${circleClass}-negativo`);
-      elemento.appendChild(circleNegativo);
-    });
+     // Crear y agregar circlenegativo
+     const circleNegativo = document.createElement("div");
+     circleNegativo.classList.add(`${circleClass}-negativo`); // Nombre único para diferenciarlos
+     elemento.appendChild(circleNegativo);
+   });
 
     const fondoRainbow = elemento.querySelector(".fondo-rainbow");
     const capaHolograficaEstrellas = elemento.querySelector(".capaholograficaestrellas");
-
+    
     let lastPositionX = 0;
     let lastPositionY = 0;
     let accumulatedY1 = 0;
@@ -188,10 +189,14 @@ document.addEventListener("DOMContentLoaded", function() {
       elemento.style.transform = `perspective(2000px) rotateX(${yAxis}deg) rotateY(${xAxis}deg)`;
 
       const circles = elemento.querySelectorAll("div[class^='circle']");
+      const circleNegativos = elemento.querySelectorAll("div[class*='circlenegativo']");
+
+      // Mover circles hacia el mouse
       circles.forEach(circle => {
         circle.style.left = `${clientX - rect.left}px`;
         circle.style.top = `${clientY - rect.top}px`;
       });
+
 
       const deltaX = clientX - lastPositionX;
       const deltaY = clientY - lastPositionY;
@@ -203,6 +208,7 @@ document.addEventListener("DOMContentLoaded", function() {
       accumulatedY2 -= totalDelta;
 
       const hueValue = (clientX + clientY) % 360;
+      
       [fondoRainbow, capaHolograficaEstrellas].forEach(elemento => {
         if (elemento) {
           elemento.style.filter = `saturate(2) hue-rotate(${hueValue}deg)`;
@@ -226,31 +232,32 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     const startInteraction = () => {
-      elemento.style.transition = "transform 0.2s ease-out";
-      if (fondoRainbow) fondoRainbow.style.transition = "filter 0.2s ease-out";
+      elemento.style.transition = "transform 0.2s ease-out"; // Suaviza la entrada
+      if (fondoRainbow) fondoRainbow.style.transition = "filter 0.2s ease-out"; // Suaviza la entrada de fondo-rainbow
       if (capaHolograficaEstrellas) capaHolograficaEstrellas.style.transition = "filter 0.2s ease-out";
-
+    
       elemento.addEventListener("mousemove", moverLineas);
       elemento.addEventListener("touchmove", moverLineas);
     };
-
+    
     const stopInteraction = () => {
       elemento.style.transition = "transform 0.6s ease-out"; 
       elemento.style.transform = "rotateY(0deg) rotateX(0deg)";
-
+    
       if (fondoRainbow) {
         fondoRainbow.style.transition = "filter 0.6s ease-out"; 
         fondoRainbow.style.filter = "saturate(10)";
       }
-
+    
       if (capaHolograficaEstrellas) {
         capaHolograficaEstrellas.style.transition = "filter 0.6s ease-out"; 
         capaHolograficaEstrellas.style.filter = "saturate(10)";
       }
-
+    
       elemento.removeEventListener("mousemove", moverLineas);
       elemento.removeEventListener("touchmove", moverLineas);
     };
+    
 
     elemento.addEventListener("mouseenter", startInteraction);
     elemento.addEventListener("touchstart", startInteraction);
@@ -259,20 +266,9 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   cartas.forEach(aplicarEfectos);
-
-  // Integración del giroscopio
-  window.addEventListener("deviceorientation", (event) => {
-    const gamma = event.gamma; 
-    const beta = event.beta;
-
-    cartas.forEach((elemento) => {
-      const xAxis = gamma / 5; 
-      const yAxis = beta / 5; 
-
-      elemento.style.transform = `perspective(2000px) rotateX(${yAxis}deg) rotateY(${xAxis}deg)`;
-    });
-  });
 });
+
+
 
 
 // ----------------------------------
