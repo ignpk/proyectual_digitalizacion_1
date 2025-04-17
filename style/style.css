@@ -3,12 +3,16 @@
   color: white;
   font-family: "Covered By Your Grace";
 }
-html {
-  scroll-behavior: smooth; /* Desplazamiento suave */
-}
-body{
+
+html, body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
 background-image: url(../assets/background001.webp);
 background-size: contain;
+scroll-behavior: smooth; /* Desplazamiento suave */
+
 }
 /*------------------------------ALERTA-------------------------------------*/
 .modal-alerta {
@@ -315,6 +319,8 @@ background-color: black;
     position: fixed;
     z-index: 999999;
     transform-style: preserve-3d;
+    overscroll-behavior: none;
+    touch-action: none;
   }
 
 .carta{
