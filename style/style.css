@@ -3,10 +3,9 @@
   color: white;
   font-family: "Covered By Your Grace";
 }
-html {
-  scroll-behavior: smooth; /* Desplazamiento suave */
-}
-body{
+
+html, body{
+  scroll-behavior: smooth; 
   overscroll-behavior: none;
   height: 100dvh;
   margin: 0;
