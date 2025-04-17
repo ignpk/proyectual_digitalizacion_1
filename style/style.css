@@ -12,6 +12,7 @@ html, body{
 background-image: url(../assets/background001.webp);
 background-size: contain;
 scroll-behavior: smooth; /* Desplazamiento suave */
+touch-action: none
 
 }
 /*------------------------------ALERTA-------------------------------------*/
