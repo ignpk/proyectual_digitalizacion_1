@@ -3,16 +3,12 @@
   color: white;
   font-family: "Covered By Your Grace";
 }
-
-html, body{
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-x: hidden;
+html {
+  scroll-behavior: smooth; /* Desplazamiento suave */
+}
+body{
 background-image: url(../assets/background001.webp);
 background-size: contain;
-scroll-behavior: smooth;
-
 }
 /*------------------------------ALERTA-------------------------------------*/
 .modal-alerta {
@@ -319,8 +315,6 @@ background-color: black;
     position: fixed;
     z-index: 999999;
     transform-style: preserve-3d;
-    overscroll-behavior: none;
-    touch-action: none;
   }
 
 .carta{
@@ -549,7 +543,7 @@ backface-visibility: hidden;
 
   .BOTONDESBLOQUEAR{
     padding: 5px;
-      top: 90%;
+      top: 89%;
       width: 250px;
     }
 
