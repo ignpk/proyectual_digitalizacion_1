@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       background: black;
       z-index: 9999;
     `;
