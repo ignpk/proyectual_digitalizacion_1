@@ -28,7 +28,8 @@ background-size: contain;
 
 .contenido-alerta {
   width: 250PX;
-  height: 300PX;
+  height: auto;
+  padding-bottom: 20px;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -43,7 +44,7 @@ background-size: contain;
 .contenido-alerta p,
 .contenido-alerta button{
   color: black;
-  font-family: Helvetica;
+  font-family:Arial, Helvetica, sans-serif;
   font-weight: bold;
 }
 
