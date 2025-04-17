@@ -1,18 +1,48 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ----------------- CARTAS BLOQUEADAS ---------------------------------
+  // ----------------- FUNCIONES DE ALERTA PERSONALIZADA -----------------
+  function mostrarAlerta(mensaje, tipo) {
+    const modal = document.getElementById("alertaModal");
+    const texto = document.getElementById("textoAlerta");
+    const contenido = document.querySelector(".contenido-alerta");
 
-  // Agrega animación a las tarjetas
+    if (modal && texto && contenido) {
+      texto.textContent = mensaje;
+
+      //  colores del alerta :)
+      const colores = {
+        canjeado: { fondo: "#f0c401", borde: "#ff5c5c" }, // Amarillo
+        incorrecto: { fondo: "#ff5c5c", borde: "#000" } // Rojo
+      };
+
+      if (colores[tipo]) {
+        contenido.style.backgroundColor = colores[tipo].fondo;
+        contenido.style.borderColor = colores[tipo].borde;
+      }
+
+      modal.classList.remove("oculto");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  window.cerrarAlerta = function () {
+    document.getElementById("alertaModal")?.classList.add("oculto");
+    document.body.style.overflow = "auto";
+  };
+  document.addEventListener("keydown", function (e) {
+    const modal = document.getElementById("alertaModal");
+    if (e.key === "Enter" && modal && !modal.classList.contains("oculto")) {
+      cerrarAlerta();
+    }
+  });
+  // ----------------- CARTAS BLOQUEADAS ---------------------------------
   document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
 
   const carouselItems = document.querySelectorAll(".carousel-item");
   const fondonegro = document.querySelector(".fondonegro");
-
-  // 🔳 Creamos y agregamos pantalla negra si no existe
-  let pantallaNegra = document.getElementById("pantallaNegra");
-  if (!pantallaNegra) {
-    pantallaNegra = document.createElement("div");
-    pantallaNegra.id = "pantallaNegra";
-    pantallaNegra.style.cssText = `
+  const pantallaNegra = document.getElementById("pantallaNegra") || (() => {
+    const div = document.createElement("div");
+    div.id = "pantallaNegra";
+    div.style.cssText = `
       display: none;
       position: fixed;
       top: 0;
@@ -22,63 +52,76 @@ document.addEventListener("DOMContentLoaded", () => {
       background: black;
       z-index: 9999;
     `;
-    document.body.appendChild(pantallaNegra);
-  }
+    document.body.appendChild(div);
+    return div;
+  })();
 
-  // Oculta carruseles al inicio
+  document.getElementById("codigoGlobal").addEventListener("keypress", e => {
+    if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
+  });
+
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-  // ✅ 1. AGREGAMOS EVENTO A TODOS LOS OVERLAYS PARA PEDIR CONTRASEÑA
-  document.querySelectorAll(".overlay-bloqueo").forEach(overlay => {
-    overlay.addEventListener("click", e => {
-      e.stopPropagation();
+  //  DESBLOQUEO 
+  document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
+    const codigoIngresado = document.getElementById("codigoGlobal").value.trim();
+    if (!codigoIngresado) return;
 
-      const wrapper = overlay.closest(".carta-wrapper");
+    let codigoEncontrado = false;
+    let cartaDesbloqueada = false;
+
+    document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+      const overlay = wrapper.querySelector(".overlay-bloqueo");
       const passCorrecta = wrapper.getAttribute("data-pass");
-      const passIngresada = prompt("Introduce la contraseña:");
 
-      if (passIngresada === passCorrecta) {
-        overlay.remove();
+      if (codigoIngresado === passCorrecta) {
+        codigoEncontrado = true;
 
-        // Mostrar pantalla negra
-        pantallaNegra.style.display = "block";
+        if (overlay) {
+          overlay.remove();
+          cartaDesbloqueada = true;
+          pantallaNegra.style.display = "block";
 
-        // Esperar 2 segundos y ocultar pantalla negra + abrir carrusel
-        setTimeout(() => {
-          pantallaNegra.style.display = "none";
+          setTimeout(() => {
+            pantallaNegra.style.display = "none";
 
-          // Abre el carrusel asociado
-          const boton = wrapper.querySelector(".cartaejemplo");
-          if (boton) {
-            const id = boton.getAttribute("data-target");
+            const boton = wrapper.querySelector(".cartaejemplo");
+            const id = boton?.getAttribute("data-target");
             const itemToShow = document.getElementById(id);
+
             if (itemToShow) {
               carouselItems.forEach(item => item.style.display = "none");
               itemToShow.style.display = "flex";
               fondonegro.style.display = "block";
               document.body.style.overflow = "hidden";
             }
-          }
-        }, 2000);
 
-      } else {
-        alert("Contraseña incorrecta");
+            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+          }, 1000);
+        }
       }
     });
+
+    if (!codigoEncontrado) {
+      mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
+    } else if (!cartaDesbloqueada) {
+      mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
+    } else {
+    }
+    document.getElementById("codigoGlobal").value = "";
   });
 
-  // ✅ 2. Si ya está desbloqueada, clic abre directamente
+  // ✅ Si ya está desbloqueada, clic abre directamente
   document.querySelectorAll(".cartaejemplo").forEach(boton => {
     boton.addEventListener("click", event => {
       event.stopPropagation();
 
       const wrapper = boton.closest(".carta-wrapper");
-      const overlay = wrapper.querySelector(".overlay-bloqueo");
-
-      if (!overlay) {
+      if (!wrapper.querySelector(".overlay-bloqueo")) {
         const id = boton.getAttribute("data-target");
         const itemToShow = document.getElementById(id);
+
         if (itemToShow) {
           carouselItems.forEach(item => item.style.display = "none");
           itemToShow.style.display = "flex";
@@ -103,72 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   fondonegro.addEventListener("click", cerrarCarrusel);
-});
-
-
-// ----------------- BANNER FOTOS -----------------
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  const banner = document.querySelector('.banner');
-  let currentImageIndex = 0;
-  let bannerImages = [];
-  let intervalId;
-  let isMobileMode = null; // guardamos si estamos en modo mobile
-
-  // Función para elegir el set de imágenes según el ancho de pantalla
-  function getBannerImages(isMobile) {
-    return isMobile
-      ? [
-          'assets/wallpapersMobile01.webp',
-          'assets/wallpapersMobile02.webp',
-          'assets/wallpapersMobile03.webp',
-          'assets/wallpapersMobile04.webp',
-        ]
-      : [
-          'assets/wallpapers.webp',
-          'assets/wallpapers02.webp',
-          'assets/wallpapers03.webp',
-          'assets/wallpapers04.webp',
-        ];
-  }
-
-  // Precargar imágenes
-  function preloadImages(images) {
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }
-
-  // Cambiar imagen de fondo
-  function changeBannerImage() {
-    banner.style.backgroundImage = `url(${bannerImages[currentImageIndex]})`;
-    currentImageIndex = (currentImageIndex + 1) % bannerImages.length;
-  }
-
-  // Iniciar carrusel
-  function startCarousel() {
-    clearInterval(intervalId); // Detener intervalos anteriores
-    isMobileMode = window.innerWidth <= 500; // actualizar el estado
-    bannerImages = getBannerImages(isMobileMode);
-    preloadImages(bannerImages);
-    currentImageIndex = 0;
-    changeBannerImage(); // Mostrar la primera imagen
-    intervalId = setInterval(changeBannerImage, 7000);
-  }
-
-  // Al cargar la página
-  startCarousel();
-
-  // Al redimensionar la ventana
-  window.addEventListener('resize', () => {
-    const nowMobile = window.innerWidth <= 500;
-    if (nowMobile !== isMobileMode) {
-      startCarousel(); // reiniciar con las imágenes correctas
-    }
-  });
 });
 
 // ----------------- RESPLANDOR CARTA Y EFECTO 3D -----------------
@@ -264,16 +241,16 @@ document.addEventListener("DOMContentLoaded", function() {
     };
     
     const stopInteraction = () => {
-      elemento.style.transition = "transform 0.6s ease-out"; // Suaviza la salida
+      elemento.style.transition = "transform 0.6s ease-out"; 
       elemento.style.transform = "rotateY(0deg) rotateX(0deg)";
     
       if (fondoRainbow) {
-        fondoRainbow.style.transition = "filter 0.6s ease-out"; // Suaviza la salida de fondo-rainbow
+        fondoRainbow.style.transition = "filter 0.6s ease-out"; 
         fondoRainbow.style.filter = "saturate(10)";
       }
     
       if (capaHolograficaEstrellas) {
-        capaHolograficaEstrellas.style.transition = "filter 0.6s ease-out"; // Suaviza la salida de capaHolograficaEstrellas
+        capaHolograficaEstrellas.style.transition = "filter 0.6s ease-out"; 
         capaHolograficaEstrellas.style.filter = "saturate(10)";
       }
     
@@ -330,30 +307,30 @@ function applyAnimations(selector) {
   });
 }
 
-// reproducir la animación
+
 function playAnimation(element, bgBase) {
   element.style.animation = ''; 
 
-  // Duración de la animación
-  const totalDuration = 400; // 0.5s
+
+  const totalDuration = 400; 
   const stepDuration = totalDuration / 4; 
 
   // Secuencia
   setTimeout(() => {
     element.style.backgroundImage = `url(./assets/${bgBase}b.webp)`;
-  }, stepDuration * 1); // Cambiar al 25% del tiempo total
+  }, stepDuration * 1); //  al 25% 
   setTimeout(() => {
     element.style.backgroundImage = `url(./assets/${bgBase}c.webp)`;
-  }, stepDuration * 2); // Cambiar al 50% del tiempo total
+  }, stepDuration * 2); // al 50% 
   setTimeout(() => {
     element.style.backgroundImage = `url(./assets/${bgBase}d.webp)`;
-  }, stepDuration * 3); // Cambiar al 75% del tiempo total
+  }, stepDuration * 3); //  al 75% 
   setTimeout(() => {
-    element.style.backgroundImage = `url(./assets/${bgBase}.webp)`; // Fondo final
-  }, totalDuration); // Fondo final al terminar la animación
+    element.style.backgroundImage = `url(./assets/${bgBase}.webp)`; 
+  }, totalDuration); // Fondo final 
 }
 
-// Aplicar animaciones a estos divs
+// Aplicar animaciones a estos divs=…
 applyAnimations('.carousel-item');
 
 
