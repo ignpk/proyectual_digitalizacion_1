@@ -315,6 +315,7 @@ background-color: black;
     position: fixed;
     z-index: 999999;
     transform-style: preserve-3d;
+    overscroll-behavior: none
   }
 
 .carta{
@@ -543,7 +544,7 @@ backface-visibility: hidden;
 
   .BOTONDESBLOQUEAR{
     padding: 5px;
-      top: 89%;
+      top: 90%;
       width: 250px;
     }
 
