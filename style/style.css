@@ -121,11 +121,14 @@ background-size: contain;
 
 }
 .bannerlogo{
-  width: 220px;
-  height: 250px;
+  position: absolute;
+  width: 18%;
+  height: 44%;
   background-image: url(../assets/logo001.webp);
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
+
 
 /*-------------------------------------------------------------------*/
 
@@ -213,6 +216,7 @@ transform: scale(1.3);
 .trasera,
 .michi{
   pointer-events: none;
+  outline: none;
 }
 
 .carta,
@@ -248,7 +252,6 @@ transform: scale(1.3);
     gap: 30px;
     justify-content: center;
     align-items: center;
-    position: relative;
     width: 100%;
     height: auto;
     display: flex;
@@ -287,9 +290,19 @@ transform: scale(1.3);
     width: 100%;
     height: 100%;
 background-color: rgb(64, 30, 75);
-border: 4px dashed #4a2264;
 border-radius: 5px;
   }
+.overnormal{
+  background-color: rgb(64, 30, 75);
+  border: 4px dashed #4a2264;
+
+}
+.overespecial{
+  background-color: rgb(91, 89, 20);
+  border: 4px dashed #ffffff55;
+
+}
+
 .pantallaNegra{
   position: fixed;
   display: none;
@@ -363,7 +376,6 @@ pointer-events: all;
 }
 
 .carta {
-  filter: contrast(1.2);
   cursor:pointer;
   border-radius: 11px;
 backface-visibility: hidden;
@@ -475,8 +487,8 @@ backface-visibility: hidden;
         box-shadow: 0px 0px 20px 5px rgb(243, 180, 255);
         }
       .line-recta{
-        background-color: rgba(208, 0, 255, 0.252);
-        box-shadow: 0px 0px 20px 15px rgba(93, 0, 88, 0.75);    
+        background-color: rgba(255, 255, 255, 0);
+        box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);    
         height:10px;
       }
 
