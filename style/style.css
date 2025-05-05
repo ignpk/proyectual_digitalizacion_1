@@ -546,7 +546,12 @@ backface-visibility: hidden;
   background-color: rgba(0, 0, 0, 0.467);
   backdrop-filter: blur(5px);
 }
-
+.separacion{
+  position: relative;
+  width: 100%;
+  height: 15%;
+  background-color: brown;
+}
   /*-----------------------------MEDIA--------------------------------*/
   @media only screen and (max-width: 900px){
 
@@ -554,9 +559,13 @@ backface-visibility: hidden;
 
 
     .cartasgaleriacontainer{
+transform: translateY(-15%);
       padding: 50px;
       gap: 15px;
-
+      width: 100%;
+      height: 75vh;
+overflow: scroll;
+mask-image: linear-gradient(to bottom, transparent, black 20%, black 90%, transparent);
     }
 
 
@@ -571,7 +580,7 @@ backface-visibility: hidden;
     }
 
   .cartasgaleriacontainer{
-    padding:100px 30px;
+    padding:100px 0px;
     gap: 15px;
   }
   .cartaejemplo{
