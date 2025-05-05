@@ -442,6 +442,10 @@ backface-visibility: hidden;
   from { background-position: 0 0; }
   to { background-position: -1368px 0; } /* Se mueve 4 frames (342px * 4) */
 }
+@keyframes animacion2 {
+  from { background-position: 0 0; }
+  to { background-position: -2052px 0; } /* Se mueve 4 frames (342px * 4) */
+}
 .bordecarta{
   z-index: 18;
   position: absolute;
