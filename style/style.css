@@ -2,20 +2,11 @@
 *{
   color: white;
   /*font-family: "Covered By Your Grace";*/
+    -webkit-tap-highlight-color: transparent;
+
 }
 
-* {
-  outline: none !important;
-  box-shadow: none !important;
-  -webkit-tap-highlight-color: transparent;
-}
 
-*:focus,
-*:active {
-  outline: none !important;
-  box-shadow: none !important;
-  -webkit-tap-highlight-color: transparent;
-}
 
 
 
