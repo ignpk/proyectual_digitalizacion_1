@@ -331,7 +331,7 @@ function playAnimation(element, bgBase) {
 }
 
 // Aplicar animaciones a estos divs=…
-applyAnimations('.carousel-item');
+applyAnimations('.bannerlogo');
 
 
 
