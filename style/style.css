@@ -307,9 +307,8 @@ display: block;
   z-index: 997;
   position: fixed;
   display: none;
-background: linear-gradient(90deg,rgba(0, 0, 0, 0.499) 0%, rgba(0, 0, 0, 0.289) 53%, rgba(255, 255, 255, 0) 100%);
-
-  width: 100%;
+backdrop-filter: blur(5px);  
+width: 100%;
   height: 100%;
 }
 .botonmenudesplegable a{
@@ -333,9 +332,11 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0.499) 0%, rgba(0, 0, 0, 0.289) 
   cursor: pointer;
   border: none;
   background-color: rgba(255, 255, 255, 0);
-  color: white;
+  color: rgb(255, 255, 255);
   padding-top: 20%;
   transform: scale(2.2);
+}
+.cerrar button p{
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -588,16 +589,12 @@ transform: scale(1.3);
 
 .contenedorcolores{
   gap: 20px;
-  border: 2px solid rgba(146, 146, 146, 0.546);
-  border-radius: 10px;
   flex-wrap: wrap;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 70%;
+  width: 85%;
   height: auto;
-  margin: 0px 50px;
-  padding:50PX;
 
 }
 
@@ -607,8 +604,8 @@ transform: scale(1.3);
     filter: saturate(1.2) contrast(1.2);
     border-radius: 6px;
     background-size: cover;
-    width: 103px;
-    height: 150px;
+    width: 100%;
+    height: 100%;
     border: none;
     transition: 0.3s ease;
 
@@ -618,6 +615,8 @@ transform: scale(1.1);
   }
 
   .carta-wrapper {
+        width: 103px;
+    height: 150px;
     position: relative;
     display: inline-block;
   }
@@ -627,22 +626,23 @@ transform: scale(1.1);
     left: 0;
     width: 100%;
     height: 100%;
-background-color: rgb(64, 30, 75);
 border-radius: 5px;
+background-size: contain;
   }
 .overnormal{
-  background-color: rgb(64, 30, 75);
-
+  background-image: url(../assets/cartas/BACK.webp);
+filter: sepia(1) grayscale(1) brightness(0.8);
 }
 
 .overraro{
-  background-color: rgb(53, 22, 93);
+  background-image: url(../assets/cartas/BACK.webp);
+filter: sepia(1) saturate(5) hue-rotate(240deg) brightness(0.7);
 
 }
 
 .overespecial{
-  background-color: rgb(117, 90, 2);
-
+  background-image: url(../assets/cartas/BACK.webp);
+filter: sepia(1) saturate(5) hue-rotate(350deg) brightness(0.7);
 }
 
 .pantallaNegra{
@@ -960,13 +960,6 @@ overflow: scroll;
 mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
     }
 
-
-  .contenedorcolores{
-    border-radius: 10px;
-    padding:50px 0PX;
-    gap: 15px;
-
-  }
   .BOTONDESBLOQUEAR{
     padding: 5px;
       top: 90%;
@@ -979,13 +972,11 @@ mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transp
 
 
 
-  .cartaejemplo{
-    border-radius: 5px;
-    background-size: cover;
+
+  .carta-wrapper {
     width: 80px;
     height: 117px;
   }
-
   .banner{
     display: none;
   }
@@ -1016,19 +1007,10 @@ display: none;
   @media only screen and (max-width: 360px){
 
 
-  .contenedorcolores{
-    border-radius: 10px;
-    padding:30px 0PX;
-    gap: 10px;
-  }
-
-  .cartaejemplo{
-    border-radius: 5px;
-    background-size: cover;
+  .carta-wrapper {
     width: 70px;
     height: 103px;
   }
-
 
   .bannermichis{
 display: none;
