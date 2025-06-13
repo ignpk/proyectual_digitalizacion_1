@@ -1,3 +1,66 @@
+
+
+ // animacion boton menu------------------------------------------------
+
+ const botonMenu = document.querySelector('.botonmenu');
+ const botonMenuDesplegable = document.querySelector('.botonmenudesplegable');
+ const botonCerrar = document.querySelector('.cerrar');
+ const links = botonMenuDesplegable.querySelectorAll('a'); // Seleccionamos todos los enlaces del menú desplegable
+
+ // Al hacer clic en el botón "Menú"
+ botonMenu.addEventListener('click', () => {
+   // Oculta el botón de menú y muestra el menú desplegable con la animación
+   botonMenu.style.display = 'none'; // Ocultar botón de menú
+   botonMenuDesplegable.classList.remove('hide');  // Quitar la animación de salida si existe
+   botonMenuDesplegable.style.display = 'block';   // Aseguramos que se vea el menú desplegable
+   botonMenuDesplegable.classList.add('show');     // Aplica la animación de entrada
+
+   // Muestra el botón de cerrar con la animación
+   botonCerrar.classList.remove('hide');
+   botonCerrar.style.display = 'block';
+   botonCerrar.classList.add('show');
+ });
+
+ // Al hacer clic en el botón "Cerrar"
+ botonCerrar.addEventListener('click', () => {
+   cerrarMenu();
+ });
+
+ // Al hacer clic en los enlaces del menú desplegable
+ links.forEach(link => {
+   link.addEventListener('click', () => {
+     cerrarMenu(); // Cierra el menú al hacer clic en cualquier enlace
+   });
+ });
+
+ // Función para cerrar el menú y el botón de cerrar
+ function cerrarMenu() {
+   // Aplica la animación de salida al menú desplegable y al botón cerrar
+   botonMenuDesplegable.classList.remove('show');
+   botonMenuDesplegable.classList.add('hide');  // Desliza fuera el menú
+
+   botonCerrar.classList.remove('show');
+   botonCerrar.classList.add('hide');           // Desliza fuera el botón cerrar
+
+   // Espera a que termine la animación para ocultar completamente los elementos
+   setTimeout(() => {
+     botonMenuDesplegable.style.display = 'none';  // Oculta el div desplegable
+     botonCerrar.style.display = 'none';           // Oculta el botón cerrar
+     botonMenu.style.display = 'block';            // Vuelve a mostrar el botón de menú
+   }, 500);  // Duración de la animación (500 ms)
+ }
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   // ----------------- FUNCIONES DE ALERTA PERSONALIZADA -----------------
   function mostrarAlerta(mensaje, tipo) {
@@ -292,7 +355,7 @@ function applyAnimations(selector) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const uniqueDelay = Math.random() * 800; 
+            const uniqueDelay = Math.random() * 100; 
             setTimeout(() => playAnimation(element, bgBase), uniqueDelay);
           } else {
             
@@ -332,7 +395,7 @@ function playAnimation(element, bgBase) {
 
 // Aplicar animaciones a estos divs=…
 applyAnimations('.bannerlogo');
-
+applyAnimations('.opcionnavbarefectos');
 
 
 

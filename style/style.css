@@ -1,6 +1,7 @@
 
 *{
   color: white;
+  text-decoration: none;
   /*font-family: "Covered By Your Grace";*/
 
 }
@@ -95,7 +96,294 @@ background-size: contain;
   from {transform: translateY(-20px);}
   to {transform: translateY(0);}
 }
-/*-------------------------------------------------------------------*/
+
+
+
+/*---------------------------NAVBAR----------------------------------------*/
+
+.navoculto {
+  position: fixed;
+  z-index: 999999999999;
+}
+
+
+.navoculto{
+
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 300px;
+  height: 100%;
+background-image: url(../assets/NAVBAR_BACKGROUND.webp);
+background-size: contain;
+  left: -230px;
+transition: 0.5s ease;
+z-index: 999;
+transform: translateX(-20px);
+      box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.54);
+}
+
+.navbar{
+  gap: 10PX;
+
+background-size: cover;
+transform: translateX(0px);
+
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  transition: 0.5s ease;
+}
+.navoculto:hover{
+  transition: 0.3s ease;
+  left: 0;
+}
+.navoculto:hover .navbar{
+  filter: opacity(100);
+  pointer-events: all;
+  transition: 0.3s ease;
+}
+
+.opcionnavbar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 60px;
+  transition: 0.2s ease;
+  transform: rotate(-3DEG) translateX(20px);
+    border-radius: 5px;
+      box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.54);
+}
+
+.opcionnavbar:nth-child(1){
+  background-color: rgb(255, 132, 0);
+}
+.opcionnavbar:nth-child(2){
+  background-color: rgb(40, 163, 6);
+}
+.opcionnavbar:nth-child(3){
+  background-color: rgb(112, 0, 197);
+}
+.opcionnavbar:nth-child(4){
+  background-color: rgb(54, 127, 255);
+}
+.opcionnavbar:nth-child(5){
+  background-color: rgb(211, 208, 0);
+}
+.opcionnavbar:nth-child(6){
+  background-color: rgb(255, 0, 140);
+}
+
+.opcionnavbar:nth-child(1):hover{
+  background-color: rgb(255, 132, 0);
+}
+.opcionnavbar:nth-child(2):hover{
+  background-color: rgb(40, 163, 6);
+}
+.opcionnavbar:nth-child(3):hover{
+  background-color: rgb(112, 0, 197);
+}
+.opcionnavbar:nth-child(4):hover{
+  background-color: rgb(54, 127, 255);
+}
+.opcionnavbar:nth-child(5):hover{
+  background-color: rgb(211, 208, 0);
+}
+.opcionnavbar:nth-child(6):hover{
+  background-color: rgb(255, 0, 140);
+}
+
+.opcionnavbar p{
+  color: rgba(0, 0, 0, 0.485);
+  font-family: "Covered By Your Grace", cursive;
+  font-weight: bold;
+  font-style: normal;
+  letter-spacing: 2px;
+  font-size: 120%;
+}
+.opcionnavbar:hover p{
+    letter-spacing: 2px;
+  color: rgb(255, 255, 255);
+  animation: animarletras 0.3s ;
+    font-size: 150%;
+}
+
+
+
+@keyframes animarletras{
+  0%{
+  font-family: "Lacquer", system-ui;
+  font-weight: 400;
+  font-style: normal;
+      letter-spacing: normal;
+  }
+    25%{
+  font-family: "Fredericka the Great", serif;
+  font-weight: 400;
+  font-style: normal;
+        letter-spacing: normal;
+  }
+    50%{
+  font-family: "Slackside One", cursive;
+  font-weight: 400;
+  font-style: normal;
+        letter-spacing: normal;
+  }
+      75%{
+  font-family: "Kranky", serif;
+  font-weight: 400;
+  font-style: normal;
+        letter-spacing: normal;
+  }
+    100%{
+  font-family: "Covered By Your Grace", cursive;
+  font-weight: 400;
+  font-style: normal;
+        letter-spacing: normal;
+  }
+}
+
+.opcionnavbar:hover{
+  box-shadow: -10px 19px 9px 0px rgba(0,0,0,0.54);
+  transform: rotate(-3DEG) translateX(50px) translateY(-5px);
+  filter: opacity(100%);
+  transition: 0.3s ease;
+  border-radius: 5px;
+}
+
+
+.opcionnavbarefectos{
+  width: 100%;
+  height: 100%;
+  transform: scale(1.3);
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  background-size: cover;
+
+}
+.opcionnavbar:hover > .opcionnavbarefectos{
+display: block;
+}
+
+
+
+
+
+/*---------------------------NAVBAR MOVIL----------------------------------------*/
+
+.botonmenu {
+  cursor: pointer;
+  pointer-events: none;
+  filter: opacity(0);
+  font-size: 110%;
+  text-align: center;
+  color: white;
+  margin: 4%;
+  z-index: 999999999;
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.298);
+  background-image: url(../assets/opciones.png);
+  background-size: cover;
+
+}
+
+
+
+.botonmenudesplegable {
+  padding-top: 30%;
+  font-size: 120%;
+  text-align: center;
+  z-index: 997;
+  position: fixed;
+  display: none;
+background: linear-gradient(90deg,rgba(0, 0, 0, 0.499) 0%, rgba(0, 0, 0, 0.289) 53%, rgba(255, 255, 255, 0) 100%);
+
+  width: 100%;
+  height: 100%;
+}
+.botonmenudesplegable a{
+  margin:20px 0px;
+}
+
+.cerrar {
+  cursor: pointer;
+  right: 0;
+  display: none;
+  text-align: center;
+  color: white;
+  margin: 2%;
+  z-index: 999;
+  position: fixed;
+  width: 60px;
+  height: 60px;
+}
+
+.cerrar button {
+  cursor: pointer;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+  padding-top: 20%;
+  transform: scale(2.2);
+}
+
+/* Animación de entrada (deslizamiento de izquierda a derecha) */
+@keyframes slideIn {
+  from {
+transform: translateX(-100%);
+filter: opacity(0);
+  }
+
+  to {
+transform: translateX(0%);
+
+  }
+}
+
+/* Animación de salida (deslizamiento de derecha a izquierda) */
+@keyframes slideOut {
+  from {
+transform: translateX(0%);
+  }
+
+  to {
+transform: translateX(-100%);
+filter: opacity(0);
+  }
+}
+
+/* Estado visible con animación de entrada */
+.botonmenudesplegable.show {
+  animation: slideIn 0.2s forwards;
+  /* Aparece deslizándose */
+}
+
+/* Estado oculto con animación de salida */
+.botonmenudesplegable.hide {
+  animation: slideOut 0.2s forwards;
+  /* Desaparece deslizándose */
+}
+
+/* Para mostrar el botón de cerrar */
+.cerrar.show {
+  animation: slideIn 0.2s forwards;
+}
+
+.cerrar.hide {
+  animation: slideOut 0.2s forwards;
+}
+
 
 
 /*----------------------------BANNER---------------------------------------*/
@@ -305,10 +593,11 @@ transform: scale(1.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: auto;
+  width: 70%;
   height: auto;
   margin: 0px 50px;
   padding:50PX;
+
 }
 
   .cartaejemplo{
@@ -595,7 +884,11 @@ backface-visibility: hidden;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.467);
   backdrop-filter: blur(5px);
+
+
+
 }
+
 .botoncerrar{
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
@@ -623,6 +916,37 @@ left: 50%;
   /*-----------------------------MEDIA--------------------------------*/
   @media only screen and (max-width: 900px){
 
+
+  .botonmenu {
+    pointer-events: all;
+    filter: opacity(1);
+
+  }
+
+  .opcionnavbar{
+  transform: rotate(-3DEG) translateX(-20px);
+      box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.54);
+  height: 70px;
+}
+.opcionnavbar p{
+  color: rgb(255, 255, 255);
+    font-size: 150%;
+}
+
+.opcionnavbar:hover{
+      box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.54);
+  transform: rotate(-3DEG) translateX(0px) translateY(0px);
+  animation: none;
+}
+.opcionnavbar:hover p{
+  animation: none;
+    font-size: 150%;
+}
+
+.navoculto{
+  display: none;
+}
+
     .cartaejemplo:hover{
       transform: none;
         }
@@ -640,6 +964,7 @@ mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transp
     border-radius: 10px;
     padding:50px 0PX;
     gap: 15px;
+
   }
   .BOTONDESBLOQUEAR{
     padding: 5px;
