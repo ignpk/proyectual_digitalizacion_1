@@ -1,4 +1,15 @@
 
+ // responsive en moviles. barra de busqueda------------------------------------------------
+
+
+function setRealVh() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+window.addEventListener('resize', setRealVh);
+window.addEventListener('orientationchange', setRealVh);
+setRealVh(); // llamá la función al cargar
 
  // animacion boton menu------------------------------------------------
 
