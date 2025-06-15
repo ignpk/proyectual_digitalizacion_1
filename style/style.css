@@ -26,9 +26,10 @@ background-size: contain;
 }
 
 #installButton{
+  right: 0;
   width: 100px;
   height: 100px;
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.424);
   position: fixed;
   z-index: 999;
 }
