@@ -295,3 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
   applyAnimations('.bannerlogo');
   applyAnimations('.opcionnavbarefectos');
 });
+
+
+
+
+
