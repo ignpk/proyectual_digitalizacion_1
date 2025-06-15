@@ -1,3 +1,29 @@
+// -------------------------------- boton descargar app--------------------------------
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event; // Guardamos el evento para usarlo más tarde
+    document.getElementById("installButton").style.display = "block"; // Mostramos el botón
+});
+
+document.getElementById("installButton").addEventListener("click", () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+                console.log("El usuario instaló la app");
+            } else {
+                console.log("El usuario canceló la instalación");
+            }
+            deferredPrompt = null; // Limpiamos el evento
+        });
+    }
+});
+
+
+
 // -------------------------------- BOTÓN MENÚ --------------------------------
 
 const botonMenu = document.querySelector('.botonmenu');

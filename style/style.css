@@ -25,7 +25,13 @@ background-image: url(../assets/background001.webp);
 background-size: contain;
 }
 
-
+#installButton{
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  position: fixed;
+  z-index: 999;
+}
 /*------------------------------ALERTA-------------------------------------*/
 .modal-alerta {
   position: fixed;
