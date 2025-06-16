@@ -25,16 +25,6 @@ background-image: url(../assets/background001.webp);
 background-size: contain;
 }
 
-#installButton{
-  right: 0;
-  width: 100px;
-  height: 100px;
-  background-color: rgba(255, 0, 0, 0.424);
-  position: fixed;
-  z-index: 999;
-}
-
-
 /*--------------------------------------------------INDEX-----------------------------------------------------*/
 
 
@@ -42,7 +32,6 @@ background-size: contain;
   display: none;
 }
 
-/*--------------------------------------------------GALERÍA-----------------------------------------------------*/
 
 /*------------------------------ALERTA-------------------------------------*/
 .modal-alerta {
@@ -183,44 +172,22 @@ transform: translateX(0px);
       background-image: url(../assets/patron01.webp);
       background-size: contain;
 }
-
 .opcionnavbar:nth-child(1){
-  background-color: rgb(255, 132, 0);
+  background-color: rgb(102, 143, 255);
 }
 .opcionnavbar:nth-child(2){
-  background-color: rgb(40, 163, 6);
+  background-color: rgb(112, 0, 197);
 }
 .opcionnavbar:nth-child(3){
-  background-color: rgb(112, 0, 197);
+  background-color: rgb(6, 163, 87);
 }
 .opcionnavbar:nth-child(4){
-  background-color: rgb(54, 127, 255);
-}
-.opcionnavbar:nth-child(5){
-  background-color: rgb(211, 208, 0);
-}
-.opcionnavbar:nth-child(6){
-  background-color: rgb(255, 0, 140);
-}
-
-.opcionnavbar:nth-child(1):hover{
   background-color: rgb(255, 132, 0);
 }
-.opcionnavbar:nth-child(2):hover{
-  background-color: rgb(40, 163, 6);
+.opcionnavbar:nth-child(5){
+  background-color: rgb(196, 27, 148);
 }
-.opcionnavbar:nth-child(3):hover{
-  background-color: rgb(112, 0, 197);
-}
-.opcionnavbar:nth-child(4):hover{
-  background-color: rgb(54, 127, 255);
-}
-.opcionnavbar:nth-child(5):hover{
-  background-color: rgb(211, 208, 0);
-}
-.opcionnavbar:nth-child(6):hover{
-  background-color: rgb(255, 0, 140);
-}
+
 
 .opcionnavbar p{
   color: rgba(0, 0, 0, 0.485);
@@ -233,44 +200,11 @@ transform: translateX(0px);
 .opcionnavbar:hover p{
     letter-spacing: 2px;
   color: rgb(255, 255, 255);
-  animation: animarletras 0.3s ;
     font-size: 150%;
 }
 
 
 
-@keyframes animarletras{
-  0%{
-  font-family: "Lacquer", system-ui;
-  font-weight: 400;
-  font-style: normal;
-      letter-spacing: normal;
-  }
-    25%{
-  font-family: "Fredericka the Great", serif;
-  font-weight: 400;
-  font-style: normal;
-        letter-spacing: normal;
-  }
-    50%{
-  font-family: "Slackside One", cursive;
-  font-weight: 400;
-  font-style: normal;
-        letter-spacing: normal;
-  }
-      75%{
-  font-family: "Kranky", serif;
-  font-weight: 400;
-  font-style: normal;
-        letter-spacing: normal;
-  }
-    100%{
-  font-family: "Covered By Your Grace", cursive;
-  font-weight: 400;
-  font-style: normal;
-        letter-spacing: normal;
-  }
-}
 
 .opcionnavbar:hover{
   box-shadow: -10px 19px 9px 0px rgba(0,0,0,0.54);
@@ -281,133 +215,6 @@ transform: translateX(0px);
 }
 
 
-.opcionnavbarefectos{
-  width: 100%;
-  height: 100%;
-  transform: scale(1.3);
-  position: absolute;
-  display: none;
-  pointer-events: none;
-  background-size: cover;
-  background-color: red;
-
-}
-.opcionnavbar:hover > .opcionnavbarefectos{
-display: block;
-}
-
-
-
-
-
-/*---------------------------NAVBAR MOVIL----------------------------------------*/
-
-.botonmenu {
-  cursor: pointer;
-  pointer-events: none;
-  filter: opacity(0);
-  font-size: 110%;
-  text-align: center;
-  color: white;
-  margin: 4%;
-  z-index: 9;
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.298);
-  background-image: url(../assets/opciones.png);
-  background-size: cover;
-
-}
-
-
-
-.botonmenudesplegable {
-  padding-top: 30%;
-  font-size: 120%;
-  text-align: center;
-  z-index: 999;
-  position: fixed;
-  display: none;
-backdrop-filter: blur(5px);  
-width: 100%;
-  height: 100dvh;
-}
-.botonmenudesplegable a{
-  margin:20px 0px;
-}
-
-.cerrar {
-  cursor: pointer;
-  right: 0;
-  display: none;
-  text-align: center;
-  color: white;
-  margin: 2%;
-  z-index: 999;
-  position: fixed;
-  width: 60px;
-  height: 60px;
-}
-
-.cerrar button {
-  cursor: pointer;
-  border: none;
-  background-color: rgba(255, 255, 255, 0);
-  color: rgb(255, 255, 255);
-  padding-top: 20%;
-  transform: scale(2.2);
-}
-.cerrar button p{
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Animación de entrada (deslizamiento de izquierda a derecha) */
-@keyframes slideIn {
-  from {
-transform: translateX(-100%);
-filter: opacity(0);
-  }
-
-  to {
-transform: translateX(0%);
-
-  }
-}
-
-/* Animación de salida (deslizamiento de derecha a izquierda) */
-@keyframes slideOut {
-  from {
-transform: translateX(0%);
-  }
-
-  to {
-transform: translateX(-100%);
-filter: opacity(0);
-  }
-}
-
-/* Estado visible con animación de entrada */
-.botonmenudesplegable.show {
-  animation: slideIn 0.2s forwards;
-  /* Aparece deslizándose */
-}
-
-/* Estado oculto con animación de salida */
-.botonmenudesplegable.hide {
-  animation: slideOut 0.2s forwards;
-  /* Desaparece deslizándose */
-}
-
-/* Para mostrar el botón de cerrar */
-.cerrar.show {
-  animation: slideIn 0.2s forwards;
-}
-
-.cerrar.hide {
-  animation: slideOut 0.2s forwards;
-}
 
 
 
@@ -445,10 +252,11 @@ filter: opacity(0);
 }
 .bannerlogo{
   position: absolute;
-  width: 18%;
-  height: 44%;
+  width: 25vw;
+  aspect-ratio: 1/1;
   background-size: contain;
   background-repeat: no-repeat;
+  background-image: url(../assets/logoprograma03.webp);
 }
 
 
@@ -948,21 +756,54 @@ left: 50%;
 .separacion{
   position: relative;
   width: 100%;
-  height: 15%;
+  height: 100px;
 }
   /*-----------------------------MEDIA--------------------------------*/
   @media only screen and (max-width: 600px){
 .banner{
   display: none;
 }
+.contenedorbotoncerrar{
+  z-index: 999;
+  position: fixed;
+  width: 300px;
+background-color: rgba(255, 255, 255, 0.107);
+backdrop-filter: blur(5px);
+border: 3px solid rgba(255, 255, 255, 0.083);
+border-radius: 10px;
+  display: flex;
+  bottom: 0;
+transform: translateX(-50%);
+left: 50%;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+margin: 0 auto;
+  z-index: 500;
+  bottom: 20px;
 
-.botonatras{
-  width: 80px;
-  height: 80px;
-  position: absolute;
-  background-color: yellow;
-  margin: 20px;
-  z-index: 99;
+}
+
+
+
+.botonatras:nth-child(1), .botonatras:nth-child(2), .botonatras:nth-child(3) {
+  font-family: Arial;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 120%;
+}
+
+.botonatras:nth-child(2){
+  border-radius: 50%;
+     border: 1px solid white;
+       background-color: rgba(255, 255, 255, 0.214);
+}
+
+.botonatras:nth-child(1),.botonatras:nth-child(3){
+background-color: rgba(255, 0, 0, 0.455);
 }
 
   /*-----------------------------Menu app-------------------------------*/
@@ -1043,9 +884,6 @@ background-size: cover;
 
 
 
-
-
-
 .navoculto{
   display: none;
 }
@@ -1054,19 +892,7 @@ background-size: cover;
       transform: none;
         }
       
-    .cartasgaleriacontainer{
-transform: translateY(-10%);
-      width: 100%;
-      height: 100vh;
-overflow: scroll;
-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-    }
 
-  .BOTONDESBLOQUEAR{
-    padding: 5px;
-      top: 90%;
-      width: 250px;
-    }
     }
 
 @media only screen and (max-width: 500px){

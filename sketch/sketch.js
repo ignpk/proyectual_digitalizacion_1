@@ -1,27 +1,3 @@
-// -------------------------------- boton descargar app--------------------------------
-
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    deferredPrompt = event; // Guardamos el evento para usarlo más tarde
-    document.getElementById("installButton").style.display = "block"; // Mostramos el botón
-});
-
-document.getElementById("installButton").addEventListener("click", () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === "accepted") {
-                console.log("El usuario instaló la app");
-            } else {
-                console.log("El usuario canceló la instalación");
-            }
-            deferredPrompt = null; // Limpiamos el evento
-        });
-    }
-});
-
 
 
 // ------------------------- DOM CONTENT LOADED -------------------------
@@ -256,41 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cartas.forEach(aplicarEfectos);
 
-  // ---------------------- ANIMACIÓN DIVS ----------------------
-  function applyAnimations(selector) {
-    document.querySelectorAll(selector).forEach(element => {
-      const bgBase = element.getAttribute('data-bg-base');
-      element.style.backgroundImage = 'none';
 
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const delay = Math.random() * 100;
-            setTimeout(() => playAnimation(element, bgBase), delay);
-          } else {
-            element.style.backgroundImage = 'none';
-          }
-        });
-      }, { threshold: 0.5 });
 
-      observer.observe(element);
-    });
-  }
 
-  function playAnimation(element, base) {
-    element.style.animation = '';
-    const dur = 400, step = dur / 4;
-
-    const frames = ['b', 'c', 'd', ''];
-    frames.forEach((suf, i) => {
-      setTimeout(() => {
-        element.style.backgroundImage = `url(./assets/${base}${suf}.webp)`;
-      }, i * step);
-    });
-  }
-
-  applyAnimations('.bannerlogo');
-  applyAnimations('.opcionnavbarefectos');
 });
 
 

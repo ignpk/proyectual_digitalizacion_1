@@ -3,7 +3,7 @@
   "short_name": "Michi Box",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#800080",
+  "background_color": "#ffffff",
   "theme_color": "#800080",
   "icons": [
     {
