@@ -33,6 +33,17 @@ background-size: contain;
   position: fixed;
   z-index: 999;
 }
+
+
+/*--------------------------------------------------INDEX-----------------------------------------------------*/
+
+
+.contenedor {
+  display: none;
+}
+
+/*--------------------------------------------------GALERÍA-----------------------------------------------------*/
+
 /*------------------------------ALERTA-------------------------------------*/
 .modal-alerta {
   position: fixed;
@@ -278,6 +289,7 @@ transform: translateX(0px);
   display: none;
   pointer-events: none;
   background-size: cover;
+  background-color: red;
 
 }
 .opcionnavbar:hover > .opcionnavbarefectos{
@@ -939,35 +951,100 @@ left: 50%;
   height: 15%;
 }
   /*-----------------------------MEDIA--------------------------------*/
-  @media only screen and (max-width: 900px){
-
-
-  .botonmenu {
-    pointer-events: all;
-    filter: opacity(1);
-
-  }
-
-
-  .opcionnavbar{
-  transform: rotate(-3DEG) translateX(-20px);
-      box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.54);
-  height: 70px;
-}
-.opcionnavbar p{
-  color: rgb(255, 255, 255);
-    font-size: 150%;
+  @media only screen and (max-width: 600px){
+.banner{
+  display: none;
 }
 
-.opcionnavbar:hover{
-      box-shadow: 5px 0px 5px 0px rgba(0,0,0,0.54);
-  transform: rotate(-3DEG) translateX(0px) translateY(0px);
-  animation: none;
+.botonatras{
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  background-color: yellow;
+  margin: 20px;
+  z-index: 99;
 }
-.opcionnavbar:hover p{
-  animation: none;
-    font-size: 150%;
+
+  /*-----------------------------Menu app-------------------------------*/
+
+.menuapp{
+  width: 100%;
+  height: 100dvh;
+  position: relative;
+display: flex;
+  justify-content: center;
+  align-items: center;
+background-image: url(../assets/wallpapers.webp);
+background-position: center;
+background-size: cover;
+
 }
+
+.contenedor{
+
+  width: 85vw;
+  aspect-ratio: 1/2;
+    display: flex;
+  flex-direction: column;
+    max-width: 400px;
+}
+.logo, .noticias, .galeriaapp, .quees, .insta{
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.logo{
+  width: 100%;
+  height: 50%;
+  background-image: url(../assets/logoprograma03.webp);
+}
+.botonesmenu{
+  gap: 15px;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.noticias{
+  background-image: url(../assets/NOTICIAS01.webp);
+  width: 100%;
+  height: 40%;
+}
+.cajaapp{
+    gap: 15px;
+  width: 100%;
+  height: 60%;
+    display: flex;
+  flex-direction: row;
+}
+.galeriaapp{
+    background-image: url(../assets/galeriacartasicon.webp);
+  width: 60%;
+  height: 100%;
+}
+.infoapp{
+  width: 40%;
+  height: 100%;
+      display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.quees{
+    width: 100%;
+  height: 50%;
+  background-image: url(../assets/infoicon.webp);
+}
+.insta{
+    width: 100%;
+  height: 50%;
+  background-image: url(../assets/instaicon.webp);
+}
+  /*-----------------------------Menu app-------------------------------*/
+
+
+
+
+
 
 .navoculto{
   display: none;
@@ -1014,17 +1091,7 @@ mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transp
 display: none;
   }
 
-.bannermovil{
-  position: relative;
-  display: flex;
-    width: 100%;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  background-image: url(../assets/wallpapersmovil.webp);
-  background-size: cover;
-  background-position: center;
-}
+
 
   
   }

@@ -24,35 +24,6 @@ document.getElementById("installButton").addEventListener("click", () => {
 
 
 
-// -------------------------------- BOTÓN MENÚ --------------------------------
-
-const botonMenu = document.querySelector('.botonmenu');
-const botonMenuDesplegable = document.querySelector('.botonmenudesplegable');
-const botonCerrar = document.querySelector('.cerrar');
-const links = botonMenuDesplegable.querySelectorAll('a');
-
-function cerrarMenu() {
-  botonMenuDesplegable.classList.replace('show', 'hide');
-  botonCerrar.classList.replace('show', 'hide');
-
-  setTimeout(() => {
-    botonMenuDesplegable.style.display = 'none';
-    botonCerrar.style.display = 'none';
-    botonMenu.style.display = 'block';
-  }, 500);
-}
-
-botonMenu.addEventListener('click', () => {
-  botonMenu.style.display = 'none';
-  botonMenuDesplegable.style.display = 'block';
-  botonMenuDesplegable.classList.replace('hide', 'show');
-  botonCerrar.style.display = 'block';
-  botonCerrar.classList.replace('hide', 'show');
-});
-
-botonCerrar.addEventListener('click', cerrarMenu);
-links.forEach(link => link.addEventListener('click', cerrarMenu));
-
 // ------------------------- DOM CONTENT LOADED -------------------------
 document.addEventListener("DOMContentLoaded", () => {
 
