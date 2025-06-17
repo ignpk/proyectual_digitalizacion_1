@@ -1,3 +1,59 @@
+document.querySelectorAll('.navbar a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const url = this.getAttribute('href');
+
+    // Si href es vacío o # no hacemos nada
+    if (!url || url === '#' || url.trim() === '') {
+      e.preventDefault();
+      return;
+    }
+
+    // Para links externos (ej Instagram), dejamos que actúe normal
+    if (url.startsWith('http') || url.startsWith('mailto:')) {
+      return;
+    }
+
+    e.preventDefault();
+
+    fetch(url)
+      .then(response => {
+        if (!response.ok) throw new Error('No se pudo cargar la página');
+        return response.text();
+      })
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const contenido = doc.getElementById('main-content');
+
+        if (contenido) {
+          document.getElementById('main-content').innerHTML = contenido.innerHTML;
+          history.pushState({html: contenido.innerHTML, url: url}, '', url);
+        } else {
+          console.error('No se encontró el contenedor main-content en ' + url);
+          // Podés mostrar error o fallback
+        }
+      })
+      .catch(err => console.error(err));
+  });
+});
+
+// Evento para manejo del botón atrás y adelante
+window.addEventListener('popstate', event => {
+  if (event.state && event.state.html) {
+    document.getElementById('main-content').innerHTML = event.state.html;
+  } else {
+    // Si no hay estado, recarga la página
+    location.reload();
+  }
+});
+
+
+
+
+
+
+// ------------------------- optimizador de imagenes------------------------
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
