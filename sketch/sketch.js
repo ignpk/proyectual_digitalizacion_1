@@ -1,3 +1,34 @@
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+
+      if (el.dataset.loaded) return;
+
+      // Restaurar el style guardado
+      if (el.dataset.style) {
+        el.setAttribute('style', el.dataset.style);
+      }
+
+      el.dataset.loaded = "true";
+      observer.unobserve(el);
+    }
+  });
+});
+
+// Buscar elementos con .lazy-michi o [data-lazy="true"]
+document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
+  // Si ya tiene el atributo style inline, lo movemos a data-style automáticamente
+  if (!el.dataset.style && el.hasAttribute('style')) {
+    el.dataset.style = el.getAttribute('style');
+    el.removeAttribute('style');
+  }
+
+  // Si tiene data-style válido, lo observamos
+  if (el.dataset.style) {
+    observer.observe(el);
+  }
+});
 
 
 // ------------------------- DOM CONTENT LOADED -------------------------
