@@ -2,7 +2,7 @@ document.querySelectorAll('.navbar a').forEach(link => {
   link.addEventListener('click', function(e) {
     const url = this.getAttribute('href');
 
-    // Si href es vacío o # no hacemos nada
+    // Si href es vacío o # no se activa...
     if (!url || url === '#' || url.trim() === '') {
       e.preventDefault();
       return;
@@ -47,6 +47,48 @@ window.addEventListener('popstate', event => {
   }
 });
 
+
+
+
+// ------------------------- boton descargar------------------------
+
+let deferredPrompt;
+
+// Detectar si la app ya está instalada (por ejemplo, para ocultar el botón)
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  console.log('La app ya está instalada.');
+} else {
+  // Esperar a que el navegador dispare el evento de instalación disponible
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); // Cancelamos el prompt automático
+    deferredPrompt = e;
+
+    const installBtn = document.getElementById('installBtn');
+    installBtn.style.display = 'inline-block'; // Mostramos el botón personalizado
+
+    installBtn.addEventListener('click', () => {
+      installBtn.disabled = true; // Evita múltiples clics
+      deferredPrompt.prompt(); // Mostramos el diálogo oficial
+
+      // Esperamos la decisión del usuario
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('El usuario aceptó instalar la app.');
+        } else {
+          console.log('El usuario rechazó instalar la app.');
+        }
+
+        deferredPrompt = null;
+        installBtn.style.display = 'none'; // Ocultamos el botón
+      });
+    });
+  });
+}
+
+// Opcional: detectar instalación exitosa
+window.addEventListener('appinstalled', () => {
+  console.log('La app fue instalada correctamente.');
+});
 
 
 

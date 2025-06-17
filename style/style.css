@@ -790,7 +790,69 @@ display: none;
 }
   /*-----------------------------MEDIA--------------------------------*/
   @media only screen and (max-width: 600px){
-.banner{
+.boton-instalar,
+.panel-desplegable {
+  display: block;
+}
+.contenedor-instalar {
+  margin: 15px;
+  position: fixed;
+  right: 0px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+@keyframes aparecerBoton {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.boton-instalar {
+  background-color: rgba(102, 51, 153, 0);
+  width: 80px;
+  height: 80px;
+  background-image: url(../assets/iconoinstalapp.webp);
+  background-size: contain;
+  border: none;
+  opacity: 0;
+  transform: scale(0);
+  animation: aparecerBoton 0.4s ease-out 2s forwards;
+}
+
+.panel-desplegable {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  overflow: hidden;
+  white-space: nowrap;
+  transform: scaleX(0);
+  transform-origin: right;
+ animation: desplegar 0.6s ease-out 2.4s forwards; 
+  opacity: 0;
+}
+
+@keyframes desplegar {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+
+    .banner{
   display: none;
 }
 .contenedorbotoncerrar{
