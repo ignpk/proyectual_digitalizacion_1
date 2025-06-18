@@ -364,7 +364,7 @@ filter: sepia(1) saturate(5) hue-rotate(350deg) brightness(0.7);
   position: fixed;
   z-index: 999999999999999999;
   pointer-events: none;
-  animation: cargando 2s ;
+  animation: cargando 1s ;
 filter: opacity(0);
 }
 @keyframes cargando{
@@ -627,6 +627,7 @@ left: 50%;
        background-color: rgba(255, 255, 255, 0.214);
 }
 
+
 .contenedorbotoncerrar{
 display: none;
 
@@ -666,7 +667,7 @@ display: none;
 
 .boton-instalar {
   background-color: rgba(102, 51, 153, 0);
-  width: 80px;
+  width: 200px;
   height: 80px;
   background-image: url(../assets/iconoinstalapp.webp);
   background-size: contain;
@@ -676,32 +677,7 @@ display: none;
   animation: aparecerBoton 0.4s ease-out 1.8s forwards;
 }
 
-.panel-desplegable {
-background: linear-gradient(0deg,rgba(117, 10, 125, 1) 0%, rgba(255, 0, 208, 1) 100%);
-  color: rgb(72, 255, 0);
-  font-weight: bold;
-  font-size: 16px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  overflow: hidden;
-  white-space: nowrap;
-  transform: scaleX(0);
-  transform-origin: right;
- animation: desplegar 0.6s ease-out 2.2s forwards; 
-  opacity: 0;
-}
 
-@keyframes desplegar {
-  0% {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  100% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-}
 
 
 
@@ -736,6 +712,7 @@ margin: 0 auto;
   width: 40px;
   height: 40px;
   font-size: 120%;
+  background-size: cover;
 }
 
 .botonatras:nth-child(2){
@@ -745,7 +722,8 @@ margin: 0 auto;
 }
 
 .botonatras:nth-child(1),.botonatras:nth-child(3){
-background-color: rgba(255, 0, 0, 0.455);
+  background-size: cover;
+  font-size: 70%;
 }
 
   /*-----------------------------Menu app-------------------------------*/

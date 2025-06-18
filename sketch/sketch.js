@@ -1,3 +1,9 @@
+function mostrarGaleria() {
+  document.getElementById('galeriaContainer').style.display = 'block';
+}
+function cerrarGaleria() {
+  document.getElementById('galeriaContainer').style.display = 'none';
+}
 
 // ------------------------- boton descargar------------------------
 

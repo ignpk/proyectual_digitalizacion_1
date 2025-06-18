@@ -245,9 +245,9 @@
 
         <div class="fondonegro"  >
    <DIV class="contenedorbotoncerrar">
-  <div  class="botonatras"> A </div>
-    <div  class="botonatras"> X </div>
-      <div  class="botonatras"> C </div>
+  <div  class="botonatras" style="background-image: url(./assets/expansiones.webp);">EXPANSIONES</div>
+    <button  class="botonatras"> X </button>
+      <div  class="botonatras" style="background-image: url(./assets/intercambio.webp);"> CAMBIAR </div>
 </DIV>
         </div>
 
@@ -754,10 +754,11 @@
 <!-----------------------------------------------------------------------------> 
       </div>
 
-<DIV class="contenedorbotoncerrar">
-  <a href="" class="botonatras"> A </a>
-    <a href="index.html" class="botonatras"> X </a>
-      <a href="" class="botonatras"> C </a>
+    <DIV class="contenedorbotoncerrar">
+      <a href="" class="botonatras" style="background-image: url(./assets/expansiones.webp);"> EXPANSIONES </a>
+    <a onclick="cerrarGaleriaDesdeIframe()" class="botonatras"> X </a>
+      <a href="" class="botonatras" style="background-image: url(./assets/info.webp);"> INFO </a>
+      
 </DIV>
 
 
@@ -772,6 +773,14 @@
     navigator.serviceWorker.register("service-worker.js")
       .then(() => console.log("Service Worker registrado"))
       .catch((error) => console.error("Error al registrar el Service Worker", error));
+  }
+</script>
+
+<script>
+  function cerrarGaleriaDesdeIframe() {
+    if (window.parent && typeof window.parent.cerrarGaleria === 'function') {
+      window.parent.cerrarGaleria();
+    }
   }
 </script>
 
