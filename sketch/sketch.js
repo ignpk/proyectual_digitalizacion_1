@@ -5,6 +5,46 @@ function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
 }
 
+
+  function abrirInfo() {
+    document.getElementById('ventanaInfo').style.display = 'block';
+  }
+
+  function cerrarInfo() {
+    document.getElementById('ventanaInfo').style.display = 'none';
+  }
+
+// ------------------------- BOTON EXPANSIONES------------------------
+
+
+  function abrirVentanaExpansiones() {
+    document.getElementById("ventanaExpansiones").style.display = "flex";
+  }
+
+  function cerrarVentanaExpansiones() {
+    document.getElementById("ventanaExpansiones").style.display = "none";
+  }
+
+
+
+
+// ------------------------- carrousel de expansiones-----------------------
+
+  let indiceCarruseldeExpansiones = 0;
+
+  function moverCarruseldeExpansiones(direccion) {
+    const carrusel = document.querySelector('.carruseldeexpansiones');
+    const totalItems = document.querySelectorAll('.carruseldeexpansiones-item').length;
+
+    indiceCarruseldeExpansiones += direccion;
+    if (indiceCarruseldeExpansiones < 0) indiceCarruseldeExpansiones = totalItems - 1;
+    if (indiceCarruseldeExpansiones >= totalItems) indiceCarruseldeExpansiones = 0;
+
+    carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
+  }
+
+
+
 // ------------------------- boton descargar------------------------
 
 let deferredPrompt;
