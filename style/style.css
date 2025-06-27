@@ -770,8 +770,6 @@ margin: 0 auto;
 .categoriaexpansiones{
   width: 80%;
   height: 70%;
-border: 3px solid rgb(119, 119, 119);
-border-radius: 15px;
 }
 
 
@@ -797,8 +795,16 @@ border-radius: 15px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  animation: entrada 0.5s ease;
 }
-
+@keyframes entrada{
+  0%{
+    transform: scale(1.5);
+  }
+    100%{
+    transform: scale(1);
+  }
+}
 .carruseldeexpansiones-btn {
 
   position: absolute;
