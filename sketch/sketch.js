@@ -16,14 +16,13 @@ function cerrarGaleria() {
 
 // ------------------------- escaner QR------------------------
 
-
 let scanner;
 
 document.getElementById("btn-abrir-escaner").addEventListener("click", () => {
-  const contenedor = document.getElementById("reader");
-  contenedor.style.display = "block";
+  const overlay = document.getElementById("reader-overlay");
+  overlay.style.display = "flex"; // Mostrar como overlay centrado
 
-  // Si ya hay un escáner activo, lo detenemos
+  // Si ya hay un escáner activo, lo reiniciamos
   if (scanner) {
     scanner.stop().then(() => {
       iniciarEscaner();
@@ -44,13 +43,13 @@ function iniciarEscaner() {
     (decodedText) => {
       document.getElementById("resultado").innerText = "Código QR: " + decodedText;
 
-      // Detenemos el escáner y ocultamos el lector
+      // Detener escaneo y ocultar overlay
       scanner.stop().then(() => {
-        document.getElementById("reader").style.display = "none";
+        document.getElementById("reader-overlay").style.display = "none";
       });
     },
     (errorMessage) => {
-      // Opcional: mostrar errores de lectura
+      // Error de lectura (opcional)
     }
   ).catch((err) => {
     console.error("No se pudo iniciar el escáner:", err);

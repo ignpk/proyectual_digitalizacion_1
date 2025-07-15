@@ -50,14 +50,6 @@
 
 
 
-<!---------------------ESCANER QR --------------------------------------->
-
-
-  <button id="btn-abrir-escaner">Abrir escáner QR</button>
-
-  <div id="reader"></div>
-  <p id="resultado"></p>
-
 
 <!----------------------boton de codigo--------------------------------------->
 
@@ -792,9 +784,17 @@
     <DIV class="contenedorbotoncerrar">
   <a class="botonatras" onclick="abrirVentanaExpansiones()" style="background-image: url(./assets/expansiones.webp);"> EXPANSIONES </a>
       <a onclick="cerrarGaleriaDesdeIframe()" class="botonatras"> X </a>
-<a onclick="abrirInfo()" class="botonatras" style="background-image: url(./assets/info.webp);"> ESCANEAR </a>
+<button id="btn-abrir-escaner" class="botonatras" style="background-image: url(./assets/info.webp);"> ESCANEAR </button>
 
     </DIV>
+
+
+  <div id="reader-overlay">
+    <div id="reader"></div>
+  </div>
+
+  <p id="resultado"></p>
+
 
 <!-- Ventana emergente para INFO ---------------------------------------------------------->
 <div id="ventanaInfo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;">
