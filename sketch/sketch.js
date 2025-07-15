@@ -17,47 +17,46 @@ function cerrarGaleria() {
 // ------------------------- escaner QR------------------------
 
 
-  let scanner; // Variable global para controlar el escáner
+let scanner;
 
-  document.getElementById("escanerqr").addEventListener("click", () => {
-    const readerDiv = document.getElementById("reader");
-    readerDiv.style.display = "block"; // Muestra el contenedor del escáner
+document.getElementById("btn-abrir-escaner").addEventListener("click", () => {
+  const contenedor = document.getElementById("reader");
+  contenedor.style.display = "block";
 
-    // Si ya hay un escáner en marcha, detenelo antes de empezar uno nuevo
-    if (scanner) {
-      scanner.stop().then(() => {
-        startScanner();
-      }).catch(() => {
-        startScanner(); // Si falló detener, intentamos igual
-      });
-    } else {
-      startScanner();
-    }
-  });
-
-  function startScanner() {
-    scanner = new Html5Qrcode("reader");
-
-    scanner.start(
-      { facingMode: "environment" }, // Cámara trasera
-      { fps: 10, qrbox: 250 },
-      (decodedText, decodedResult) => {
-        document.getElementById("result").innerText = `Código QR detectado: ${decodedText}`;
-
-        // Detenemos y ocultamos el escáner una vez leído
-        scanner.stop().then(() => {
-          document.getElementById("reader").style.display = "none";
-        }).catch(err => {
-          console.error("Error al detener el escáner:", err);
-        });
-      },
-      errorMessage => {
-        // Escaneo fallido (se repite mientras no encuentra QR), se puede ignorar
-      }
-    ).catch(err => {
-      console.error("Error al iniciar el escáner:", err);
+  // Si ya hay un escáner activo, lo detenemos
+  if (scanner) {
+    scanner.stop().then(() => {
+      iniciarEscaner();
+    }).catch(() => {
+      iniciarEscaner();
     });
+  } else {
+    iniciarEscaner();
   }
+});
+
+function iniciarEscaner() {
+  scanner = new Html5Qrcode("reader");
+
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    (decodedText) => {
+      document.getElementById("resultado").innerText = "Código QR: " + decodedText;
+
+      // Detenemos el escáner y ocultamos el lector
+      scanner.stop().then(() => {
+        document.getElementById("reader").style.display = "none";
+      });
+    },
+    (errorMessage) => {
+      // Opcional: mostrar errores de lectura
+    }
+  ).catch((err) => {
+    console.error("No se pudo iniciar el escáner:", err);
+  });
+}
+
 
 
 
