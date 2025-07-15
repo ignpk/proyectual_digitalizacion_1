@@ -214,6 +214,7 @@ transform: scale(1.3);
 
 
 #reader {
+  border-radius: 20px;
   height: auto;
   width: 80%;
   top: 20%;
