@@ -204,10 +204,10 @@ transform: scale(1.3);
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   display: none;
   border: 15px solid #ff00ea;
   z-index: 999999 !important;
+  background-color: rgba(0, 255, 21, 0.538);
 }
 
 /*-------------------------------------------------------------------*/
