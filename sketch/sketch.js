@@ -14,7 +14,44 @@ function cerrarGaleria() {
     document.getElementById('ventanaInfo').style.display = 'none';
   }
 
+// ------------------------- escaner QR------------------------
+
+
+
+    const btn = document.getElementById("escanerqr");
+    const readerDiv = document.getElementById("reader");
+    const result = document.getElementById("result");
+
+    let scanner; // Para poder detenerlo si es necesario
+
+    btn.addEventListener("click", () => {
+      readerDiv.style.display = "block"; // Muestra el lector
+
+      scanner = new Html5Qrcode("reader");
+      scanner.start(
+        { facingMode: "environment" }, // Cámara trasera
+        {
+          fps: 10,
+          qrbox: 250
+        },
+        (decodedText, decodedResult) => {
+          result.innerText = `Código QR detectado: ${decodedText}`;
+          scanner.stop().then(() => {
+            readerDiv.style.display = "none";
+          });
+        },
+        (errorMessage) => {
+          // Opcional: manejar errores o intentos fallidos
+        }
+      );
+    });
+
+
+
+    
 // ------------------------- BOTON EXPANSIONES------------------------
+
+
 
 
   function abrirVentanaExpansiones() {

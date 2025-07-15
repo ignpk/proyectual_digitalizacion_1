@@ -47,6 +47,10 @@
       </div>
 
 
+
+
+
+
 <!----------------------boton de codigo--------------------------------------->
 
 
@@ -780,9 +784,17 @@
     <DIV class="contenedorbotoncerrar">
   <a class="botonatras" onclick="abrirVentanaExpansiones()" style="background-image: url(./assets/expansiones.webp);"> EXPANSIONES </a>
       <a onclick="cerrarGaleriaDesdeIframe()" class="botonatras"> X </a>
-<a onclick="abrirInfo()" class="botonatras" style="background-image: url(./assets/info.webp);"> INFO </a>
+<button  id="escanerqr" class="escanerqr" style="background-image: url(./assets/info.webp);"> ESCANEAR </button>
 
     </DIV>
+      <div id="reader"></div>
+  <p id="result"></p>
+
+
+
+
+
+
 
 <!-- Ventana emergente para INFO ---------------------------------------------------------->
 <div id="ventanaInfo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;">
