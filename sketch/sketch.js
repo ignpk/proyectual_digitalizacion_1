@@ -16,53 +16,49 @@ function cerrarGaleria() {
 
 // ------------------------- escaner QR------------------------
 
-let scanner;
+  let scanner;
 
-document.getElementById("btn-abrir-escaner").addEventListener("click", () => {
+  const btnAbrir = document.getElementById("btn-abrir-escaner");
   const overlay = document.getElementById("overlay");
-  overlay.style.display = "flex";
+  const cerrar = document.getElementById("cerrar-overlay");
+  const resultado = document.getElementById("resultado");
 
-  if (scanner) {
-    scanner.stop().then(() => iniciarEscaner()).catch(() => iniciarEscaner());
-  } else {
-    iniciarEscaner();
-  }
-});
+  btnAbrir.addEventListener("click", () => {
+    overlay.style.display = "flex";
 
-document.getElementById("cerrar-overlay").addEventListener("click", () => {
-  if (scanner) {
-    scanner.stop().then(() => {
-      document.getElementById("overlay").style.display = "none";
-    });
-  } else {
-    document.getElementById("overlay").style.display = "none";
-  }
-});
-
-function iniciarEscaner() {
-  scanner = new Html5Qrcode("reader");
-
-  scanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    (decodedText) => {
-      document.getElementById("resultado").innerText = "Código QR: " + decodedText;
-
-      // Detener escáner y cerrar overlay
-      scanner.stop().then(() => {
-        document.getElementById("overlay").style.display = "none";
-      });
-    },
-    (errorMessage) => {
-      // errores opcionales
+    if (!scanner) {
+      scanner = new Html5Qrcode("reader");
     }
-  ).catch((err) => {
-    console.error("No se pudo iniciar el escáner:", err);
+
+    scanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      (decodedText) => {
+        resultado.innerText = "Código QR: " + decodedText;
+        scanner.stop().then(() => {
+          overlay.style.display = "none";
+        });
+      },
+      (error) => {
+        // Opcional: mostrar errores
+      }
+    ).catch(err => {
+      console.error("No se pudo iniciar el escáner:", err);
+    });
   });
-}
 
-
-
+  cerrar.addEventListener("click", () => {
+    if (scanner) {
+      scanner.stop().then(() => {
+        overlay.style.display = "none";
+        resultado.innerText = "";
+      }).catch(() => {
+        overlay.style.display = "none";
+      });
+    } else {
+      overlay.style.display = "none";
+    }
+  });
 // ------------------------- BOTON EXPANSIONES------------------------
 
 
