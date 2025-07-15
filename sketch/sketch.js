@@ -59,6 +59,38 @@ function cerrarGaleria() {
       overlay.style.display = "none";
     }
   });
+
+
+
+
+
+// ------------------------- QR DE CADA CARTA POR SEPARADO------------------------
+
+document.getElementById("botonCambiar").addEventListener("click", function () {
+  const carruseles = document.querySelectorAll(".carousel-item");
+
+  carruseles.forEach(item => {
+    const estilo = window.getComputedStyle(item);
+    if (estilo.display !== "none") {
+      const qr = item.querySelector(".codigoqrdecarta");
+      if (qr) {
+        if (qr.classList.contains("mostrar")) {
+          // Ocultar con efecto suave
+          qr.classList.remove("mostrar");
+          setTimeout(() => {
+            qr.style.display = "none";
+          }, 400); // Tiempo igual al del transition
+        } else {
+          // Mostrar con efecto suave
+          qr.style.display = "block";
+          setTimeout(() => {
+            qr.classList.add("mostrar");
+          }, 10); // Pequeño delay para que transition se aplique
+        }
+      }
+    }
+  });
+});
 // ------------------------- BOTON EXPANSIONES------------------------
 
 
@@ -202,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (modal && texto && contenido) {
       texto.textContent = mensaje;
       const colores = {
-        canjeado: { fondo: "#f0c401", borde: "#ff5c5c" },
+        canjeado: { fondo: "rgba(240, 196, 1, 1)", borde: "#ff5c5c" },
         incorrecto: { fondo: "#ff5c5c", borde: "#000" }
       };
       if (colores[tipo]) {
@@ -304,20 +336,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const cerrarCarrusel = () => {
-    carouselItems.forEach(i => i.style.display = "none");
-    fondonegro.style.display = "none";
-    document.body.style.overflow = "auto";
-  };
+const cerrarCarrusel = () => {
+  carouselItems.forEach(item => {
+    item.style.display = "none";
 
-  document.addEventListener("click", e => {
-    if (![...carouselItems].some(i => i.contains(e.target)) && !fondonegro.contains(e.target)) {
-      cerrarCarrusel();
+    // Oculta también el QR si está visible dentro del item
+    const qr = item.querySelector(".codigoqrdecarta");
+    if (qr) {
+      qr.style.display = "none";
     }
   });
 
-  fondonegro.addEventListener("click", cerrarCarrusel);
+  fondonegro.style.display = "none";
+  document.body.style.overflow = "auto";
+};
 
+document.querySelectorAll('.botonatras').forEach(boton => {
+  if (boton.textContent.trim() === "X") {
+    boton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cerrarCarrusel();
+    });
+  }
+});
   // ---------------------- EFECTOS CARTA ----------------------
   const cartas = document.querySelectorAll(".carta");
 

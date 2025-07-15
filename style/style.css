@@ -59,7 +59,8 @@ background-size: contain;
   background-size: cover;
 }
 .contenido-alerta p,
-.contenido-alerta button{
+.contenido-alerta button,
+.TEXTOQRALERTA{
   color: black;
   font-family:Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -171,8 +172,7 @@ position: sticky;
 }
 #codigoGlobal::placeholder {
   border: none;
-  color: rgba(255, 255, 255, 0.322); 
-  opacity: 1;
+  color: rgb(211, 211, 211); 
 }
 .BOTONDESBLOQUEAR input{
   outline: none;
@@ -422,8 +422,49 @@ filter: opacity(0);
     position: fixed;
     z-index: 999999;
     transform-style: preserve-3d;
-    overscroll-behavior: none
+    overscroll-behavior: none;
   }
+
+
+/* --------------------------QR DE CARTA------------------------- */
+.codigoqrdecarta {
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: none;
+  width: 70%;
+  height: 65%;
+  position: absolute;
+  z-index: 999999999999999999999999;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  border-radius: 15PX;
+  text-align: center;
+    padding-bottom: 20px;
+    box-shadow: 0px 0px 1px 100px rgba(0, 0, 0, 0.577);
+
+
+}
+
+
+.codigoqrdecarta.mostrar {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+.sinQRNORMAL{
+background-color:rgb(240, 196, 1);
+
+}
+.TEXTOQRALERTA{
+  margin: 25PX;
+}
+
+/* --------------------------QR DE CARTA------------------------- */
+
+
 
   .Cnormal{
 background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(20, 176, 122, 0.465) 100%);
@@ -451,7 +492,9 @@ background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(20, 176, 122
 .carta{
 overflow: hidden;
     filter: saturate(1.2) contrast(1.2);
-
+justify-content: center;
+align-items: center;
+display: flex;
 }
 
 
@@ -805,7 +848,7 @@ margin: 0 auto;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.399);
   backdrop-filter: blur(5px);
-  z-index: 9000;
+  z-index: 999999999;
   justify-content: center;
   align-items: center;
 }
