@@ -323,6 +323,8 @@ filter: sepia(1) saturate(5) hue-rotate(240deg) brightness(0.7);
 filter: sepia(1) saturate(5) hue-rotate(350deg) brightness(0.7);
 }
 
+
+
 #pantallaNegra {
   position: fixed;
   top: 0;
