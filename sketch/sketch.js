@@ -17,38 +17,50 @@ function cerrarGaleria() {
 // ------------------------- escaner QR------------------------
 
 
+  let scanner; // Variable global para controlar el escáner
 
-    const btn = document.getElementById("escanerqr");
+  document.getElementById("escanerqr").addEventListener("click", () => {
     const readerDiv = document.getElementById("reader");
-    const result = document.getElementById("result");
+    readerDiv.style.display = "block"; // Muestra el contenedor del escáner
 
-    let scanner; // Para poder detenerlo si es necesario
+    // Si ya hay un escáner en marcha, detenelo antes de empezar uno nuevo
+    if (scanner) {
+      scanner.stop().then(() => {
+        startScanner();
+      }).catch(() => {
+        startScanner(); // Si falló detener, intentamos igual
+      });
+    } else {
+      startScanner();
+    }
+  });
 
-    btn.addEventListener("click", () => {
-      readerDiv.style.display = "block"; // Muestra el lector
+  function startScanner() {
+    scanner = new Html5Qrcode("reader");
 
-      scanner = new Html5Qrcode("reader");
-      scanner.start(
-        { facingMode: "environment" }, // Cámara trasera
-        {
-          fps: 10,
-          qrbox: 250
-        },
-        (decodedText, decodedResult) => {
-          result.innerText = `Código QR detectado: ${decodedText}`;
-          scanner.stop().then(() => {
-            readerDiv.style.display = "none";
-          });
-        },
-        (errorMessage) => {
-          // Opcional: manejar errores o intentos fallidos
-        }
-      );
+    scanner.start(
+      { facingMode: "environment" }, // Cámara trasera
+      { fps: 10, qrbox: 250 },
+      (decodedText, decodedResult) => {
+        document.getElementById("result").innerText = `Código QR detectado: ${decodedText}`;
+
+        // Detenemos y ocultamos el escáner una vez leído
+        scanner.stop().then(() => {
+          document.getElementById("reader").style.display = "none";
+        }).catch(err => {
+          console.error("Error al detener el escáner:", err);
+        });
+      },
+      errorMessage => {
+        // Escaneo fallido (se repite mientras no encuentra QR), se puede ignorar
+      }
+    ).catch(err => {
+      console.error("Error al iniciar el escáner:", err);
     });
+  }
 
 
 
-    
 // ------------------------- BOTON EXPANSIONES------------------------
 
 

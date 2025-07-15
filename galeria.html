@@ -781,14 +781,20 @@
 <!-----------------------------------------------------------------------------> 
       </div>
 
+
+
+
+      <!-----------------------------------------------------------------------------> 
+
     <DIV class="contenedorbotoncerrar">
   <a class="botonatras" onclick="abrirVentanaExpansiones()" style="background-image: url(./assets/expansiones.webp);"> EXPANSIONES </a>
       <a onclick="cerrarGaleriaDesdeIframe()" class="botonatras"> X </a>
-<button  id="escanerqr" class="escanerqr" style="background-image: url(./assets/info.webp);"> ESCANEAR </button>
+<button  id="escanerqr" class="botonatras escanerqr" style="background-image: url(./assets/info.webp);"> ESCANEAR </button><!-----ESCANER QR----
 
     </DIV>
-      <div id="reader"></div>
-  <p id="result"></p>
+      <div id="reader"></div><!--------ESCANER QR-----------> 
+  <p id="result"></p><!---------ESCANER QR-------------> 
+
 
 
 
@@ -855,6 +861,9 @@
     }
   }
 </script>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 
   </body>
 </html>
