@@ -514,7 +514,7 @@ display: flex;
 
 .tarjeta.flip {
   animation: giro2 0.8s forwards;
-  width: 342px;
+  width: 343px;
   height: 500px;
 }
 @keyframes giro2 {
@@ -755,15 +755,16 @@ transform: translateY(50px);
 }
   /*-----------------------------MEDIA--------------------------------*/
   @media only screen and (max-width: 600px){
-.boton-instalar,
-.panel-desplegable {
+.boton-instalar {
   display: block;
 }
 .contenedor-instalar {
+    width: 200px;
+  height: 80px;
   margin: 15px;
   position: fixed;
   right: 0px;
-  z-index: 9;
+  z-index: 999;
   display: flex;
   flex-direction: row;
   justify-content: center;
