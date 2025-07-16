@@ -511,7 +511,7 @@ display: flex;
   z-index: 10;
   position: absolute; 
   display: flex;
-  perspective: 2000px;
+  perspective: 800px;
   transform-style: preserve-3d;
 }
 
