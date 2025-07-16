@@ -46,7 +46,7 @@ background-size: contain;
 .contenido-alerta {
   width: 60%;
   height: 300px;
-  padding: 10%;
+  padding: 5%;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -63,6 +63,7 @@ background-size: contain;
 .contenido-alerta p,
 .contenido-alerta button,
 .TEXTOQRALERTA{
+    padding: 0% 10%;
   color: black;
   font-family:Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -442,7 +443,7 @@ filter: opacity(0);
   transition: opacity 0.2s ease, transform 0.2s ease;
   border-radius: 15PX;
   text-align: center;
-    padding-bottom: 20px;
+  padding: 5%;
     box-shadow: 0px 0px 1px 100px rgba(0, 0, 0, 0.577);
 
 
@@ -510,14 +511,14 @@ display: flex;
   z-index: 10;
   position: absolute; 
   display: flex;
-  perspective: 1000px;
+  perspective: 2000px;
   transform-style: preserve-3d;
 }
 
 .tarjeta.flip {
   animation: giro2 0.8s forwards;
-  width: 343px;
-  height: 500px;
+  width: 309px;
+  height: 450px;
 }
 @keyframes giro2 {
   0% {  transform: rotateY(0deg) scale(2) rotate(-20deg) ;  }
@@ -567,8 +568,8 @@ backface-visibility: hidden;
 .michi{
   background-size: cover;
   position: absolute;
-  width: 343px; 
-  height: 500px;
+  width: 309px; 
+  height: 450px;
 }
 
 
@@ -596,7 +597,7 @@ backface-visibility: hidden;
 
 @keyframes animacion {
   from { background-position: 0 0; }
-  to { background-position: -1372px 0; } /* Se mueve 4 frames (342px * 4) */
+  to { background-position: -1236px 0; } /* Se mueve 4 frames (342px * 4) */
 }
 
 .bordecarta{
