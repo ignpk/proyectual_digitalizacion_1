@@ -516,8 +516,8 @@ display: flex;
 
 .tarjeta.flip {
   animation: giro2 0.8s forwards;
-  width: 274px;
-  height: 400px;
+  width: 343px;
+  height: 500px;
 }
 @keyframes giro2 {
   0% {  transform: rotateY(0deg) scale(2) rotate(-20deg) ;  }
@@ -567,8 +567,8 @@ backface-visibility: hidden;
 .michi{
   background-size: cover;
   position: absolute;
-  width: 274px; 
-  height: 400px;
+  width: 343px; 
+  height: 500px;
 }
 
 
@@ -596,7 +596,7 @@ backface-visibility: hidden;
 
 @keyframes animacion {
   from { background-position: 0 0; }
-  to { background-position: -1096px 0; } /* Se mueve 4 frames (342px * 4) */
+  to { background-position: -1372px 0; } /* Se mueve 4 frames (342px * 4) */
 }
 
 .bordecarta{
