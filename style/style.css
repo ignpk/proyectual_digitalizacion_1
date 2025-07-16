@@ -514,8 +514,8 @@ display: flex;
 
 .tarjeta.flip {
   animation: giro2 0.8s forwards;
-  width: 343px;
-  height: 500px;
+  width: 274px;
+  height: 400px;
 }
 @keyframes giro2 {
   0% {  transform: rotateY(0deg) scale(2) rotate(-20deg) ;  }
@@ -565,8 +565,8 @@ backface-visibility: hidden;
 .michi{
   background-size: cover;
   position: absolute;
-  width: 342px; 
-  height: 500px;
+  width: 274px; 
+  height: 400px;
 }
 
 
@@ -594,12 +594,9 @@ backface-visibility: hidden;
 
 @keyframes animacion {
   from { background-position: 0 0; }
-  to { background-position: -1368px 0; } /* Se mueve 4 frames (342px * 4) */
+  to { background-position: -1096px 0; } /* Se mueve 4 frames (342px * 4) */
 }
-@keyframes animacion2 {
-  from { background-position: 0 0; }
-  to { background-position: -2052px 0; } /* Se mueve 4 frames (342px * 4) */
-}
+
 .bordecarta{
   z-index: 18;
   position: absolute;
@@ -755,42 +752,6 @@ transform: translateY(50px);
 }
   /*-----------------------------MEDIA--------------------------------*/
   @media only screen and (max-width: 600px){
-.boton-instalar {
-  display: block;
-}
-.contenedor-instalar {
-    width: 200px;
-  height: 80px;
-  margin: 15px;
-  position: fixed;
-  right: 0px;
-  z-index: 999;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-@keyframes aparecerBoton {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.boton-instalar {
-  background-color: rgba(102, 51, 153, 0);
-  width: 200px;
-  height: 80px;
-  background-image: url(../assets/iconoinstalapp.webp);
-  background-size: contain;
-  border: none;
-  opacity: 0;
-  transform: scale(0);
-  animation: aparecerBoton 0.4s ease-out 1.8s forwards;
-}
-
-
 
 
 
