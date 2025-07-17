@@ -125,10 +125,34 @@ background-image: url(../assets/background001.webp);
 .logo{
   width: 100%;
   height: 60%;
-  background-image: url(../assets/background_BANNER.webp);
     background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  animation: carruselmenu 30s ease-in-out infinite;
+}
+@keyframes carruselmenu {
+  0%{
+  background-image: url(../assets/background_BANNER.webp);
+  }
+      35%{
+  background-image: url(../assets/background_BANNER.webp);
+  }
+    40%{
+  background-image: url(../assets/background_BANNER_002.webp);
+  }
+      70%{
+  background-image: url(../assets/background_BANNER_002.webp);
+  }
+    75%{
+  background-image: url(../assets/background_BANNER_003.webp);
+  }
+      95%{
+  background-image: url(../assets/background_BANNER_003.webp);
+  }
+      100%{
+  background-image: url(../assets/background_BANNER.webp);
+  }
+
 }
 
 .botonesmenu{
@@ -142,7 +166,7 @@ background-image: url(../assets/background001.webp);
 }
 .galeriaapp, .quees, .insta, .descargarapp{
  width: 20vw;             
-  max-width: 180px;        
+  max-width: 150px;        
   aspect-ratio: 1 / 1; 
 }
 .galeriaapp:hover, .quees:hover, .insta:hover, .descargarapp:hover{

@@ -1,4 +1,7 @@
 
+
+
+
 // ------------------------- galeria de cartas ------------------------
 
 
@@ -169,6 +172,7 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
 
 // ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
+
 
 
 
