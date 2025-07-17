@@ -177,9 +177,9 @@ background-image: url(../assets/background001.webp);
 .descripcionbanner{
   position:absolute;
   margin: 0;
-  bottom: 5px;
+  bottom: 10px;
   width: 75%;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: center;
