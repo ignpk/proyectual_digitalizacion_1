@@ -22,8 +22,8 @@ function cerrarGaleria() {
   }
 
 // ------------------------- escáner QR ------------------------
-
 let scanner;
+let escanerActivo = false;
 
 const btnAbrir = document.getElementById("btn-abrir-escaner");
 const overlay = document.getElementById("overlay");
@@ -33,39 +33,45 @@ const resultado = document.getElementById("resultado");
 btnAbrir.addEventListener("click", () => {
   overlay.style.display = "flex";
 
-  if (!scanner) {
-    scanner = new Html5Qrcode("reader");
-  }
-
-  scanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    (decodedText) => {
-      // ✅ Ejecutar desbloqueo
-      desbloquearCodigo(decodedText.trim());
-
-      // ✅ Mostrar resultado
-      resultado.innerText = "Código QR: " + decodedText;
-
-      // ✅ Detener escáner después de un pequeño delay
-      setTimeout(() => {
-        scanner.stop().then(() => {
-          overlay.style.display = "none";
-        });
-      }, 1000); // 1 segundo para que se vea la animación de desbloqueo
-    },
-    (error) => {
-      // Podés mostrar el error si querés
-      // console.warn(error);
+  setTimeout(() => {
+    if (!scanner) {
+      scanner = new Html5Qrcode("reader");
     }
-  ).catch(err => {
-    console.error("No se pudo iniciar el escáner:", err);
-  });
+
+    if (!escanerActivo) {
+      scanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+          if (!decodedText) return;
+
+          desbloquearCodigo(decodedText.trim());
+          resultado.innerText = "Código QR: " + decodedText;
+
+          escanerActivo = false;
+          setTimeout(() => {
+            scanner.stop().then(() => {
+              overlay.style.display = "none";
+              resultado.innerText = "";
+            });
+          }, 1000);
+        },
+        (error) => {
+          // Puedes mostrar errores si quieres
+        }
+      ).then(() => {
+        escanerActivo = true;
+      }).catch(err => {
+        console.error("No se pudo iniciar el escáner:", err);
+      });
+    }
+  }, 200); // Pequeño delay para que el overlay esté visible
 });
 
 cerrar.addEventListener("click", () => {
-  if (scanner) {
+  if (scanner && escanerActivo) {
     scanner.stop().then(() => {
+      escanerActivo = false;
       overlay.style.display = "none";
       resultado.innerText = "";
     }).catch(() => {
@@ -75,7 +81,6 @@ cerrar.addEventListener("click", () => {
     overlay.style.display = "none";
   }
 });
-
 
 
 
@@ -343,18 +348,6 @@ function onQRScan(decodedText) {
   // html5QrCode.stop().then(() => console.log("Escáner detenido"));
 }
 
-// Si ya tenés el lector, usalo así:
-const html5QrCode = new Html5Qrcode("reader");
-
-html5QrCode.start(
-  { facingMode: "environment" },
-  { fps: 10, qrbox: 250 },
-  decodedText => onQRScan(decodedText),
-  errorMessage => {
-    // Errores ignorados o logueados si querés
-    // console.warn(errorMessage);
-  }
-);
 
 // ----------------- FUNCIONES AUXILIARES -----------------
 
