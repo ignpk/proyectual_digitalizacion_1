@@ -23,80 +23,50 @@ function cerrarGaleria() {
 
 // ------------------------- escaner QR------------------------
 
-// ------------------------- ESCANER QR (VERSIÓN SIMPLIFICADA Y VERIFICADA) ------------------------
-let scanner;
-const btnAbrir = document.getElementById("btn-abrir-escaner");
-const overlay = document.getElementById("overlay");
-const cerrar = document.getElementById("cerrar-overlay");
-const resultado = document.getElementById("resultado");
+  let scanner;
 
-// 1. Verifica que los elementos existen
-if (!btnAbrir || !overlay || !cerrar || !resultado) {
-  console.error("Error: Elementos del escáner no encontrados");
-} else {
+  const btnAbrir = document.getElementById("btn-abrir-escaner");
+  const overlay = document.getElementById("overlay");
+  const cerrar = document.getElementById("cerrar-overlay");
+  const resultado = document.getElementById("resultado");
+
   btnAbrir.addEventListener("click", () => {
     overlay.style.display = "flex";
-    resultado.innerText = "Escaneando...";
 
-    // 2. Inicializa el escáner solo si no existe
     if (!scanner) {
       scanner = new Html5Qrcode("reader");
     }
 
-    // 3. Configuración mínima de escaneo
-    const config = {
-      fps: 10,
-      qrbox: 250,
-      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-    };
-
     scanner.start(
       { facingMode: "environment" },
-      config,
+      { fps: 10, qrbox: 250 },
       (decodedText) => {
-        console.log("Código QR detectado:", decodedText); // Verifica en consola
-        resultado.innerText = "Código detectado!";
-        
-        // 4. Lógica de desbloqueo (simplificada para prueba)
-        document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
-          const pass = wrapper.getAttribute("data-pass");
-          if (decodedText.trim() === pass) {
-            const overlayBloqueo = wrapper.querySelector(".overlay-bloqueo");
-            if (overlayBloqueo) {
-              overlayBloqueo.remove();
-              resultado.innerText = "¡Carta desbloqueada!";
-            }
-          }
-        });
-
-        // 5. Detener escáner después de éxito
+        resultado.innerText = "Código QR: " + decodedText;
         scanner.stop().then(() => {
           overlay.style.display = "none";
-        }).catch(err => console.error("Error al detener:", err));
+        });
       },
       (error) => {
-        console.log("Error escaneando:", error); // Depuración
-        resultado.innerText = "Error: " + error;
+        // Opcional: mostrar errores
       }
     ).catch(err => {
-      console.error("Error al iniciar:", err);
-      resultado.innerText = "No se pudo iniciar la cámara";
-      overlay.style.display = "none";
+      console.error("No se pudo iniciar el escáner:", err);
     });
   });
 
-  // Cerrar escáner manualmente
   cerrar.addEventListener("click", () => {
     if (scanner) {
       scanner.stop().then(() => {
         overlay.style.display = "none";
         resultado.innerText = "";
-      }).catch(err => console.error("Error al cerrar:", err));
+      }).catch(() => {
+        overlay.style.display = "none";
+      });
     } else {
       overlay.style.display = "none";
     }
   });
-}
+
 
 
 
