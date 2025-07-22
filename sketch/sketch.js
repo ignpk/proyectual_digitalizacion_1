@@ -255,66 +255,114 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----------------- BLOQUEO DE CARTAS -----------------
-  document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
-  const carouselItems = document.querySelectorAll(".carousel-item");
-  const fondonegro = document.querySelector(".fondonegro");
+// ----------------- BLOQUEO DE CARTAS -----------------
 
-  // Se asume que #pantallaNegra está en el HTML con spinner y sin display por defecto (display:none)
-  const pantallaNegra = document.getElementById("pantallaNegra");
+// Estado inicial: las cartas están volteadas
+document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
 
-  document.getElementById("codigoGlobal").addEventListener("keypress", e => {
-    if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
-  });
+// Elementos comunes
+const carouselItems = document.querySelectorAll(".carousel-item");
+const fondonegro = document.querySelector(".fondonegro");
+const pantallaNegra = document.getElementById("pantallaNegra");
 
-  carouselItems.forEach(item => item.style.display = "none");
-  fondonegro.style.display = "none";
+// Ocultamos carruseles y fondo negro al inicio
+carouselItems.forEach(item => item.style.display = "none");
+fondonegro.style.display = "none";
 
-  document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
-    const codigo = document.getElementById("codigoGlobal").value.trim();
-    if (!codigo) return;
+// Si presionan Enter en el input, se hace click en el botón
+document.getElementById("codigoGlobal").addEventListener("keypress", e => {
+  if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
+});
 
-    let encontrado = false;
-    let desbloqueada = false;
+// Escucha del botón para verificación manual
+document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
+  const codigo = document.getElementById("codigoGlobal").value.trim();
+  desbloquearCodigo(codigo);
+  document.getElementById("codigoGlobal").value = "";
+});
 
-    document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
-      const overlay = wrapper.querySelector(".overlay-bloqueo");
-      const pass = wrapper.getAttribute("data-pass");
+// ----------------- FUNCIÓN REUTILIZABLE DE DESBLOQUEO -----------------
 
-      if (codigo === pass) {
-        encontrado = true;
+function desbloquearCodigo(codigo) {
+  if (!codigo) return;
 
-        if (overlay) {
-          overlay.remove();
-          desbloqueada = true;
-          mostrarPantallaNegra();
+  let encontrado = false;
+  let desbloqueada = false;
 
-          setTimeout(() => {
-            ocultarPantallaNegra();
+  document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+    const overlay = wrapper.querySelector(".overlay-bloqueo");
+    const pass = wrapper.getAttribute("data-pass");
 
-            const boton = wrapper.querySelector(".cartaejemplo");
-            const id = boton?.getAttribute("data-target");
-            const item = document.getElementById(id);
-            if (item) {
-              carouselItems.forEach(i => i.style.display = "none");
-              item.style.display = "flex";
-              fondonegro.style.display = "block";
-              document.body.style.overflow = "hidden";
-            }
-            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-          }, 1000);
-        }
+    if (codigo === pass) {
+      encontrado = true;
+
+      if (overlay) {
+        overlay.remove();
+        desbloqueada = true;
+        mostrarPantallaNegra();
+
+        setTimeout(() => {
+          ocultarPantallaNegra();
+
+          const boton = wrapper.querySelector(".cartaejemplo");
+          const id = boton?.getAttribute("data-target");
+          const item = document.getElementById(id);
+          if (item) {
+            carouselItems.forEach(i => i.style.display = "none");
+            item.style.display = "flex";
+            fondonegro.style.display = "block";
+            document.body.style.overflow = "hidden";
+          }
+
+          setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+        }, 1000);
       }
-    });
-
-    if (!encontrado) {
-      mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
-    } else if (!desbloqueada) {
-      mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
     }
-
-    document.getElementById("codigoGlobal").value = "";
   });
+
+  if (!encontrado) {
+    mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
+  } else if (!desbloqueada) {
+    mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
+  }
+}
+
+// ----------------- INTEGRACIÓN CON ESCÁNER QR -----------------
+
+function onQRScan(decodedText) {
+  desbloquearCodigo(decodedText.trim());
+  // Si querés detener el escaneo tras éxito, podés agregar:
+  // html5QrCode.stop().then(() => console.log("Escáner detenido"));
+}
+
+// Si ya tenés el lector, usalo así:
+const html5QrCode = new Html5Qrcode("reader");
+
+html5QrCode.start(
+  { facingMode: "environment" },
+  { fps: 10, qrbox: 250 },
+  decodedText => onQRScan(decodedText),
+  errorMessage => {
+    // Errores ignorados o logueados si querés
+    // console.warn(errorMessage);
+  }
+);
+
+// ----------------- FUNCIONES AUXILIARES -----------------
+
+function mostrarPantallaNegra() {
+  pantallaNegra.style.display = "flex";
+}
+
+function ocultarPantallaNegra() {
+  pantallaNegra.style.display = "none";
+}
+
+function mostrarAlerta(mensaje, tipo) {
+  // Implementación opcional, reemplazá esto con tu alerta real
+  alert(mensaje);
+}
+
 
   // ------------- ABRIR CARTAS YA DESBLOQUEADAS ---------------
   document.querySelectorAll(".cartaejemplo").forEach(boton => {
