@@ -1,4 +1,10 @@
+
+
+
+
 // ------------------------- galeria de cartas ------------------------
+
+
 function mostrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'block';
 }
@@ -6,16 +12,20 @@ function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
 }
 
-function abrirInfo() {
-  document.getElementById('ventanaInfo').style.display = 'block';
-}
 
-function cerrarInfo() {
-  document.getElementById('ventanaInfo').style.display = 'none';
-}
+  function abrirInfo() {
+    document.getElementById('ventanaInfo').style.display = 'block';
+  }
 
-// ------------------------- escaner QR (MODIFICADO PARA DESBLOQUEO) ------------------------
+  function cerrarInfo() {
+    document.getElementById('ventanaInfo').style.display = 'none';
+  }
+
+// ------------------------- escaner QR------------------------
+
+// ------------------------- ESCANER QR (VERSIÓN HÍBRIDA) ------------------------
 let scanner;
+
 const btnAbrir = document.getElementById("btn-abrir-escaner");
 const overlay = document.getElementById("overlay");
 const cerrar = document.getElementById("cerrar-overlay");
@@ -33,7 +43,44 @@ btnAbrir.addEventListener("click", () => {
     { fps: 10, qrbox: 250 },
     (decodedText) => {
       resultado.innerText = "Código QR escaneado: " + decodedText;
-      desbloquearCarta(decodedText.trim()); // Nueva función reutilizable
+      
+      // --- NUEVO: Lógica de desbloqueo (se ejecuta ANTES de cerrar el escáner) ---
+      const codigoQR = decodedText.trim();
+      let encontrado = false;
+
+      document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+        const overlayBloqueo = wrapper.querySelector(".overlay-bloqueo");
+        const pass = wrapper.getAttribute("data-pass");
+
+        if (codigoQR === pass && overlayBloqueo) {
+          encontrado = true;
+          overlayBloqueo.remove();
+          mostrarPantallaNegra();
+
+          setTimeout(() => {
+            ocultarPantallaNegra();
+            const boton = wrapper.querySelector(".cartaejemplo");
+            const id = boton?.getAttribute("data-target");
+            const item = document.getElementById(id);
+            
+            if (item) {
+              document.querySelectorAll(".carousel-item").forEach(i => i.style.display = "none");
+              item.style.display = "flex";
+              document.querySelector(".fondonegro").style.display = "block";
+              document.body.style.overflow = "hidden";
+            }
+            
+            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+          }, 1000);
+        }
+      });
+
+      if (!encontrado) {
+        mostrarAlerta("QR NO VÁLIDO", "incorrecto");
+      }
+      // --- FIN NUEVA LÓGICA ---
+
+      // Cierra el escáner (parte original que ya tenías)
       scanner.stop().then(() => {
         overlay.style.display = "none";
       });
@@ -46,6 +93,7 @@ btnAbrir.addEventListener("click", () => {
   });
 });
 
+// Mantén este evento original (cierre manual del escáner)
 cerrar.addEventListener("click", () => {
   if (scanner) {
     scanner.stop().then(() => {
@@ -59,7 +107,11 @@ cerrar.addEventListener("click", () => {
   }
 });
 
+
+
+
 // ------------------------- QR DE CADA CARTA POR SEPARADO------------------------
+
 document.getElementById("botonCambiar").addEventListener("click", function () {
   const carruseles = document.querySelectorAll(".carousel-item");
 
@@ -69,115 +121,102 @@ document.getElementById("botonCambiar").addEventListener("click", function () {
       const qr = item.querySelector(".codigoqrdecarta");
       if (qr) {
         if (qr.classList.contains("mostrar")) {
+          // Ocultar con efecto suave
           qr.classList.remove("mostrar");
           setTimeout(() => {
             qr.style.display = "none";
-          }, 400);
+          }, 400); // Tiempo igual al del transition
         } else {
+          // Mostrar con efecto suave
           qr.style.display = "block";
           setTimeout(() => {
             qr.classList.add("mostrar");
-          }, 10);
+          }, 10); // Pequeño delay para que transition se aplique
         }
       }
     }
   });
 });
-
 // ------------------------- BOTON EXPANSIONES------------------------
-function abrirVentanaExpansiones() {
-  document.getElementById("ventanaExpansiones").style.display = "flex";
-}
 
-function cerrarVentanaExpansiones() {
-  document.getElementById("ventanaExpansiones").style.display = "none";
-}
+
+
+
+  function abrirVentanaExpansiones() {
+    document.getElementById("ventanaExpansiones").style.display = "flex";
+  }
+
+  function cerrarVentanaExpansiones() {
+    document.getElementById("ventanaExpansiones").style.display = "none";
+  }
+
+
+
 
 // ------------------------- carrousel de expansiones-----------------------
-let indiceCarruseldeExpansiones = 0;
 
-function moverCarruseldeExpansiones(direccion) {
-  const carrusel = document.querySelector('.carruseldeexpansiones');
-  const totalItems = document.querySelectorAll('.carruseldeexpansiones-item').length;
+  let indiceCarruseldeExpansiones = 0;
 
-  indiceCarruseldeExpansiones += direccion;
-  if (indiceCarruseldeExpansiones < 0) indiceCarruseldeExpansiones = totalItems - 1;
-  if (indiceCarruseldeExpansiones >= totalItems) indiceCarruseldeExpansiones = 0;
+  function moverCarruseldeExpansiones(direccion) {
+    const carrusel = document.querySelector('.carruseldeexpansiones');
+    const totalItems = document.querySelectorAll('.carruseldeexpansiones-item').length;
 
-  carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
-}
+    indiceCarruseldeExpansiones += direccion;
+    if (indiceCarruseldeExpansiones < 0) indiceCarruseldeExpansiones = totalItems - 1;
+    if (indiceCarruseldeExpansiones >= totalItems) indiceCarruseldeExpansiones = 0;
+
+    carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
+  }
+
+
+
+// ------------------------- boton descargar------------------------
+
+
 
 // ------------------------- optimizador de imagenes------------------------
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const el = entry.target;
+
       if (el.dataset.loaded) return;
+
+      // Restaurar el style guardado
       if (el.dataset.style) {
         el.setAttribute('style', el.dataset.style);
       }
+
       el.dataset.loaded = "true";
       observer.unobserve(el);
     }
   });
 });
 
+// Buscar elementos con .lazy-michi o [data-lazy="true"]
 document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
+  // Si ya tiene el atributo style inline, lo movemos a data-style automáticamente
   if (!el.dataset.style && el.hasAttribute('style')) {
     el.dataset.style = el.getAttribute('style');
     el.removeAttribute('style');
   }
+
+  // Si tiene data-style válido, lo observamos
   if (el.dataset.style) {
     observer.observe(el);
   }
 });
 
-// ===================== FUNCIÓN REUTILIZABLE PARA DESBLOQUEO (NUEVA) =====================
-function desbloquearCarta(codigo) {
-  if (!codigo) return;
 
-  let encontrado = false;
-  let desbloqueada = false;
-
-  document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
-    const overlay = wrapper.querySelector(".overlay-bloqueo");
-    const pass = wrapper.getAttribute("data-pass");
-
-    if (codigo === pass) {
-      encontrado = true;
-
-      if (overlay) {
-        overlay.remove();
-        desbloqueada = true;
-        mostrarPantallaNegra();
-
-        setTimeout(() => {
-          ocultarPantallaNegra();
-
-          const boton = wrapper.querySelector(".cartaejemplo");
-          const id = boton?.getAttribute("data-target");
-          const item = document.getElementById(id);
-          if (item) {
-            document.querySelectorAll(".carousel-item").forEach(i => i.style.display = "none");
-            item.style.display = "flex";
-            document.querySelector(".fondonegro").style.display = "block";
-            document.body.style.overflow = "hidden";
-          }
-          setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-        }, 1000);
-      }
-    }
-  });
-
-  if (!encontrado) {
-    mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
-  } else if (!desbloqueada) {
-    mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
-  }
-}
-
-// ------------------------- DOM CONTENT LOADED ------------------------
+// ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
+
+
+
+
+// ------------------------- quitar zoom doble tap ------------------------
+
   // Bloquear zoom por gesto (Safari iOS)
   document.addEventListener('gesturestart', function (e) {
     e.preventDefault();
@@ -188,18 +227,23 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('touchend', function (event) {
     const now = new Date().getTime();
     if (now - lastTouchEnd <= 300) {
-      event.preventDefault();
+      event.preventDefault(); // ← evita el zoom
     }
     lastTouchEnd = now;
   }, false);
 
+  // Prevenir el zoom por doble toque en elementos con foco (iOS a veces lo permite igual)
   document.addEventListener('touchstart', function (event) {
     if (event.touches.length > 1) {
       event.preventDefault();
     }
   }, { passive: false });
 
-  // Funciones para mostrar y ocultar pantalla negra con spinner
+
+  // ------------------------ --------------------------------------------------------------------------
+
+
+  // Funciones para mostrar y ocultar pantalla negra con spinner y bloqueo scroll
   function mostrarPantallaNegra() {
     const pantallaNegra = document.getElementById('pantallaNegra');
     if (pantallaNegra) {
@@ -250,29 +294,65 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----------------- BLOQUEO DE CARTAS (ACTUALIZADO) -----------------
+  // ----------------- BLOQUEO DE CARTAS -----------------
   document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
   const carouselItems = document.querySelectorAll(".carousel-item");
   const fondonegro = document.querySelector(".fondonegro");
 
-  // Inicialización
+  // Se asume que #pantallaNegra está en el HTML con spinner y sin display por defecto (display:none)
+  const pantallaNegra = document.getElementById("pantallaNegra");
+
+  document.getElementById("codigoGlobal").addEventListener("keypress", e => {
+    if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
+  });
+
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-  // Evento para el botón manual (ahora usa desbloquearCarta)
   document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
     const codigo = document.getElementById("codigoGlobal").value.trim();
-    desbloquearCarta(codigo);
-    document.getElementById("codigoGlobal").value = "";
-  });
+    if (!codigo) return;
 
-  // Evento para la tecla Enter (ahora usa desbloquearCarta)
-  document.getElementById("codigoGlobal").addEventListener("keypress", e => {
-    if (e.key === "Enter") {
-      const codigo = document.getElementById("codigoGlobal").value.trim();
-      desbloquearCarta(codigo);
-      document.getElementById("codigoGlobal").value = "";
+    let encontrado = false;
+    let desbloqueada = false;
+
+    document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+      const overlay = wrapper.querySelector(".overlay-bloqueo");
+      const pass = wrapper.getAttribute("data-pass");
+
+      if (codigo === pass) {
+        encontrado = true;
+
+        if (overlay) {
+          overlay.remove();
+          desbloqueada = true;
+          mostrarPantallaNegra();
+
+          setTimeout(() => {
+            ocultarPantallaNegra();
+
+            const boton = wrapper.querySelector(".cartaejemplo");
+            const id = boton?.getAttribute("data-target");
+            const item = document.getElementById(id);
+            if (item) {
+              carouselItems.forEach(i => i.style.display = "none");
+              item.style.display = "flex";
+              fondonegro.style.display = "block";
+              document.body.style.overflow = "hidden";
+            }
+            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+          }, 1000);
+        }
+      }
+    });
+
+    if (!encontrado) {
+      mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
+    } else if (!desbloqueada) {
+      mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
     }
+
+    document.getElementById("codigoGlobal").value = "";
   });
 
   // ------------- ABRIR CARTAS YA DESBLOQUEADAS ---------------
@@ -293,27 +373,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const cerrarCarrusel = () => {
-    carouselItems.forEach(item => {
-      item.style.display = "none";
-      const qr = item.querySelector(".codigoqrdecarta");
-      if (qr) {
-        qr.style.display = "none";
-      }
-    });
-    fondonegro.style.display = "none";
-    document.body.style.overflow = "auto";
-  };
+const cerrarCarrusel = () => {
+  carouselItems.forEach(item => {
+    item.style.display = "none";
 
-  document.querySelectorAll('.botonatras').forEach(boton => {
-    if (boton.textContent.trim() === "X") {
-      boton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        cerrarCarrusel();
-      });
+    // Oculta también el QR si está visible dentro del item
+    const qr = item.querySelector(".codigoqrdecarta");
+    if (qr) {
+      qr.style.display = "none";
     }
   });
 
+  fondonegro.style.display = "none";
+  document.body.style.overflow = "auto";
+};
+
+document.querySelectorAll('.botonatras').forEach(boton => {
+  if (boton.textContent.trim() === "X") {
+    boton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cerrarCarrusel();
+    });
+  }
+});
   // ---------------------- EFECTOS CARTA ----------------------
   const cartas = document.querySelectorAll(".carta");
 
@@ -398,4 +480,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   cartas.forEach(aplicarEfectos);
+
+
+
+
 });
+
+
+
+
+
