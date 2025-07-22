@@ -21,52 +21,60 @@ function cerrarGaleria() {
     document.getElementById('ventanaInfo').style.display = 'none';
   }
 
-// ------------------------- escaner QR------------------------
+// ------------------------- escáner QR ------------------------
 
-  let scanner;
+let scanner;
 
-  const btnAbrir = document.getElementById("btn-abrir-escaner");
-  const overlay = document.getElementById("overlay");
-  const cerrar = document.getElementById("cerrar-overlay");
-  const resultado = document.getElementById("resultado");
+const btnAbrir = document.getElementById("btn-abrir-escaner");
+const overlay = document.getElementById("overlay");
+const cerrar = document.getElementById("cerrar-overlay");
+const resultado = document.getElementById("resultado");
 
-  btnAbrir.addEventListener("click", () => {
-    overlay.style.display = "flex";
+btnAbrir.addEventListener("click", () => {
+  overlay.style.display = "flex";
 
-    if (!scanner) {
-      scanner = new Html5Qrcode("reader");
-    }
+  if (!scanner) {
+    scanner = new Html5Qrcode("reader");
+  }
 
-    scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: 250 },
-      (decodedText) => {
-        resultado.innerText = "Código QR: " + decodedText;
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    (decodedText) => {
+      // ✅ Ejecutar desbloqueo
+      desbloquearCodigo(decodedText.trim());
+
+      // ✅ Mostrar resultado
+      resultado.innerText = "Código QR: " + decodedText;
+
+      // ✅ Detener escáner después de un pequeño delay
+      setTimeout(() => {
         scanner.stop().then(() => {
           overlay.style.display = "none";
         });
-      },
-      (error) => {
-        // Opcional: mostrar errores
-      }
-    ).catch(err => {
-      console.error("No se pudo iniciar el escáner:", err);
-    });
-  });
-
-  cerrar.addEventListener("click", () => {
-    if (scanner) {
-      scanner.stop().then(() => {
-        overlay.style.display = "none";
-        resultado.innerText = "";
-      }).catch(() => {
-        overlay.style.display = "none";
-      });
-    } else {
-      overlay.style.display = "none";
+      }, 1000); // 1 segundo para que se vea la animación de desbloqueo
+    },
+    (error) => {
+      // Podés mostrar el error si querés
+      // console.warn(error);
     }
+  ).catch(err => {
+    console.error("No se pudo iniciar el escáner:", err);
   });
+});
 
+cerrar.addEventListener("click", () => {
+  if (scanner) {
+    scanner.stop().then(() => {
+      overlay.style.display = "none";
+      resultado.innerText = "";
+    }).catch(() => {
+      overlay.style.display = "none";
+    });
+  } else {
+    overlay.style.display = "none";
+  }
+});
 
 
 
