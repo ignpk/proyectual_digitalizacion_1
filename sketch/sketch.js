@@ -23,89 +23,80 @@ function cerrarGaleria() {
 
 // ------------------------- escaner QR------------------------
 
-// ------------------------- ESCANER QR (VERSIÓN HÍBRIDA) ------------------------
+// ------------------------- ESCANER QR (VERSIÓN SIMPLIFICADA Y VERIFICADA) ------------------------
 let scanner;
-
 const btnAbrir = document.getElementById("btn-abrir-escaner");
 const overlay = document.getElementById("overlay");
 const cerrar = document.getElementById("cerrar-overlay");
 const resultado = document.getElementById("resultado");
 
-btnAbrir.addEventListener("click", () => {
-  overlay.style.display = "flex";
+// 1. Verifica que los elementos existen
+if (!btnAbrir || !overlay || !cerrar || !resultado) {
+  console.error("Error: Elementos del escáner no encontrados");
+} else {
+  btnAbrir.addEventListener("click", () => {
+    overlay.style.display = "flex";
+    resultado.innerText = "Escaneando...";
 
-  if (!scanner) {
-    scanner = new Html5Qrcode("reader");
-  }
-
-  scanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    (decodedText) => {
-      resultado.innerText = "Código QR escaneado: " + decodedText;
-      
-      // --- NUEVO: Lógica de desbloqueo (se ejecuta ANTES de cerrar el escáner) ---
-      const codigoQR = decodedText.trim();
-      let encontrado = false;
-
-      document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
-        const overlayBloqueo = wrapper.querySelector(".overlay-bloqueo");
-        const pass = wrapper.getAttribute("data-pass");
-
-        if (codigoQR === pass && overlayBloqueo) {
-          encontrado = true;
-          overlayBloqueo.remove();
-          mostrarPantallaNegra();
-
-          setTimeout(() => {
-            ocultarPantallaNegra();
-            const boton = wrapper.querySelector(".cartaejemplo");
-            const id = boton?.getAttribute("data-target");
-            const item = document.getElementById(id);
-            
-            if (item) {
-              document.querySelectorAll(".carousel-item").forEach(i => i.style.display = "none");
-              item.style.display = "flex";
-              document.querySelector(".fondonegro").style.display = "block";
-              document.body.style.overflow = "hidden";
-            }
-            
-            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-          }, 1000);
-        }
-      });
-
-      if (!encontrado) {
-        mostrarAlerta("QR NO VÁLIDO", "incorrecto");
-      }
-      // --- FIN NUEVA LÓGICA ---
-
-      // Cierra el escáner (parte original que ya tenías)
-      scanner.stop().then(() => {
-        overlay.style.display = "none";
-      });
-    },
-    (error) => {
-      console.error("Error al escanear:", error);
+    // 2. Inicializa el escáner solo si no existe
+    if (!scanner) {
+      scanner = new Html5Qrcode("reader");
     }
-  ).catch(err => {
-    console.error("No se pudo iniciar el escáner:", err);
-  });
-});
 
-// Mantén este evento original (cierre manual del escáner)
-cerrar.addEventListener("click", () => {
-  if (scanner) {
-    scanner.stop().then(() => {
-      overlay.style.display = "none";
-      resultado.innerText = "";
-    }).catch(() => {
+    // 3. Configuración mínima de escaneo
+    const config = {
+      fps: 10,
+      qrbox: 250,
+      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+    };
+
+    scanner.start(
+      { facingMode: "environment" },
+      config,
+      (decodedText) => {
+        console.log("Código QR detectado:", decodedText); // Verifica en consola
+        resultado.innerText = "Código detectado!";
+        
+        // 4. Lógica de desbloqueo (simplificada para prueba)
+        document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+          const pass = wrapper.getAttribute("data-pass");
+          if (decodedText.trim() === pass) {
+            const overlayBloqueo = wrapper.querySelector(".overlay-bloqueo");
+            if (overlayBloqueo) {
+              overlayBloqueo.remove();
+              resultado.innerText = "¡Carta desbloqueada!";
+            }
+          }
+        });
+
+        // 5. Detener escáner después de éxito
+        scanner.stop().then(() => {
+          overlay.style.display = "none";
+        }).catch(err => console.error("Error al detener:", err));
+      },
+      (error) => {
+        console.log("Error escaneando:", error); // Depuración
+        resultado.innerText = "Error: " + error;
+      }
+    ).catch(err => {
+      console.error("Error al iniciar:", err);
+      resultado.innerText = "No se pudo iniciar la cámara";
       overlay.style.display = "none";
     });
-  } else {
-    overlay.style.display = "none";
-  }
-});
+  });
+
+  // Cerrar escáner manualmente
+  cerrar.addEventListener("click", () => {
+    if (scanner) {
+      scanner.stop().then(() => {
+        overlay.style.display = "none";
+        resultado.innerText = "";
+      }).catch(err => console.error("Error al cerrar:", err));
+    } else {
+      overlay.style.display = "none";
+    }
+  });
+}
 
 
 
