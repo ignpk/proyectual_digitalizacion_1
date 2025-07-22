@@ -42,7 +42,6 @@ function cerrarGaleria() {
       { fps: 10, qrbox: 250 },
      (decodedText) => {
   resultado.innerText = "Código QR: " + decodedText;
-  document.body.setAttribute("data-desbloqueo", "qr");
   document.getElementById("codigoGlobal").value = decodedText;
   document.getElementById("botonVerificarCodigo").click();
 
@@ -302,13 +301,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (item) {
               carouselItems.forEach(i => i.style.display = "none");
               item.style.display = "flex";
-              if (document.body.getAttribute("data-desbloqueo") === "qr") {
-  item.classList.add("animacionQR");
-  setTimeout(() => {
-    item.classList.remove("animacionQR");
-    document.body.removeAttribute("data-desbloqueo");
-  }, 2000); // dura 2 segundos
-}
               fondonegro.style.display = "block";
               document.body.style.overflow = "hidden";
             }
