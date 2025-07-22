@@ -40,12 +40,15 @@ function cerrarGaleria() {
     scanner.start(
       { facingMode: "environment" },
       { fps: 10, qrbox: 250 },
-      (decodedText) => {
-        resultado.innerText = "Código QR: " + decodedText;
-        scanner.stop().then(() => {
-          overlay.style.display = "none";
-        });
-      },
+     (decodedText) => {
+  resultado.innerText = "Código QR: " + decodedText;
+  document.getElementById("codigoGlobal").value = decodedText;
+  document.getElementById("botonVerificarCodigo").click();
+
+  scanner.stop().then(() => {
+    overlay.style.display = "none";
+  });
+},
       (error) => {
         // Opcional: mostrar errores
       }
