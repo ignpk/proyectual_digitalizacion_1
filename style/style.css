@@ -26,18 +26,138 @@ background-image: url(../assets/background001.webp);
 
 
 
+/*-----------------------------------------------------------------*/
+
+.modal-alerta,
+.QRRARO,
+.carta,
+.fondonegro,
+#ventanaExpansiones,
+.ventana-emergente,
+.fondo-rainbow,
+.medio,
+.sombra,
+.arriba,
+.bordecarta,
+.efectoholograficolineas,
+.capaholograficaestrellas,
+.line-container,
+.main-container,
+.cartel,
+.overlaY{
+  width: 100%;
+  height: 100%;
+}
+
+
+.medio,
+.circle1,
+.circle2,
+.circle3,
+.circle4,
+.circle5,
+.circle6,
+.arriba,
+.sombra,
+.overlay,
+.efectoholograficolineas,
+.capaholograficaestrellas,
+.bordecarta,
+.trasera,
+.michi{
+  pointer-events: none;
+  outline: none;
+}
+
+.carta,
+.fondo-rainbow,
+.medio,
+.arriba,
+.sombra,
+.efectoholograficolineas,
+.line-container,
+.cartel,
+.botonreset,
+.main-container,
+.overlay,
+.circle1,
+.circle2,
+.circle3,
+.circle4,
+.circle5,
+.circle6{
+  position: absolute;
+}
+
+.modal-alerta,
+.QRRARO,
+.overlay,
+.fondonegro,
+#ventanaExpansiones,
+.BOTONDESBLOQUEAR,
+.contenedorbotoncerrar{
+    backdrop-filter: blur(5px);
+
+}
+
+.modal-alerta,
+.carta,
+.BOTONDESBLOQUEAR,
+.contenedorcolores,
+.botonatras:nth-child(1),
+.botonatras:nth-child(2),
+.botonatras:nth-child(3),
+.botonatrasexpansiones{
+    align-items: center;
+  justify-content: center;
+}
+
+.modal-alerta,
+.contenedor,
+.botonesmenu,
+.BOTONDESBLOQUEAR,
+ .cartasgaleriacontainer,
+ .contenedorcolores,
+ #pantallaNegra.activo,
+ .pantallacargando,
+ .tarjeta,
+ .line-container,
+ .contenedorbotoncerrar,
+ .botonatras:nth-child(1),
+ .botonatras:nth-child(2),
+ .botonatras:nth-child(3),
+ .botonatrasexpansiones,
+ .carruseldeexpansiones,
+ .ventana-emergente{ 
+   display: flex;
+}
+
+
+ .michiconfundido,
+ .noticias,
+ .galeriaapp,
+ .quees,
+ .insta,
+ .descargarapp,
+ .codigoqrdecarta{
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.contenido-alerta,
+.descripcionbanner,
+.BOTONDESBLOQUEAR,
+.BOTONDESBLOQUEAR input,
+.codigoqrdecarta{
+  text-align: center;
+}
 /*------------------------------ALERTA-------------------------------------*/
 .modal-alerta {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.531);
-  backdrop-filter: BLUR(5PX);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 9999;
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -47,7 +167,6 @@ background-image: url(../assets/background001.webp);
   height: 300px;
   padding: 5%;
   border-radius: 12px;
-  text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   animation: slideDown 0.4s ease-out;
 }
@@ -55,9 +174,6 @@ background-image: url(../assets/background001.webp);
   width: 100%;
   height: 50%;
   background-image: url(../assets/ALERT.webp);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .contenido-alerta p,
 .contenido-alerta button,
@@ -111,17 +227,11 @@ background-image: url(../assets/background001.webp);
   overflow: hidden;
   width: 100%;
   height: 100vh;
-    display: flex;
     flex-direction: column;
     align-items: center;
 
 }
- .noticias, .galeriaapp, .quees, .insta, .descargarapp{
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
 
-}
 .logo{
   width: 100%;
   height: 60%;
@@ -160,7 +270,6 @@ background-image: url(../assets/background001.webp);
   gap: 20px;
   width: 100%;
   height: auto;
-  display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -174,6 +283,10 @@ background-image: url(../assets/background001.webp);
   transition: 0.2s ease-in-out;
 }
 
+.descargarapp{
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+}
 .descripcionbanner{
   position:absolute;
   margin: 0;
@@ -182,7 +295,6 @@ background-image: url(../assets/background001.webp);
   font-size: 0.6rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    text-align: center;
   color: rgb(255, 255, 255);
 
 }
@@ -207,11 +319,7 @@ margin: 0 auto;
   z-index: 500;
   top: 20px;
 position: sticky;
-  display: flex;
   width: 300px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 #codigoGlobal {
   border: none;
@@ -224,7 +332,6 @@ position: sticky;
 .BOTONDESBLOQUEAR input{
   outline: none;
   font-weight: lighter;
-  text-align: center;
 background-color: rgba(255, 255, 255, 0);
 border: none;
 }
@@ -252,9 +359,8 @@ transform: scale(1.3);
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.51);
-  backdrop-filter: blur(5px);
   z-index: 999999999;
-  display: none; /* Oculto por defecto */
+  display: none; 
   align-items: center;
   flex-direction: column;
 }
@@ -271,61 +377,6 @@ transform: scale(1.3);
 /*-------------------------------------------------------------------*/
 
 
-.carta,
-.fondo-rainbow,
-.medio,
-.sombra,
-.arriba,
-.bordecarta,
-.efectoholograficolineas,
-.line-container,
-.main-container,
-.cartel,
-.overlaY{
-  width: 100%;
-  height: 100%;
-}
-
-
-.medio,
-.circle1,
-.circle2,
-.circle3,
-.circle4,
-.circle5,
-.circle6,
-.arriba,
-.sombra,
-.overlay,
-.efectoholograficolineas,
-.capaholograficaestrellas,
-.bordecarta,
-.trasera,
-.michi{
-  pointer-events: none;
-  outline: none;
-}
-
-.carta,
-.fondo-rainbow,
-.medio,
-.arriba,
-.sombra,
-.efectoholograficolineas,
-.line-container,
-.cartel,
-.botonreset,
-.main-container,
-.overlay,
-.circle1,
-.circle2,
-.circle3,
-.circle4,
-.circle5,
-.circle6{
-  position: absolute;
-}
-
 .carousel-container {
   width: 100%;
   height: auto;
@@ -338,16 +389,12 @@ transform: scale(1.3);
     align-items: center;
     width: 100%;
     height: auto;
-    display: flex;
     flex-wrap: wrap;
   }
 
 .contenedorcolores{
   gap: 20px;
   flex-wrap: wrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 85%;
   height: auto;
 }
@@ -385,19 +432,17 @@ background-size: contain;
 background-image: url(../assets/cartas/BACK.webp);
   }
 .overnormal{
-filter: sepia(1) grayscale(1) brightness(0.5);
+filter: sepia(1) grayscale(1) brightness(0.6) ;
 }
 
 .overraro{
-filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.5);
+filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.7) ;
 
 }
 
 .overespecial{
-filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.5);
+filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
 }
-
-
 
 
 #pantallaNegra {
@@ -432,7 +477,6 @@ filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.5);
 }
 
 .pantallacargando{
-    display: flex;
     justify-content: center;
   align-items: center;
   width: 100%;
@@ -475,21 +519,15 @@ filter: opacity(0);
 
 /* --------------------------QR DE CARTA------------------------- */
 .codigoqrdecarta {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
   display: none;
-
   position: absolute;
   z-index: 999999999999999999999999;
   opacity: 0;
   transform: scale(0.95);
   transition: opacity 0.2s ease, transform 0.2s ease;
   border-radius: 15PX;
-  text-align: center;
-  padding: 5%;
+    padding: 5%;
     box-shadow: 0px 0px 1px 100px rgba(0, 0, 0, 0.579);
-    overflow: hidden;
 
 
 }
@@ -510,9 +548,6 @@ background-color:rgb(240, 196, 1);
 }
 .QRRARO{
 background-color:rgba(0, 0, 0, 0.545);
-backdrop-filter: BLUR(5PX);
-  width: 100%;
-  height: 100%;
 }
 
 /* HAZ DE LUZ */
@@ -578,9 +613,6 @@ background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(20, 176, 122
 .carta{
 overflow: hidden;
     filter: saturate(1.2) contrast(1.2);
-justify-content: center;
-align-items: center;
-display: flex;
 }
 
 
@@ -593,7 +625,6 @@ display: flex;
 .tarjeta {
   z-index: 10;
   position: absolute; 
-  display: flex;
   perspective: 2000px;
   transform-style: preserve-3d;
 }
@@ -616,6 +647,9 @@ pointer-events: all;
 }
 
 .carta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor:pointer;
   border-radius: 11px;
 backface-visibility: hidden;
@@ -643,8 +677,6 @@ backface-visibility: hidden;
 .bordecarta{z-index:14;}
 .capaholograficaestrellas{
   position: absolute;
-  width: 100%;
-  height: 100%;
   background-size: cover;
   z-index: 10;
 }
@@ -692,7 +724,6 @@ backface-visibility: hidden;
 }
   
 .line-container {
-    display: flex;
     flex-direction: column;
   }
   
@@ -778,13 +809,7 @@ backface-visibility: hidden;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.467);
-  backdrop-filter: blur(5px);
-
-
-
 }
 
 
@@ -815,10 +840,8 @@ transform: translateY(50px);
   /*-----------------------------info-------------------------------*/
 
 .infocontainer{
-
  width: 100%;
  height: 100dvh;
- display: flex;
 }
 .infobanner{
   width: 100%;
@@ -843,13 +866,12 @@ transform: translateY(50px);
 
 .contenedorbotoncerrar{
   z-index: 999;
+    display: flex;
   position: fixed;
   width: 300px;
 background-color: rgba(255, 255, 255, 0.107);
-backdrop-filter: blur(5px);
 border: 3px solid rgba(255, 255, 255, 0.083);
 border-radius: 10px;
-  display: flex;
 transform: translateX(-50%);
 left: 50%;
   align-items: center;
@@ -864,9 +886,6 @@ margin: 0 auto;
 
 .botonatras:nth-child(1), .botonatras:nth-child(2), .botonatras:nth-child(3), .botonatrasexpansiones {
   font-family: Arial;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 40px;
   height: 40px;
   font-size: 120%;
@@ -892,19 +911,13 @@ margin: 0 auto;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.399);
-  backdrop-filter: blur(5px);
   z-index: 999999999;
   justify-content: center;
   align-items: center;
 }
 
 .ventana-emergente {
-  width: 100%;
-  height: 100%;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -925,7 +938,6 @@ margin: 0 auto;
 }
 
 .carruseldeexpansiones {
-  display: flex;
   transition: transform 0.5s ease;
   width: 100%;
 }

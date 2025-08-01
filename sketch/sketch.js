@@ -134,8 +134,6 @@ document.getElementById("botonCambiar").addEventListener("click", function () {
 
 
 
-// ------------------------- boton descargar------------------------
-
 
 
 // ------------------------- optimizador de imagenes------------------------

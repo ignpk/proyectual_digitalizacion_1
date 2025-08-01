@@ -18,8 +18,52 @@
 
     <title>Michi Box-Card Game</title>
     <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+
+<script>
+  let deferredPrompt = null;
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    console.log("✅ Evento beforeinstallprompt recibido");
+
+    e.preventDefault(); // Evita el cartel automático
+    deferredPrompt = e; // Guardamos el evento para usarlo luego
+
+    // Mostramos el botón solo si se puede instalar
+    document.addEventListener("DOMContentLoaded", () => {
+      const installBtn = document.getElementById("installBtn");
+      if (installBtn) installBtn.style.display = "block";
+    });
+  });
+</script>
+
+
   </head>
   <body>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const installBtn = document.getElementById("installBtn");
+
+  installBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+    console.log("Instalación:", result.outcome);
+
+    if (result.outcome === "accepted") {
+      console.log("✅ App instalada");
+      installBtn.style.display = "none";
+    } else {
+      console.log("❌ Instalación cancelada");
+    }
+
+    deferredPrompt = null;
+  });
+});
+</script>
+
     <main>
 
       <!------------------------BOTON DESCARGAR------------------------------------->
@@ -36,7 +80,7 @@
   <a onclick="mostrarGaleria()"  class="galeriaapp lazy-michi" style="background-image: url(./assets/galeriacartasicon.webp);">  </a>
   <div  class="quees lazy-michi" style="background-image: url(./assets/boton_QUE_ES.webp);" >  </div>
   <div class="insta lazy-michi" style="background-image: url(./assets/boton_NOTICIAS.webp);">  </div>
-  <div class="descargarapp lazy-michi" style="background-image: url(./assets/boton_descargar.webp);"> </div>
+  <button id="installBtn" class="descargarapp lazy-michi" style="background-image: url(./assets/boton_descargar.webp);"> </button>
 </div>
 <p class="descripcionbanner">Michi box - Juego de gatos colecionables. Proyectual Digitalización I 2025. diseño y realización: José Ignacio Pyptyk</p>
 </div>
