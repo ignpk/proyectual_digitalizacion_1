@@ -421,12 +421,6 @@ function mostrarCartelAdvertenciaPersistente(htmlContenido) {
   }, 2000); //
 }
 
-// Eliminamos la función cerrarCartelClickFuera porque no la usaremos más
-// y también quitamos el eventListener de click para cerrar el cartel
-
-// (Si quieres, simplemente no la incluyas o elimínala del código)
-
- 
 
   // Función que chequea y desbloquea cartas automáticamente según requisitos
   function chequearDesbloqueosAutomaticos() {

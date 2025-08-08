@@ -177,13 +177,13 @@ background-image: url(../assets/background001.webp);
 }
 .contenido-alerta p,
 .contenido-alerta button,
-.TEXTOQRALERTA{
+.TEXTOQRALERTA,
+.cartel-advertencia p{
     padding: 0% 10%;
   color: black;
   font-family:Arial, Helvetica, sans-serif;
   font-weight: bold;
 }
-
 
 .modal-alerta button {
   background-color: #ffffff1e;
@@ -449,26 +449,40 @@ filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
    flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10PX;
   gap: 10PX;
-    width: 60%;
-  height: 300px;
+    width: 70%;
+  height: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgb(255, 255, 0);
-  border: 2px solid black;
+  background: rgb(223, 223, 0);
+  border: 7px solid rgba(255, 238, 192, 0.693);
   border-radius: 8px;
   font-size: 18px;
   z-index: 9999;
-  max-width: 300px;
   text-align: center;
-box-shadow: 0px 0px 200px 200px rgba(0, 0, 0, 0.496);
-  animation: fadeInOut 4s ease forwards;
+box-shadow: 0px 0px 200px 500px rgba(0, 0, 0, 0.496);
+  animation: fadeZoomInOut 2s ease forwards;
+pointer-events: none;
 }
-.cartel-advertencia p{
-  color: black;
-  font-size: 80%;
+
+@keyframes fadeZoomInOut {
+  0% {
+    opacity: 0;
+/* más chico al inicio */
+  }
+  10% {
+    opacity: 1;
+ /* tamaño normal */
+  }
+  90% {
+    opacity: 1;
+ /* mantener visible */
+  }
+  100% {
+    opacity: 0;
+ /* zoom inverso al salir */
+  }
 }
 
 .cartas-requeridas {
@@ -476,22 +490,28 @@ box-shadow: 0px 0px 200px 200px rgba(0, 0, 0, 0.496);
   gap: 10px;
   justify-content: center;
   margin-top: 10px;
+
+}
+.cartel-advertencia p b{
+  color: rgb(125, 125, 125);
 }
 
 .carta-mini {
-  width: 60px;
-  height: 90px;
+  width: 70px;
+  height: 100px;
   background-size: cover;
   background-position: center;
   position: relative;
   border: 1px solid black;
-  border-radius: 5px;
+  border-radius: 3px;
+
 }
 
 .mini-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.562);
+  background: rgba(0, 0, 0, 0.419);
+
 }
 
 
