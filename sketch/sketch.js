@@ -1,9 +1,4 @@
-
-
-
-
 // ------------------------- galeria de cartas ------------------------
-
 
 function mostrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'block';
@@ -12,67 +7,62 @@ function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
 }
 
+function abrirInfo() {
+  document.getElementById('ventanaInfo').style.display = 'block';
+}
 
-  function abrirInfo() {
-    document.getElementById('ventanaInfo').style.display = 'block';
-  }
-
-  function cerrarInfo() {
-    document.getElementById('ventanaInfo').style.display = 'none';
-  }
+function cerrarInfo() {
+  document.getElementById('ventanaInfo').style.display = 'none';
+}
 
 // ------------------------- escaner QR------------------------
 
-  let scanner;
+let scanner;
 
-  const btnAbrir = document.getElementById("btn-abrir-escaner");
-  const overlay = document.getElementById("overlay");
-  const cerrar = document.getElementById("cerrar-overlay");
-  const resultado = document.getElementById("resultado");
+const btnAbrir = document.getElementById("btn-abrir-escaner");
+const overlay = document.getElementById("overlay");
+const cerrar = document.getElementById("cerrar-overlay");
+const resultado = document.getElementById("resultado");
 
-  btnAbrir.addEventListener("click", () => {
-    overlay.style.display = "flex";
+btnAbrir.addEventListener("click", () => {
+  overlay.style.display = "flex";
 
-    if (!scanner) {
-      scanner = new Html5Qrcode("reader");
-    }
+  if (!scanner) {
+    scanner = new Html5Qrcode("reader");
+  }
 
-    scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: 250 },
-     (decodedText) => {
-  resultado.innerText = "Código QR: " + decodedText;
-  document.getElementById("codigoGlobal").value = decodedText;
-  document.getElementById("botonVerificarCodigo").click();
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    (decodedText) => {
+      resultado.innerText = "Código QR: " + decodedText;
+      document.getElementById("codigoGlobal").value = decodedText;
+      document.getElementById("botonVerificarCodigo").click();
 
-  scanner.stop().then(() => {
-    overlay.style.display = "none";
-  });
-},
-      (error) => {
-        // Opcional: mostrar errores
-      }
-    ).catch(err => {
-      console.error("No se pudo iniciar el escáner:", err);
-    });
-  });
-
-  cerrar.addEventListener("click", () => {
-    if (scanner) {
       scanner.stop().then(() => {
         overlay.style.display = "none";
-        resultado.innerText = "";
-      }).catch(() => {
-        overlay.style.display = "none";
       });
-    } else {
-      overlay.style.display = "none";
+    },
+    (error) => {
+      // Opcional: mostrar errores
     }
+  ).catch(err => {
+    console.error("No se pudo iniciar el escáner:", err);
   });
+});
 
-
-
-
+cerrar.addEventListener("click", () => {
+  if (scanner) {
+    scanner.stop().then(() => {
+      overlay.style.display = "none";
+      resultado.innerText = "";
+    }).catch(() => {
+      overlay.style.display = "none";
+    });
+  } else {
+    overlay.style.display = "none";
+  }
+});
 
 // ------------------------- QR DE CADA CARTA POR SEPARADO------------------------
 
@@ -103,38 +93,28 @@ document.getElementById("botonCambiar").addEventListener("click", function () {
 });
 // ------------------------- BOTON EXPANSIONES------------------------
 
+function abrirVentanaExpansiones() {
+  document.getElementById("ventanaExpansiones").style.display = "flex";
+}
 
-
-
-  function abrirVentanaExpansiones() {
-    document.getElementById("ventanaExpansiones").style.display = "flex";
-  }
-
-  function cerrarVentanaExpansiones() {
-    document.getElementById("ventanaExpansiones").style.display = "none";
-  }
-
-
-
+function cerrarVentanaExpansiones() {
+  document.getElementById("ventanaExpansiones").style.display = "none";
+}
 
 // ------------------------- carrousel de expansiones-----------------------
 
-  let indiceCarruseldeExpansiones = 0;
+let indiceCarruseldeExpansiones = 0;
 
-  function moverCarruseldeExpansiones(direccion) {
-    const carrusel = document.querySelector('.carruseldeexpansiones');
-    const totalItems = document.querySelectorAll('.carruseldeexpansiones-item').length;
+function moverCarruseldeExpansiones(direccion) {
+  const carrusel = document.querySelector('.carruseldeexpansiones');
+  const totalItems = document.querySelectorAll('.carruseldeexpansiones-item').length;
 
-    indiceCarruseldeExpansiones += direccion;
-    if (indiceCarruseldeExpansiones < 0) indiceCarruseldeExpansiones = totalItems - 1;
-    if (indiceCarruseldeExpansiones >= totalItems) indiceCarruseldeExpansiones = 0;
+  indiceCarruseldeExpansiones += direccion;
+  if (indiceCarruseldeExpansiones < 0) indiceCarruseldeExpansiones = totalItems - 1;
+  if (indiceCarruseldeExpansiones >= totalItems) indiceCarruseldeExpansiones = 0;
 
-    carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
-  }
-
-
-
-
+  carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
+}
 
 // ------------------------- optimizador de imagenes------------------------
 
@@ -170,14 +150,10 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
   }
 });
 
-
 // ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
 
-
-
-
-// ------------------------- quitar zoom doble tap ------------------------
+  // ------------------------- quitar zoom doble tap ------------------------
 
   // Bloquear zoom por gesto (Safari iOS)
   document.addEventListener('gesturestart', function (e) {
@@ -201,9 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, { passive: false });
 
-
   // ------------------------ --------------------------------------------------------------------------
-
 
   // Funciones para mostrar y ocultar pantalla negra con spinner y bloqueo scroll
   function mostrarPantallaNegra() {
@@ -271,6 +245,10 @@ document.addEventListener("DOMContentLoaded", () => {
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
+  // Variables para cartel amarillo y requisitos activos
+  let cartelActivo = null;
+  let requisitosActivos = [];
+
   document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
     const codigo = document.getElementById("codigoGlobal").value.trim();
     if (!codigo) return;
@@ -304,6 +282,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
           }, 1000);
+
+          // Llamar para chequear desbloqueos automáticos encadenados
+          chequearDesbloqueosAutomaticos();
         }
       }
     });
@@ -335,29 +316,155 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-const cerrarCarrusel = () => {
-  carouselItems.forEach(item => {
-    item.style.display = "none";
+  const cerrarCarrusel = () => {
+    carouselItems.forEach(item => {
+      item.style.display = "none";
 
-    // Oculta también el QR si está visible dentro del item
-    const qr = item.querySelector(".codigoqrdecarta");
-    if (qr) {
-      qr.style.display = "none";
+      // Oculta también el QR si está visible dentro del item
+      const qr = item.querySelector(".codigoqrdecarta");
+      if (qr) {
+        qr.style.display = "none";
+      }
+    });
+
+    fondonegro.style.display = "none";
+    document.body.style.overflow = "auto";
+  };
+
+  document.querySelectorAll('.botonatras').forEach(boton => {
+    if (boton.textContent.trim() === "X") {
+      boton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cerrarCarrusel();
+      });
     }
   });
 
-  fondonegro.style.display = "none";
-  document.body.style.overflow = "auto";
-};
+  // -------------------- CARTEL AMARILLO CON REQUISITOS --------------------
 
-document.querySelectorAll('.botonatras').forEach(boton => {
-  if (boton.textContent.trim() === "X") {
-    boton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      cerrarCarrusel();
-    });
-  }
+document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    e.stopPropagation();
+
+    if (overlay.parentElement.contains(overlay)) {
+      const mensajePersonalizado = overlay.getAttribute('data-cartel');
+      const requisitos = overlay.getAttribute('data-requiere');
+      let contenidoFinal = '';
+
+      if (mensajePersonalizado) {
+        contenidoFinal += mensajePersonalizado; // mensaje personalizado
+
+        if (requisitos) {
+          const ids = JSON.parse(requisitos);
+          contenidoFinal += generarContenidoCartel(ids); // + cartas requeridas
+        }
+      } else if (requisitos) {
+        const ids = JSON.parse(requisitos);
+        contenidoFinal = generarContenidoCartel(ids);
+      } else {
+        contenidoFinal = "<p>⚠ Carta bloqueada.</p>";
+      }
+
+      mostrarCartelAdvertenciaPersistente(contenidoFinal);
+    }
+  });
 });
+
+
+  // Genera el HTML de las cartas requeridas con su estado
+  function generarContenidoCartel(listaIds) {
+    let html = "<div class='cartas-requeridas'>";
+
+    listaIds.forEach(passId => {
+      const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
+      if (cartaWrapper) {
+        const boton = cartaWrapper.querySelector('.cartaejemplo');
+        const fondo = boton?.getAttribute('data-style') || "";
+
+        const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
+
+        html += `
+          <div class="carta-mini" style="${fondo}">
+            ${bloqueada ? "<div class='mini-overlay'></div>" : ""}
+          </div>
+        `;
+      }
+    });
+
+    html += "</div>";
+    return html;
+  }
+
+
+// Mostrar cartel amarillo persistente (actualizable)
+function mostrarCartelAdvertenciaPersistente(htmlContenido) {
+  if (!cartelActivo) {
+    cartelActivo = document.createElement('div');
+    cartelActivo.className = 'cartel-advertencia';
+    document.body.appendChild(cartelActivo);
+  }
+
+  cartelActivo.innerHTML = htmlContenido;
+
+  // Si ya había un timeout anterior, lo cancelamos
+  if (cartelActivo.cierreTimeout) {
+    clearTimeout(cartelActivo.cierreTimeout);
+  }
+
+  // Programamos el cierre automático en 2 minutos
+  cartelActivo.cierreTimeout = setTimeout(() => {
+    if (cartelActivo) {
+      cartelActivo.remove();
+      cartelActivo = null;
+      requisitosActivos = [];
+    }
+  }, 2000); //
+}
+
+// Eliminamos la función cerrarCartelClickFuera porque no la usaremos más
+// y también quitamos el eventListener de click para cerrar el cartel
+
+// (Si quieres, simplemente no la incluyas o elimínala del código)
+
+ 
+
+  // Función que chequea y desbloquea cartas automáticamente según requisitos
+  function chequearDesbloqueosAutomaticos() {
+    const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
+
+    let cambios = false;
+
+    cartasBloqueadas.forEach(overlay => {
+      const wrapper = overlay.closest('.carta-wrapper');
+      if (!wrapper) return;
+
+      const requiere = overlay.getAttribute('data-requiere');
+      if (!requiere) return; // Sin requisitos no hace nada
+
+      const requisitos = JSON.parse(requiere);
+
+      const todasDesbloqueadas = requisitos.every(id => {
+        const cartaReq = document.querySelector(`.carta-wrapper[data-pass="${id}"]`);
+        if (!cartaReq) return false;
+        return !cartaReq.querySelector('.overlay-bloqueo');
+      });
+
+      if (todasDesbloqueadas) {
+        overlay.remove();
+        cambios = true;
+      }
+    });
+
+    if (cambios) {
+      // Actualizar cartel en vivo si está abierto
+      if (cartelActivo && requisitosActivos.length > 0) {
+        cartelActivo.innerHTML = generarContenidoCartel(requisitosActivos);
+      }
+      // Repetir por si hay desbloqueos en cadena
+      chequearDesbloqueosAutomaticos();
+    }
+  }
+
   // ---------------------- EFECTOS CARTA ----------------------
   const cartas = document.querySelectorAll(".carta");
 
@@ -443,12 +550,4 @@ document.querySelectorAll('.botonatras').forEach(boton => {
 
   cartas.forEach(aplicarEfectos);
 
-
-
-
 });
-
-
-
-
-

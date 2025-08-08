@@ -443,6 +443,56 @@ filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.7) ;
 .overespecial{
 filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
 }
+.cartel-advertencia {
+  position: fixed;
+  display: flex;
+   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10PX;
+  gap: 10PX;
+    width: 60%;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgb(255, 255, 0);
+  border: 2px solid black;
+  border-radius: 8px;
+  font-size: 18px;
+  z-index: 9999;
+  max-width: 300px;
+  text-align: center;
+box-shadow: 0px 0px 200px 200px rgba(0, 0, 0, 0.496);
+  animation: fadeInOut 4s ease forwards;
+}
+.cartel-advertencia p{
+  color: black;
+  font-size: 80%;
+}
+
+.cartas-requeridas {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.carta-mini {
+  width: 60px;
+  height: 90px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.mini-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.562);
+}
 
 
 #pantallaNegra {
@@ -700,6 +750,12 @@ backface-visibility: hidden;
   }
 }
 
+@keyframes GIRAR{
+
+  100%{
+    transform: rotate(360deg);
+  }
+}
 
 @keyframes flotar{
   0%{
