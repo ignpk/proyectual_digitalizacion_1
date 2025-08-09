@@ -417,6 +417,33 @@ function mostrarCartelEnOverlay(htmlContenido) {
   });
 }
 
+
+function mostrarAlertaDesbloqueo(mensaje) {
+  const alerta = document.createElement('div');
+  alerta.className = 'alerta-desbloqueo';
+
+  alerta.innerHTML = `
+    <span class="mensaje">${mensaje}</span>
+    <div class="circulo-imagen">
+      <img src="../assets/notif_legend.webp" alt="Carta">
+    </div>
+  `;
+
+  document.body.appendChild(alerta);
+
+  // Mostrar con animación
+  setTimeout(() => {
+    alerta.classList.add('visible');
+  }, 50);
+
+  // Ocultar después de 4 segundos
+  setTimeout(() => {
+    alerta.classList.remove('visible');
+    setTimeout(() => alerta.remove(), 500);
+  }, 4000);
+}
+
+
 // Función que chequea y desbloquea cartas automáticamente según requisitos
 function chequearDesbloqueosAutomaticos() {
   const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
@@ -438,10 +465,15 @@ function chequearDesbloqueosAutomaticos() {
       return !cartaReq.querySelector('.overlay-bloqueo');
     });
 
-    if (todasDesbloqueadas) {
-      overlay.remove();
-      cambios = true;
-    }
+if (todasDesbloqueadas) {
+  overlay.remove();
+  cambios = true;
+
+  // Mostrar alerta después de 2 segundos
+  setTimeout(() => {
+    mostrarAlertaDesbloqueo("¡CARTA LEGENDARIA DESBLOQUEADA!");
+  }, 3000);
+}
   });
 
   if (cambios) {
@@ -452,6 +484,9 @@ function chequearDesbloqueosAutomaticos() {
     // Repetir por si hay desbloqueos en cadena
     chequearDesbloqueosAutomaticos();
   }
+
+
+  
 }
 // ----------------------------------------------------------------------------------------------------------
 
