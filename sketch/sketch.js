@@ -440,7 +440,7 @@ function mostrarAlertaDesbloqueo(mensaje) {
   setTimeout(() => {
     alerta.classList.remove('visible');
     setTimeout(() => alerta.remove(), 500);
-  }, 4000);
+  }, 5000);
 }
 
 
