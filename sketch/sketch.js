@@ -340,8 +340,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // -------------------- CARTEL AMARILLO CON REQUISITOS --------------------
 
+
+
+
+
+// -------------------------------- CARTEL AMARILLO CON REQUISITOS -----------------------------------------------------------
 document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
   overlay.addEventListener('click', e => {
     e.stopPropagation();
@@ -352,11 +356,10 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
       let contenidoFinal = '';
 
       if (mensajePersonalizado) {
-        contenidoFinal += mensajePersonalizado; // mensaje personalizado
-
+        contenidoFinal += `<p>${mensajePersonalizado}</p>`; // mensaje personalizado
         if (requisitos) {
           const ids = JSON.parse(requisitos);
-          contenidoFinal += generarContenidoCartel(ids); // + cartas requeridas
+          contenidoFinal += generarContenidoCartel(ids);
         }
       } else if (requisitos) {
         const ids = JSON.parse(requisitos);
@@ -365,99 +368,98 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
         contenidoFinal = "<p>⚠ Carta bloqueada.</p>";
       }
 
-      mostrarCartelAdvertenciaPersistente(contenidoFinal);
+      mostrarCartelEnOverlay(contenidoFinal);
     }
   });
 });
 
-
-  // Genera el HTML de las cartas requeridas con su estado
-  function generarContenidoCartel(listaIds) {
-    let html = "<div class='cartas-requeridas'>";
-
-    listaIds.forEach(passId => {
-      const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
-      if (cartaWrapper) {
-        const boton = cartaWrapper.querySelector('.cartaejemplo');
-        const fondo = boton?.getAttribute('data-style') || "";
-
-        const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
-
-        html += `
-          <div class="carta-mini" style="${fondo}">
-            ${bloqueada ? "<div class='mini-overlay'></div>" : ""}
-          </div>
-        `;
-      }
-    });
-
-    html += "</div>";
-    return html;
-  }
-
-
-// Mostrar cartel amarillo persistente (actualizable)
-function mostrarCartelAdvertenciaPersistente(htmlContenido) {
-  if (!cartelActivo) {
-    cartelActivo = document.createElement('div');
-    cartelActivo.className = 'cartel-advertencia';
-    document.body.appendChild(cartelActivo);
-  }
-
-  cartelActivo.innerHTML = htmlContenido;
-
-  // Si ya había un timeout anterior, lo cancelamos
-  if (cartelActivo.cierreTimeout) {
-    clearTimeout(cartelActivo.cierreTimeout);
-  }
-
-  // Programamos el cierre automático en 2 minutos
-  cartelActivo.cierreTimeout = setTimeout(() => {
-    if (cartelActivo) {
-      cartelActivo.remove();
-      cartelActivo = null;
-      requisitosActivos = [];
+// Genera el HTML de las cartas requeridas con su estado
+function generarContenidoCartel(listaIds) {
+  let html = "<div class='cartas-requeridas'>";
+  listaIds.forEach(passId => {
+    const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
+    if (cartaWrapper) {
+      const boton = cartaWrapper.querySelector('.cartaejemplo');
+      const fondo = boton?.getAttribute('data-style') || "";
+      const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
+      html += `
+        <div class="carta-mini" style="${fondo}">
+          ${bloqueada ? "<div class='mini-overlay'></div>" : ""}
+        </div>
+      `;
     }
-  }, 2000); //
+  });
+  html += "</div>";
+  return html;
 }
 
+// Mostrar cartel dentro de un overlay negro
+function mostrarCartelEnOverlay(htmlContenido) {
+  // Crear overlay negro
+  const overlayFondo = document.createElement('div');
+  overlayFondo.className = 'overlay-fondo';
 
-  // Función que chequea y desbloquea cartas automáticamente según requisitos
-  function chequearDesbloqueosAutomaticos() {
-    const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
+  // Crear cartel amarillo
+  const cartel = document.createElement('div');
+  cartel.className = 'cartel-advertencia';
+  cartel.innerHTML = `
+    ${htmlContenido}
+    <button class="btn-cerrar-cartel">OK</button>
+  `;
 
-    let cambios = false;
+  // Añadir cartel dentro del overlay
+  overlayFondo.appendChild(cartel);
+  document.body.appendChild(overlayFondo);
 
-    cartasBloqueadas.forEach(overlay => {
-      const wrapper = overlay.closest('.carta-wrapper');
-      if (!wrapper) return;
+  // Botón para cerrar
+  cartel.querySelector('.btn-cerrar-cartel').addEventListener('click', () => {
+    overlayFondo.remove();
+  });
+}
 
-      const requiere = overlay.getAttribute('data-requiere');
-      if (!requiere) return; // Sin requisitos no hace nada
+// Función que chequea y desbloquea cartas automáticamente según requisitos
+function chequearDesbloqueosAutomaticos() {
+  const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
 
-      const requisitos = JSON.parse(requiere);
+  let cambios = false;
 
-      const todasDesbloqueadas = requisitos.every(id => {
-        const cartaReq = document.querySelector(`.carta-wrapper[data-pass="${id}"]`);
-        if (!cartaReq) return false;
-        return !cartaReq.querySelector('.overlay-bloqueo');
-      });
+  cartasBloqueadas.forEach(overlay => {
+    const wrapper = overlay.closest('.carta-wrapper');
+    if (!wrapper) return;
 
-      if (todasDesbloqueadas) {
-        overlay.remove();
-        cambios = true;
-      }
+    const requiere = overlay.getAttribute('data-requiere');
+    if (!requiere) return; // Sin requisitos no hace nada
+
+    const requisitos = JSON.parse(requiere);
+
+    const todasDesbloqueadas = requisitos.every(id => {
+      const cartaReq = document.querySelector(`.carta-wrapper[data-pass="${id}"]`);
+      if (!cartaReq) return false;
+      return !cartaReq.querySelector('.overlay-bloqueo');
     });
 
-    if (cambios) {
-      // Actualizar cartel en vivo si está abierto
-      if (cartelActivo && requisitosActivos.length > 0) {
-        cartelActivo.innerHTML = generarContenidoCartel(requisitosActivos);
-      }
-      // Repetir por si hay desbloqueos en cadena
-      chequearDesbloqueosAutomaticos();
+    if (todasDesbloqueadas) {
+      overlay.remove();
+      cambios = true;
     }
+  });
+
+  if (cambios) {
+    // Actualizar cartel en vivo si está abierto
+    if (cartelActivo && requisitosActivos.length > 0) {
+      cartelActivo.innerHTML = generarContenidoCartel(requisitosActivos);
+    }
+    // Repetir por si hay desbloqueos en cadena
+    chequearDesbloqueosAutomaticos();
   }
+}
+// ----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
   // ---------------------- EFECTOS CARTA ----------------------
   const cartas = document.querySelectorAll(".carta");

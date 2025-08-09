@@ -95,7 +95,8 @@ background-image: url(../assets/background001.webp);
 .fondonegro,
 #ventanaExpansiones,
 .BOTONDESBLOQUEAR,
-.contenedorbotoncerrar{
+.contenedorbotoncerrar,
+.overlay-fondo{
     backdrop-filter: blur(5px);
 
 }
@@ -178,14 +179,16 @@ background-image: url(../assets/background001.webp);
 .contenido-alerta p,
 .contenido-alerta button,
 .TEXTOQRALERTA,
+.btn-cerrar-cartel,
 .cartel-advertencia p{
     padding: 0% 10%;
   color: black;
-  font-family:Arial, Helvetica, sans-serif;
-  font-weight: bold;
+  font-family:Arial, Helvetica, sans-serif !important;
+  font-weight: bold ;
 }
 
-.modal-alerta button {
+.modal-alerta button,
+.btn-cerrar-cartel {
   background-color: #ffffff1e;
   color: rgb(0, 0, 0);
   padding: 10px 20px;
@@ -443,7 +446,25 @@ filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.7) ;
 .overespecial{
 filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
 }
+
+
+
+
+.overlay-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.467);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+}
+
 .cartel-advertencia {
+  padding: 5%;
   position: fixed;
   display: flex;
    flex-direction: column;
@@ -451,45 +472,24 @@ filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
   align-items: center;
   gap: 10PX;
     width: 70%;
-  height: 50%;
+  height: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgb(223, 223, 0);
-  border: 7px solid rgba(255, 238, 192, 0.693);
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   font-size: 18px;
   z-index: 9999;
   text-align: center;
-box-shadow: 0px 0px 200px 500px rgba(0, 0, 0, 0.496);
-  animation: fadeZoomInOut 2s ease forwards;
-pointer-events: none;
 }
 
-@keyframes fadeZoomInOut {
-  0% {
-    opacity: 0;
-/* más chico al inicio */
-  }
-  10% {
-    opacity: 1;
- /* tamaño normal */
-  }
-  90% {
-    opacity: 1;
- /* mantener visible */
-  }
-  100% {
-    opacity: 0;
- /* zoom inverso al salir */
-  }
-}
 
 .cartas-requeridas {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap:10px;
   justify-content: center;
-  margin-top: 10px;
 
 }
 .cartel-advertencia p b{
@@ -502,16 +502,16 @@ pointer-events: none;
   background-size: cover;
   background-position: center;
   position: relative;
-  border: 1px solid black;
-  border-radius: 3px;
+  border-radius: 5px;
 
 }
 
 .mini-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.419);
-
+  background: rgba(0, 0, 0, 0.493);
+  backdrop-filter: blur(2px);
+  border-radius: 5px;
 }
 
 
@@ -944,7 +944,7 @@ backface-visibility: hidden;
   border-radius: 50%;
 }
 
-.fondonegro {
+.fondonegro{
   z-index: 999998;
   position: fixed;
   top: 0;
