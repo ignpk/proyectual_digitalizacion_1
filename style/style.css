@@ -219,7 +219,18 @@ background-image: url(../assets/background001.webp);
   to {transform: translateY(0);}
 }
 
+@keyframes psicodelicoBrillo {
+  0%, 100% {
+    filter: brightness(0.7) saturate(1) contrast(1);
 
+  }
+  40%, 60% {
+    filter: brightness(1) saturate(1.8) contrast(1.3);
+  }
+  50% {
+    filter: brightness(1.5) saturate(2.5) contrast(1.5);
+  }
+}
 
 /*----------------------------BANNER---------------------------------------*/
 
@@ -502,7 +513,7 @@ filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
   background-size: cover;
   background-position: center;
   position: relative;
-  border-radius: 5px;
+  border-radius: 4px;
 
 }
 
@@ -510,8 +521,8 @@ filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.493);
-  backdrop-filter: blur(2px);
-  border-radius: 5px;
+  backdrop-filter: blur(1px);
+  border-radius: 4px;
 }
 .alerta-desbloqueo {
   height: 50PX;
