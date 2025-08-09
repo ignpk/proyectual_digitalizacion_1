@@ -343,9 +343,6 @@ if (codigo.toLowerCase() === pass.toLowerCase()) {
 
 
 
-
-
-
 // -------------------------------- CARTEL AMARILLO CON REQUISITOS -----------------------------------------------------------
 
 // -------------------------------- CARTEL AMARILLO CON REQUISITOS -----------------------------------------------------------
@@ -455,7 +452,7 @@ function chequearDesbloqueosPorCantidad() {
 
     if (overlay && desbloqueadas >= cantidadNecesaria) {
       overlay.remove();
-      // ⏳ Mostramos alerta después de 2 segundos
+      //  alerta después de 2 segundos
       setTimeout(() => {
         mostrarAlertaDesbloqueo("¡CARTA LEGENDARIA DESBLOQUEADA!");
       }, 3000);
