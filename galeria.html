@@ -200,13 +200,13 @@
 
   <div class="contenedorcolores">
 
-    <div class="carta-wrapper" data-pass="">
+    <div class="carta-wrapper" data-requiere-cantidad="10" data-pass="">
       <button class="cartaejemplo"   data-lazy="true" data-style="background-image: url(./assets/cartas/);" data-target="carousel-item-31"></button>
-      <div class="overlay-bloqueo overespecial"> </div>
+      <div class="overlay-bloqueo overespecial"  data-cartel="<p> <b>INTERCAMBIA 10 VECES</b> <br> para desbloquear esta carta. </p>"> </div>
     </div>
-    <div class="carta-wrapper" data-pass="">
+    <div class="carta-wrapper" data-requiere-cantidad="20" data-pass="">
       <button class="cartaejemplo"   data-lazy="true" data-style="background-image: url(./assets/cartas/);" data-target="carousel-item-32"></button>
-      <div class="overlay-bloqueo overespecial"></div>
+      <div class="overlay-bloqueo overespecial" data-cartel="<p> <b>INTERCAMBIA 20 VECES</b> <br> para desbloquear esta carta. </p>"></div>
     </div>
     <div class="carta-wrapper" data-pass="">
       <button class="cartaejemplo"   data-lazy="true" data-style="background-image: url(./assets/cartas/);" data-target="carousel-item-33"></button>
@@ -214,15 +214,15 @@
     </div>
     <div class="carta-wrapper" data-pass="034">
       <button class="cartaejemplo"   data-lazy="true" data-style="background-image: url(./assets/cartas/MINIATURAS/034.webp);" data-target="carousel-item-34"></button>
-      <div class="overlay-bloqueo overespecial" data-requiere='["SPEED","SUPERMARKET","MUNDOFELIZ"]' data-cartel="<p> Necesitas a: <br> <b>●MICHI MONEDA</b> , <b>●MICHI VENDEDOR</b> <br> y <b>●MICHI GARRA</b> <br> para desbloquear esta carta. </p>"  ></div>
+      <div class="overlay-bloqueo overespecial" data-requiere='["SPEED","SUPERMARKET","MUNDOFELIZ"]' data-cartel="<p> Necesitas a: <br> <b>●MICHI MONEDA</b> <br> <b>●MICHI VENDEDOR</b> <br> <b>●MICHI GARRA</b> <br> para desbloquear esta carta. </p>"  ></div>
     </div>
     <div class="carta-wrapper" data-pass="035">
       <button class="cartaejemplo"   data-lazy="true" data-style="background-image: url(./assets/cartas/MINIATURAS/035.webp);" data-target="carousel-item-35"></button>
-      <div class="overlay-bloqueo overespecial" data-requiere='["QUIMICO","MT800"]' data-cartel="<p> Necesitas a: <br> <b>●MICHI CIENTÍFICO</b> y <b>●MICHI ROBOT</b> <br> para desbloquear esta carta. </p>" > </div>
+      <div class="overlay-bloqueo overespecial" data-requiere='["QUIMICO","MT800"]' data-cartel="<p> Necesitas a: <br> <b>●MICHI CIENTÍFICO</b> <br> <b>●MICHI ROBOT</b> <br> para desbloquear esta carta. </p>" > </div>
     </div>
-    <div class="carta-wrapper" data-pass="036">
+    <div class="carta-wrapper" data-requiere-cantidad="30" data-pass="036">
       <button class="cartaejemplo"   data-lazy="true" data-style="background-image: url(./assets/cartas/MINIATURAS/036.webp);" data-target="carousel-item-36"></button>
-      <div class="overlay-bloqueo overespecial"></div>
+      <div class="overlay-bloqueo overespecial" data-cartel="<p> <b>COMPLETA LA COLECCIÓN</b> <br> para desbloquear esta carta. </p>"></div>
     </div>
 
   </div>
@@ -538,7 +538,7 @@
                 <img loading="lazy" class="sombra" src="assets/cartas/019/0019papel.webp"  />
                 <img loading="lazy" class="capaholograficaestrellas" src="assets/cartas/019/0019fondoTROQUEL.webp" style="z-index: 16; opacity: 30%;" />
 
-           <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/019/0019qr.webp);"> </div> 
+           <div  data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/019/0019qr.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -575,7 +575,7 @@
                 <img loading="lazy" class="sombra" src="assets/cartas/020/0020PAPEL.webp"  />
                 <img loading="lazy" class="bordecarta">
                 
-                           <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/020/020QR.webp);"> </div> 
+                <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/020/020QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -610,7 +610,7 @@
                 <img loading="lazy" class="michi" src="assets/cartas/021/021michi04.webp" style=" z-index: 13;  animation: flotar 2s ease-in-out alternate infinite">
                 <img loading="lazy" class="michi" src="assets/cartas/021/021michi05.webp" style=" z-index: 14;  animation: flotar 1.5s ease-in-out alternate infinite">
                 <img loading="lazy" class="sombra" src="assets/cartas/021/021papel.webp"   />
-                 <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/021/021_QR.webp);"> </div> 
+                 <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/021/021_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -644,7 +644,7 @@
               background-size: 1236px 450px;
           "></div>
                 <img loading="lazy" class="sombra" src="assets/cartas/022/022papel.webp"  />
-                           <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/022/022_QR.webp);"> </div> 
+                <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/022/022_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -676,7 +676,7 @@
                 <img loading="lazy" class="michi" src="assets/cartas/023/023michi02.webp" style=" z-index: 11;  animation: flotar 5s ease-in-out alternate-reverse infinite, blur alternate-reverse 5s infinite;">
                 <img loading="lazy" class="michi" src="assets/cartas/023/023michi.webp" style=" z-index: 12;  animation: flotar 3s ease-in-out alternate infinite, blur alternate 5s infinite;">
                 <img loading="lazy" class="capaholograficaestrellas" src="assets/cartas/023/023estrellas.webp"   />
-                           <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/023/023_QR.webp);"> </div> 
+                <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/023/023_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -712,7 +712,7 @@
               background-size: 1236px 450px;
           "></div>
               <img loading="lazy" class="sombra" id="eng" src="assets/cartas/024/024papelarriba.webp" />
-             <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/024/024_QR.webp);"> </div> 
+             <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/024/024_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -746,7 +746,7 @@
             "></div>
                 <img loading="lazy" class="sombra" src="assets/cartas/025/025papel.webp"  />
                 <img loading="lazy" class="capaholograficaestrellas" src="assets/cartas/025/025holograma.webp" style="z-index: 18; opacity: 30%;" />
-                           <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/025/025_QR.webp);"> </div> 
+                <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/025/025_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -780,7 +780,7 @@
                 background-size: 1236px 450px;
             "></div>
                 <img loading="lazy" class="sombra" src="assets/cartas/026/026_papel.webp"  />
-                           <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/026/026_QR.webp);"> </div> 
+                <div data-lazy="true" class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/026/026_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
@@ -844,7 +844,7 @@
               <img loading="lazy" class="michi" src="assets/cartas/028/028_sombra_02.webp" style="z-index: 18; animation: rotacion 1.8s ease forwards;" >
               <img loading="lazy" class="sombra" src="assets/cartas/028/028_sombra.webp" style="animation: sacudida 1.3s ease  forwards;" />
               <img loading="lazy" class="michi" src="assets/cartas/028/028_sombra_03.webp" style="z-index: 19;" />
-                <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/026/026_QR.webp);"> </div> 
+                <div class="codigoqrdecarta QRRARO" style="background-image: url(./assets/cartas/028/028_QR.webp);"> </div> 
 
             </div>
             <div class="carta trasera"> </div>
