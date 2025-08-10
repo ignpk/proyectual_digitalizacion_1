@@ -841,7 +841,7 @@ pointer-events: all;
   align-items: center;
   cursor:pointer;
   border-radius: 11px;
-backface-visibility: hidden;
+overflow: hidden;
 
 }
 .frente{
@@ -852,23 +852,25 @@ backface-visibility: hidden;
   background-size: cover;
   transform: rotateY(180deg);
   background-size: cover;
-  
+    z-index: 9999999999;
+    backface-visibility: hidden;
 }
 
+.lineascolores{
+  width: 100%;
+  height: 100%;
+    position: absolute;
+}
 
 .fondo-rainbow{
   background: linear-gradient(45deg, rgba(0,255,76,1) 0%, rgba(255,0,228,1) 49%, rgba(0,202,255,1) 71%, rgba(255,248,0,1) 100%);
 }
 
-.medio {z-index: 5;}
+.medio {z-index: 5; }
 .arriba {z-index: 10;}
 .sombra {z-index: 19;}
 .bordecarta{z-index:14;}
-.capaholograficaestrellas{
-  position: absolute;
-  background-size: cover;
-  z-index: 10;
-}
+
 .michi{
   background-size: cover;
   position: absolute;
@@ -918,48 +920,8 @@ backface-visibility: hidden;
 
 }
   
-.line-container {
-    flex-direction: column;
-  }
-  
-  .line {
-    transition: transform 0.1s linear, filter 0.2s ease;
-  }
 
-.line-container,
-.line-recta,
-.line-violet,
-.line-white,
-.line-yellow,
-.rainbow{
-  width: 100%;
-}
-.line-rainbow{
-  height:0px;
-}
-  .line-white{
-    background-color: white;
-    height:0px;
-    box-shadow: 0px 0px 15px 10px rgb(255, 255, 255);
-    }
-    .line-yellow{
-      background-color: rgb(255, 219, 142);
-      height:5px;
-      box-shadow: 0px 0px 8px 4px rgb(255, 219, 142);
-      }
-
-      .line-violet{
-        background-color: rgb(243, 183, 255);
-        height:0px;
-        box-shadow: 0px 0px 20px 5px rgb(243, 180, 255);
-        }
-      .line-recta{
-        background-color: rgba(255, 255, 255, 0);
-        box-shadow: 0px 0px 20px 20px rgb(0, 0, 0);    
-        height:10px;
-      }
-
-
+ 
 
 .circle1 {
   /*---------------abajo de troquel amplio-------------------*/
