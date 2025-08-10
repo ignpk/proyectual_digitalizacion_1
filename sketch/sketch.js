@@ -512,88 +512,101 @@ function chequearDesbloqueosAutomaticos() {
 
 
   // ---------------------- EFECTOS CARTA ----------------------
-  const cartas = document.querySelectorAll(".carta");
+// ---------------------- EFECTOS CARTA OPTIMIZADOS ----------------------
+const cartas = document.querySelectorAll(".carta");
 
-  function aplicarEfectos(carta) {
-    const circleClasses = (carta.getAttribute("data-circle") || "circle").split(/[\s,]+/);
-    circleClasses.forEach(clase => {
-      const c = document.createElement("div");
-      c.classList.add(clase);
-      carta.appendChild(c);
+function aplicarEfectos(carta) {
+  const circleClasses = (carta.getAttribute("data-circle") || "circle").split(/[\s,]+/);
+  circleClasses.forEach(clase => {
+    const c = document.createElement("div");
+    c.classList.add(clase);
+    carta.appendChild(c);
 
-      const neg = document.createElement("div");
-      neg.classList.add(`${clase}-negativo`);
-      carta.appendChild(neg);
+    const neg = document.createElement("div");
+    neg.classList.add(`${clase}-negativo`);
+    carta.appendChild(neg);
+  });
+
+  const fondo = carta.querySelector(".fondo-rainbow");
+  const estrellas = carta.querySelector(".capaholograficaestrellas");
+
+  let lastX = 0, lastY = 0, accY1 = 0, accY2 = 0;
+  let ticking = false; // Para controlar requestAnimationFrame
+
+  function actualizarMovimiento(e) {
+    const touch = e.type.includes("touch");
+    const x = touch ? e.touches[0].clientX : e.clientX;
+    const y = touch ? e.touches[0].clientY : e.clientY;
+    const rect = carta.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (cx - x) / 10;
+    const dy = -(cy - y) / 10;
+
+    carta.style.transform = `perspective(2000px) rotateX(${dy}deg) rotateY(${dx}deg)`;
+
+    carta.querySelectorAll("div[class^='circle']").forEach(c => {
+      c.style.left = `${x - rect.left}px`;
+      c.style.top = `${y - rect.top}px`;
     });
 
-    const fondo = carta.querySelector(".fondo-rainbow");
-    const estrellas = carta.querySelector(".capaholograficaestrellas");
+    const dX = x - lastX;
+    const dY = y - lastY;
+    lastX = x; lastY = y;
 
-    let lastX = 0, lastY = 0, accY1 = 0, accY2 = 0;
+    accY1 += dX + dY;
+    accY2 -= dX + dY;
 
-    function mover(e) {
-      const touch = e.type.includes("touch");
-      const x = touch ? e.touches[0].clientX : e.clientX;
-      const y = touch ? e.touches[0].clientY : e.clientY;
-      const rect = carta.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = (cx - x) / 10;
-      const dy = -(cy - y) / 10;
+    const hue = (x + y) % 360;
+    [fondo, estrellas].forEach(el => el && (el.style.filter = `saturate(2) hue-rotate(${hue}deg)`));
 
-      carta.style.transform = `perspective(2000px) rotateX(${dy}deg) rotateY(${dx}deg)`;
-
-      carta.querySelectorAll("div[class^='circle']").forEach(c => {
-        c.style.left = `${x - rect.left}px`;
-        c.style.top = `${y - rect.top}px`;
-      });
-
-      const dX = x - lastX;
-      const dY = y - lastY;
-      lastX = x; lastY = y;
-
-      accY1 += dX + dY;
-      accY2 -= dX + dY;
-
-      const hue = (x + y) % 360;
-      [fondo, estrellas].forEach(el => el && (el.style.filter = `saturate(2) hue-rotate(${hue}deg)`));
-
-      carta.querySelectorAll('.efectoholograficolineas').forEach((cont, i) => {
-        const l1 = cont.querySelectorAll('.line-container:first-of-type .line');
-        const l2 = cont.querySelectorAll('.line-container:last-of-type .line');
-        [l1, l2].forEach((group, idx) => {
-          group.forEach((line, j) => {
-            const offset = (j + 1) * (i + 2);
-            const yMove = idx === 0 ? accY1 : accY2;
-            line.style.transform = `translateY(${yMove / offset}px)`;
-          });
+    carta.querySelectorAll('.efectoholograficolineas').forEach((cont, i) => {
+      const l1 = cont.querySelectorAll('.line-container:first-of-type .line');
+      const l2 = cont.querySelectorAll('.line-container:last-of-type .line');
+      [l1, l2].forEach((group, idx) => {
+        group.forEach((line, j) => {
+          const offset = (j + 1) * (i + 2);
+          const yMove = idx === 0 ? accY1 : accY2;
+          line.style.transform = `translateY(${yMove / offset}px)`;
         });
       });
-    }
-
-    function start() {
-      carta.style.transition = "transform 0.2s ease-out";
-      fondo && (fondo.style.transition = "filter 0.2s ease-out");
-      estrellas && (estrellas.style.transition = "filter 0.2s ease-out");
-      carta.addEventListener("mousemove", mover);
-      carta.addEventListener("touchmove", mover);
-    }
-
-    function stop() {
-      carta.style.transition = "transform 0.6s ease-out";
-      carta.style.transform = "rotateY(0deg) rotateX(0deg)";
-      fondo && (fondo.style.transition = "filter 0.6s ease-out", fondo.style.filter = "saturate(10)");
-      estrellas && (estrellas.style.transition = "filter 0.6s ease-out", estrellas.style.filter = "saturate(10)");
-      carta.removeEventListener("mousemove", mover);
-      carta.removeEventListener("touchmove", mover);
-    }
-
-    carta.addEventListener("mouseenter", start);
-    carta.addEventListener("touchstart", start);
-    carta.addEventListener("mouseleave", stop);
-    carta.addEventListener("touchend", stop);
+    });
   }
 
-  cartas.forEach(aplicarEfectos);
+  function mover(e) {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        actualizarMovimiento(e);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  function start() {
+    carta.style.transition = "transform 0.2s ease-out";
+    fondo && (fondo.style.transition = "filter 0.2s ease-out");
+    estrellas && (estrellas.style.transition = "filter 0.2s ease-out");
+    carta.addEventListener("mousemove", mover);
+    carta.addEventListener("touchmove", mover);
+  }
+
+  function stop() {
+    carta.style.transition = "transform 0.6s ease-out";
+    carta.style.transform = "rotateY(0deg) rotateX(0deg)";
+    fondo && (fondo.style.transition = "filter 0.6s ease-out", fondo.style.filter = "saturate(10)");
+    estrellas && (estrellas.style.transition = "filter 0.6s ease-out", estrellas.style.filter = "saturate(10)");
+    carta.removeEventListener("mousemove", mover);
+    carta.removeEventListener("touchmove", mover);
+  }
+
+  carta.addEventListener("mouseenter", start);
+  carta.addEventListener("touchstart", start);
+  carta.addEventListener("mouseleave", stop);
+  carta.addEventListener("touchend", stop);
+}
+
+cartas.forEach(aplicarEfectos);
+
 
 });
