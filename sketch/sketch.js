@@ -1,3 +1,4 @@
+
 // ------------------------- galeria de cartas ------------------------
 
 function mostrarGaleria() {
@@ -7,13 +8,6 @@ function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
 }
 
-function abrirInfo() {
-  document.getElementById('ventanaInfo').style.display = 'block';
-}
-
-function cerrarInfo() {
-  document.getElementById('ventanaInfo').style.display = 'none';
-}
 
 // ------------------------- escaner QR------------------------
 
