@@ -39,7 +39,19 @@
 
   </head>
   <body>
-    <script>
+<script>
+let deferredPrompt; // variable global
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  // Prevenimos el cartel automático
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Mostramos el botón manualmente
+  const installBtn = document.getElementById("installBtn");
+  installBtn.style.display = "block";
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   const installBtn = document.getElementById("installBtn");
 
@@ -48,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!deferredPrompt) return;
 
+    // Lanzamos el cartel de instalación
     deferredPrompt.prompt();
+
     const result = await deferredPrompt.userChoice;
     console.log("Instalación:", result.outcome);
 
@@ -63,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
 
     <main>
 
