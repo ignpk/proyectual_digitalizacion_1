@@ -1,7 +1,4 @@
 
-
-
-
 // ------------------------- galeria de cartas ------------------------
 
 function mostrarGaleria() {
@@ -149,7 +146,6 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
 
 // ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  
 
   // ------------------------- quitar zoom doble tap ------------------------
 
@@ -725,11 +721,5 @@ contenedoresLineas.forEach(contenedorLineas => {
   contenedorLineas.addEventListener('mouseleave', resetLineas);
   contenedorLineas.addEventListener('touchend', resetLineas);
 });
-
-
-
-
-
-
 
 });
