@@ -160,7 +160,6 @@ html, body{
  .galeriaapp,
  .quees,
  .insta,
- .descargarapp,
  .codigoqrdecarta{
   background-size: contain;
   background-repeat: no-repeat;
@@ -308,20 +307,16 @@ html, body{
   flex-wrap: wrap;
   justify-content: center;
 }
-.galeriaapp, .quees, .insta, .descargarapp{
+.galeriaapp, .quees, .insta{
  width: 20vw;             
   max-width: 150px;        
   aspect-ratio: 1 / 1; 
 }
-.galeriaapp:hover, .quees:hover, .insta:hover, .descargarapp:hover{
+.galeriaapp:hover, .quees:hover, .insta:hover{
   transform: scale(1.1);
   transition: 0.2s ease-in-out;
 }
 
-.descargarapp{
-  border: none;
-  background-color: rgba(255, 255, 255, 0);
-}
 .descripcionbanner{
   position:absolute;
   margin: 0;
@@ -334,59 +329,37 @@ html, body{
 
 }
 
-.fondonegrodescarga{
-  width: 100%;
-  height: 250px;
-    position: absolute;
-    background-color: black;
-      display: flex;
-  justify-content: center;
-background: linear-gradient(0deg,rgba(255,255,255,0) 0%, #0000007c 40%);
-}
-.CONTENEDORDESCARGA{
-  top: 20%;
-  width: 350PX;
-  height: 80PX;
-position: relative;
-  display: flex;
-  align-items: center;
-      animation: slideDown 0.8s ease-out, fadeIn 0.5s ease-in-out;
-      overflow: hidden;
-}
-.IMAGENDESCARGA{
-  width: 80PX;
-  height: 80PX;
-z-index: 9;
-background-image: url(../assets/icon-192.png);
-background-size: cover;
-border-radius: 10px;
-}
+
 .descargarbotonfixed{
-  transform: translateX(105%);
-width: 280px;
+  position: absolute;
+  flex-direction: row !important;
+display: flex !important;
+width: 300px;
 height: 50px;
 background-color: rgb(1, 162, 1);
-border-top: 3px solid rgb(0, 255, 0);
-border-right: 2px hidden #ffffff00;
-border-bottom: 3px solid rgb(0, 255, 0);
-border-left: 3px solid rgb(0, 255, 0);
-border-radius: 8px 0px 0px 8px;
-animation: deslize 0.3s ease-in-out 0.8s forwards;
-z-index: 8;
-text-shadow: 0px 0px 10px rgb(255, 255, 255);
+border: 3px solid rgb(21, 255, 0);
+border-radius: 8px;
+top: 8%;
 color: rgb(255, 255, 255);
-font-size: 115%;
-box-shadow: 0px 0px 10px 2px rgb(0, 255, 0);
+box-shadow: 0px 0px 200px 200px rgba(0, 0, 0, 0.458);
+align-items: center;
+  animation: slideDown 1.1s ease-out, fadeIn 1s ease-in-out;;
+}
+.descargarbotonfixed p{
+  text-shadow: 0px 0px 10px rgb(255, 255, 255);
+width: 250px;
 }
 
-@keyframes deslize{
-  0%{
-    transform: translateX(105%);
-  }
-    100%{
-    transform: translateX(5%);
-  }
+.descargarbotonfixedimagen{
+  z-index: 99;
+    width: 80px;
+  height: 70px;
+  background-size: contain;
+  background-image: url(../assets/icon-192.png);
+  transform: translateX(10px);
+  background-repeat: no-repeat;
 }
+
 
   /*-----------------------------Menu app-------------------------------*/
 
