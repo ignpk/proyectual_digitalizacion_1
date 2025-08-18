@@ -149,34 +149,7 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
 
 // ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-
-
-
-  const installBtn = document.getElementById("installBtn");
-
-  // ✅ Ocultar si ya está instalado (PWA lanzada como standalone)
-  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-    installBtn.style.display = "none";
-  }
-
-  let deferredPrompt;
-
-  // ✅ Escuchar el evento de instalación
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = "block"; // mostrar el botón solo si es instalable
-  });
-
-  installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      installBtn.style.display = "none"; // ocultar tras instalar
-    }
-    deferredPrompt = null;
-  });
+  
 
   // ------------------------- quitar zoom doble tap ------------------------
 
