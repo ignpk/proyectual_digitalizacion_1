@@ -1,4 +1,7 @@
 
+
+
+
 // ------------------------- galeria de cartas ------------------------
 
 function mostrarGaleria() {
@@ -721,5 +724,38 @@ contenedoresLineas.forEach(contenedorLineas => {
   contenedorLineas.addEventListener('mouseleave', resetLineas);
   contenedorLineas.addEventListener('touchend', resetLineas);
 });
+
+
+
+
+ const installBtn = document.getElementById('installBtn');
+  let deferredPrompt;
+
+  // Evento que dispara cuando la PWA puede instalarse
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+  });
+
+  // Cuando el usuario toca el botón de instalar
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        installBtn.style.display = 'none'; // Se oculta al instalar
+      }
+      deferredPrompt = null;
+    }
+  });
+
+  // 👇 Este bloque hace que en la app instalada NO aparezca el botón
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      installBtn.style.display = 'none';
+    }
+  });
+
 
 });
