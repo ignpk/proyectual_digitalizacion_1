@@ -343,7 +343,7 @@ top: 8%;
 color: rgb(255, 255, 255);
 box-shadow: 0px 0px 200px 200px rgba(0, 0, 0, 0.458);
 align-items: center;
-  animation: slideDown 1.1s ease-out, fadeIn 1s ease-in-out;;
+
 }
 .descargarbotonfixed p{
   text-shadow: 0px 0px 10px rgb(255, 255, 255);
