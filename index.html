@@ -20,24 +20,57 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
-<body>
+<body class="indexbackground">
 <main>
+
+
   <!------------------------BANNER PRESENTACION------------------------------------->
   <div class="contenedor">
     <div class="logo lazy-michi"></div>
     <div class="botonesmenu">
       <a onclick="mostrarGaleria()" class="galeriaapp lazy-michi" style="background-image: url(./assets/galeriacartasicon.webp);"></a>
-      <a  class="quees lazy-michi" style="background-image: url(./assets/boton_QUE_ES.webp);"></a>
-      <div class="insta lazy-michi" style="background-image: url(./assets/boton_NOTICIAS.webp);"></div>
-      <button id="installBtn" class="descargarapp lazy-michi" style="background-image: url(./assets/boton_descargar.webp);"></button>
+      <a onclick="mostrarQuees()" class="quees lazy-michi" style="background-image: url(./assets/boton_QUE_ES.webp);"></a>
+      <a onclick="mostrarNoticias()" class="insta lazy-michi" style="background-image: url(./assets/boton_NOTICIAS.webp);"></a>
+            <div class="insta lazy-michi" style="background-image: url(./assets/boton_NOTICIAS.webp);"></div>
     </div>
+
+<div class="fondonegrodescarga">
+  <DIV class="CONTENEDORDESCARGA">
+  <button id="installBtn" class="descargarbotonfixed lazy-michi"> DESCARGA LA APP </button>
+  <DIV class="IMAGENDESCARGA"></DIV>
+</DIV>
+</div>
+
     <p class="descripcionbanner">Michi box - Juego de gatos coleccionables. Proyectual Digitalización I 2025. diseño y realización: José Ignacio Pyptyk</p>
   </div>
+  <!------------------------------------------------------------------------>
 
-  <div id="galeriaContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;">
+
+    <!------------------------galeria html------------------------------------>
+  <div id="galeriaContainer">
     <iframe src="galeria.html" style="width: 100%; height: 100%; border: none;"></iframe>
   </div>
+
+  <!------------------------------------------------------------------------>
+
+      <!------------------------QUE ES? html------------------------------------>
+  <div id="queesContainer" >
+    <iframe src="quees.html" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
+
+  <!------------------------------------------------------------------------>
+
+
+        <!------------------------NOTICIAS html------------------------------------>
+  <div id="noticiasContainer" >
+    <iframe src="noticias.html" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
+
+  <!------------------------------------------------------------------------>
+
 </main>
+
+
 
 <!-- Scripts al final para que cargue todo el DOM primero -->
 <script>

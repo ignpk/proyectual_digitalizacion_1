@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="stylesheet" tipe="text/css" href="style/style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Fredericka+the+Great&family=Kranky&family=Lacquer&family=Slackside+One&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="/assets/icon-192.png">   
+<meta charset="UTF-8" />
+
+    <title>Michi Box Card Game</title>
+    <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+  </head>
+  <body class="queesbackground">
+    <main>
+
+
+
+
+
+    <DIV class="contenedorbotoncerrar">
+<a href="#" id="botonCerrar" class="botonatrasexpansiones" onclick="cerrarQueesDesdeIframe()">X</a>
+    </DIV>
+
+
+
+
+    </main>
+    <script>
+      AOS.init();
+    </script>
+    <script src="sketch/sketch.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("Service Worker registrado"))
+      .catch((error) => console.error("Error al registrar el Service Worker", error));
+  }
+</script>
+
+<script>
+  function cerrarQueesDesdeIframe() {
+    if (window.parent && typeof window.parent.cerrarQuees === 'function') {
+      window.parent.cerrarQuees();
+    }
+  }
+</script>
+
+  </body>
+</html>

@@ -2,8 +2,7 @@
 *{
   color: white;
   text-decoration: none;
-  /*font-family: "Covered By Your Grace";*/
-
+    font-family:Arial, Helvetica, sans-serif !important;
 }
 
 *:focus,
@@ -21,10 +20,32 @@ html, body{
   height: 100dvh;
   margin: 0;
   padding: 0;
-background-image: url(../assets/background001.webp);
+
 }
 
+.indexbackground,
+.galeriabackground{
+  background-image: url(../assets/background001.webp);
+}
+.queesbackground,
+.noticiasbackground{
+  background: rgba(0, 0, 0, 0.6); /* negro semi-transparente */
+  backdrop-filter: blur(10px); /* efecto blur */
+        animation: slideDown 0.8s ease-out, fadeIn 0.5s ease-in-out;
 
+}
+
+#galeriaContainer,
+#queesContainer,
+#noticiasContainer{
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
 
 /*-----------------------------------------------------------------*/
 
@@ -311,6 +332,60 @@ background-image: url(../assets/background001.webp);
     overflow-wrap: break-word;
   color: rgb(255, 255, 255);
 
+}
+
+.fondonegrodescarga{
+  width: 100%;
+  height: 250px;
+    position: absolute;
+    background-color: black;
+      display: flex;
+  justify-content: center;
+background: linear-gradient(0deg,rgba(255,255,255,0) 0%, #0000007c 40%);
+}
+.CONTENEDORDESCARGA{
+  top: 20%;
+  width: 350PX;
+  height: 80PX;
+position: relative;
+  display: flex;
+  align-items: center;
+      animation: slideDown 0.8s ease-out, fadeIn 0.5s ease-in-out;
+      overflow: hidden;
+}
+.IMAGENDESCARGA{
+  width: 80PX;
+  height: 80PX;
+z-index: 9;
+background-image: url(../assets/icon-192.png);
+background-size: cover;
+border-radius: 10px;
+}
+.descargarbotonfixed{
+  transform: translateX(105%);
+width: 280px;
+height: 50px;
+background-color: rgb(1, 162, 1);
+border-top: 3px solid rgb(0, 255, 0);
+border-right: 2px hidden #ffffff00;
+border-bottom: 3px solid rgb(0, 255, 0);
+border-left: 3px solid rgb(0, 255, 0);
+border-radius: 8px 0px 0px 8px;
+animation: deslize 0.3s ease-in-out 0.8s forwards;
+z-index: 8;
+text-shadow: 0px 0px 10px rgb(255, 255, 255);
+color: rgb(255, 255, 255);
+font-size: 115%;
+box-shadow: 0px 0px 10px 2px rgb(0, 255, 0);
+}
+
+@keyframes deslize{
+  0%{
+    transform: translateX(105%);
+  }
+    100%{
+    transform: translateX(5%);
+  }
 }
 
   /*-----------------------------Menu app-------------------------------*/
