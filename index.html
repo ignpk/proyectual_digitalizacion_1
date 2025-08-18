@@ -35,7 +35,7 @@
     </div>
 
 
-  <button id="installBtn" class="descargarapp "> </button>
+  <button id="installBtn" class="descargarapp"> </button>
 
 
     <p class="descripcionbanner">Michi box - Juego de gatos coleccionables. Proyectual Digitalización I 2025. diseño y realización: José Ignacio Pyptyk</p>
@@ -73,53 +73,53 @@
 <script>
   let deferredPrompt = null;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const installBtn = document.getElementById("installBtn");
+  // Función para detectar si estamos en PWA instalada
+  function isAppInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
 
-    // 🔹 Ocultar el botón si ya estamos en modo app (PWA instalada)
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    if (isStandalone && installBtn) {
-      installBtn.style.display = "none";
+  // Función para ocultar o mostrar el botón
+  function actualizarBotonInstalacion() {
+    const btn = document.getElementById("installBtn");
+    if (!btn) return;
+
+    if (isAppInstalled()) {
+      btn.style.display = "none"; // Oculta si ya está instalada
+    } else if (deferredPrompt) {
+      btn.style.display = "block"; // Muestra si es posible instalar
     }
+  }
 
-    // 🔹 Evento para mostrar botón solo si se puede instalar
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      if (installBtn) installBtn.style.display = "block";
-    });
-
-    // 🔹 Manejo del clic en el botón de instalación
-    if (installBtn) {
-      installBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        if (!deferredPrompt) return;
-
-        deferredPrompt.prompt();
-        const result = await deferredPrompt.userChoice;
-        console.log("Instalación:", result.outcome);
-
-        if (result.outcome === "accepted") {
-          console.log("✅ App instalada");
-          installBtn.style.display = "none";
-        } else {
-          console.log("❌ Instalación cancelada");
-        }
-
-        deferredPrompt = null;
-      });
-    }
+  // Detectar evento antes de instalación
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); // Evita el banner automático
+    deferredPrompt = e;
+    actualizarBotonInstalacion();
   });
 
-  // 🔹 Inicializar AOS
-  AOS.init();
+  // Manejo del clic en el botón
+  document.addEventListener("click", async (e) => {
+    const btn = document.getElementById("installBtn");
+    if (!btn || e.target !== btn) return;
+    if (!deferredPrompt) return;
 
-  // 🔹 Registrar Service Worker
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js")
-      .then(() => console.log("Service Worker registrado"))
-      .catch((error) => console.error("Error al registrar el Service Worker", error));
-  }
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+    console.log("Instalación:", result.outcome);
+
+    if (result.outcome === "accepted") {
+      console.log("✅ App instalada");
+      btn.style.display = "none";
+    }
+
+    deferredPrompt = null;
+  });
+
+  // Revisar instalación cada vez que se vuelve a la página
+  document.addEventListener("visibilitychange", actualizarBotonInstalacion);
+
+  // Llamada inicial al cargar la página
+  document.addEventListener("DOMContentLoaded", actualizarBotonInstalacion);
 </script>
 
 <script src="sketch/sketch.js"></script>
