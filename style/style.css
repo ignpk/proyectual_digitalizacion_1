@@ -330,7 +330,7 @@ html, body{
 }
 
 
-.descargarbotonfixed{
+.descargarapp{
   position: absolute;
   flex-direction: row !important;
 display: flex !important;
