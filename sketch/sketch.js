@@ -150,6 +150,34 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
 // ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
 
+
+
+  const installBtn = document.getElementById("installBtn");
+
+  // ✅ Ocultar si ya está instalado (PWA lanzada como standalone)
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    installBtn.style.display = "none";
+  }
+
+  let deferredPrompt;
+
+  // ✅ Escuchar el evento de instalación
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "block"; // mostrar el botón solo si es instalable
+  });
+
+  installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      installBtn.style.display = "none"; // ocultar tras instalar
+    }
+    deferredPrompt = null;
+  });
+
   // ------------------------- quitar zoom doble tap ------------------------
 
   // Bloquear zoom por gesto (Safari iOS)
@@ -728,34 +756,7 @@ contenedoresLineas.forEach(contenedorLineas => {
 
 
 
- const installBtn = document.getElementById('installBtn');
-  let deferredPrompt;
 
-  // Evento que dispara cuando la PWA puede instalarse
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'block';
-  });
-
-  // Cuando el usuario toca el botón de instalar
-  installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        installBtn.style.display = 'none'; // Se oculta al instalar
-      }
-      deferredPrompt = null;
-    }
-  });
-
-  // 👇 Este bloque hace que en la app instalada NO aparezca el botón
-  window.addEventListener('DOMContentLoaded', () => {
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-      installBtn.style.display = 'none';
-    }
-  });
 
 
 });
