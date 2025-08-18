@@ -330,7 +330,8 @@ html, body{
 }
 
 
-.descargarapp{
+.botondescargarapp{
+  position:absolute;
 display: none;
 width: 300px;
 height: 50px;
@@ -1239,7 +1240,7 @@ margin: 0 auto;
   gap: 10px;
 }
 
-.noticias, .galeriaapp, .quees, .insta, .descargarapp{
+.noticias, .galeriaapp, .quees, .insta{
  width: 38vw; 
 border-radius: 5%;
  
