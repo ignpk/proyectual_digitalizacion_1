@@ -29,7 +29,7 @@ html, body{
 }
 .queesbackground,
 .noticiasbackground{
-  background: rgba(0, 0, 0, 0.6); /* negro semi-transparente */
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px); /* efecto blur */
         animation: slideDown 0.8s ease-out, fadeIn 0.5s ease-in-out;
 
@@ -567,9 +567,10 @@ filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
 .mini-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(240, 196, 1, 0.64);
+  background: rgba(255, 208, 0, 0.763);
   border-radius: 3px;
-border: 3px dashed rgb(158, 129, 0);
+border: 2px dashed rgb(177, 145, 0);
+box-shadow: 0px 0px 0px 2px rgb(240, 196, 1, 1) inset;
 }
 .alerta-desbloqueo {
   height: 50PX;
@@ -968,7 +969,6 @@ overflow: hidden;
 }
   
 
- 
 
 .circle1 {
   /*---------------abajo de troquel amplio-------------------*/
@@ -1041,75 +1041,11 @@ transform: translateY(50px);
 }
 
 
-  /*-----------------------------info-------------------------------*/
-
-.infocontainer{
- width: 100%;
- height: 100dvh;
-}
-.infobanner{
-  width: 100%;
-  height: 70%;
-  background-color: rgba(255, 0, 0, 0.465);
-}
-
-
-.contenedorbotoncerrar{
-  display: none;
-}
 
 
   /*--------------------------------------------------------QUE ES MICHI BOX--------------------------------------------------------------------*/
 
 
-  .contenedorgeneral{
-max-width: 412px;
-height: auto;
- margin: 0 auto;
-  }
-
-
-.queescontenedor{
-  width: 100%;
-  height: 100dvh;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: center;
-}
-
-.bannerquees, .bannerdescripcion{
-  width: 100%;
-
-}
-.bannerquees{
-  background-position: center;
-  background-size: contain;
-background-repeat: no-repeat;
-    height: 40%;
-}
-.bannerdescripcion{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.bannerdescripcion p{
-  padding: 15%;
-  color: white;
-  text-align: center;
-
-}
-
-.botonavanzar{
-  width: 80px;
-  height: 80px;
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 0);
-  background-image: url(../assets/boton01.webp);
-  background-repeat: no-repeat;
-  background-size: contain;
-}
 
 
 
