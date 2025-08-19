@@ -430,7 +430,7 @@ function mostrarAlertaDesbloqueo(mensaje) {
   alerta.innerHTML = `
     <span class="mensaje">${mensaje}</span>
     <div class="circulo-imagen">
-      <img src="../assets/notif_legend.webp" alt="Carta">
+      <img src="../assets/cartas/BACK.webp" alt="Carta">
     </div>
   `;
 
