@@ -1053,6 +1053,16 @@ transform: translateY(50px);
 
 
   /*-----------------------------MEDIA--------------------------------*/
+@media screen and (orientation: landscape) {
+  body {
+    transform: rotate(90deg);
+    transform-origin: center;
+    height: 100vw;
+    width: 100vh;
+  }
+}
+
+
   @media only screen and (max-width: 600px){
 
 
