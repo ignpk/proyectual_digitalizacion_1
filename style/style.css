@@ -271,7 +271,7 @@ html, body{
   height: 60%;
     background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   animation: carruselmenu 30s ease-in-out infinite;
 }
 @keyframes carruselmenu {
@@ -299,13 +299,19 @@ html, body{
 
 }
 
-.botonesmenu{
-  padding-top: 2%;
-  gap: 20px;
+.CONTENEDORESBOTONESMENU{
+  position: relative;
   width: 100%;
-  height: auto;
-  flex-wrap: wrap;
+  height: 40%;
   justify-content: center;
+  align-items: center;
+  display: flex;
+
+}
+.botonesmenu{
+    justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 .galeriaapp, .quees, .insta{
  width: 20vw;             
@@ -319,9 +325,9 @@ html, body{
 
 .descripcionbanner{
   position:absolute;
-  margin: 0;
+  padding: 0% 5%;
   bottom: 10px;
-  width: 75%;
+  width: 100%;
   font-size: 0.6rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -1239,20 +1245,22 @@ margin: 0 auto;
 
 @media only screen and (max-width: 500px){
 
+
 .logo{
   height: 40%;
-
 }
+
+
+.CONTENEDORESBOTONESMENU{
+  height: 60%;
+}
+
+
 .botonesmenu{
-  padding-top: 15%;
-  justify-content: center;
   gap: 10px;
 }
-
-.noticias, .galeriaapp, .quees, .insta, .descargarapp{
- width: 38vw; 
-border-radius: 5%;
- 
+.galeriaapp, .quees, .insta{
+ width: 38vw;             
 }
 
   .carta-wrapper {
