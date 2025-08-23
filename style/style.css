@@ -156,10 +156,7 @@ html, body{
 
 
  .michiconfundido,
- .noticias,
- .galeriaapp,
- .quees,
- .insta,
+.iconomenu,
  .codigoqrdecarta{
   background-size: contain;
   background-repeat: no-repeat;
@@ -313,12 +310,14 @@ html, body{
   gap: 20px;
   flex-wrap: wrap;
 }
-.galeriaapp, .quees, .insta{
+.iconomenu{
+  overflow: hidden;
  width: 20vw;             
   max-width: 150px;        
   aspect-ratio: 1 / 1; 
 }
-.galeriaapp:hover, .quees:hover, .insta:hover{
+
+.iconomenu:hover{
   transform: scale(1.1);
   transition: 0.2s ease-in-out;
 }
@@ -1259,7 +1258,7 @@ margin: 0 auto;
 .botonesmenu{
   gap: 10px;
 }
-.galeriaapp, .quees, .insta{
+.iconomenu{
  width: 38vw;             
 }
 
