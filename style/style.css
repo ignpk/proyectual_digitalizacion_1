@@ -1232,7 +1232,7 @@ margin: 0 auto;
 
 .logo{
   height: 40%;
-  animation: carruselmenuMEDIA 20s ease-in-out infinite, slideDown 0.5s ease-out 7.9s, fadeIn 0.5s ease-in-out 7.9s;
+  animation: carruselmenuMEDIA 30s ease-in-out infinite, slideDown 0.5s ease-out 7.9s, fadeIn 0.5s ease-in-out 7.9s;
 }
 .IMAGENLOGOBANNER{
   display: block;
@@ -1243,20 +1243,32 @@ margin: 0 auto;
     0%{
   background-image: url(../assets/background_BANNER_MEDIA.webp);
   }
-      35%{
+      20%{
   background-image: url(../assets/background_BANNER_MEDIA.webp);
   }
-    40%{
+    25%{
   background-image: url(../assets/background_BANNER_002_MEDIA_002.webp);
   }
-      70%{
+      40%{
   background-image: url(../assets/background_BANNER_002_MEDIA_002.webp);
   }
-    75%{
+      45%{
+  background-image: url(../assets/background_BANNER_004_MEDIA_004.webp);
+  }
+      60%{
+  background-image: url(../assets/background_BANNER_004_MEDIA_004.webp);
+  }
+    65%{
   background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  }
+      75%{
+  background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  }
+     80%{
+  background-image: url(../assets/background_BANNER_005_MEDIA_005.webp);
   }
       95%{
-  background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  background-image: url(../assets/background_BANNER_005_MEDIA_005.webp);
   }
       100%{
   background-image: url(../assets/background_BANNER_MEDIA.webp);
