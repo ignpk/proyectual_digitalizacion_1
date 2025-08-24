@@ -266,15 +266,16 @@ html, body{
 .logo{
   width: 100%;
   height: 60%;
+  background-image: url(../assets/background_BANNER.webp);
     background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
-  animation: carruselmenu 20s ease-in-out infinite, slideDown 0.5s ease-out 7.9s, fadeIn 0.5s ease-in-out 7.9s;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .IMAGENLOGOBANNER{
+  display: none;
   width: 200PX;
   height: 200PX;
   background-image: url(../assets/logoprograma03.webp);
@@ -284,30 +285,6 @@ html, body{
   position: absolute;
 }
  
-@keyframes carruselmenu {
-  0%{
-  background-image: url(../assets/background_BANNER.webp);
-  }
-      35%{
-  background-image: url(../assets/background_BANNER.webp);
-  }
-    40%{
-  background-image: url(../assets/background_BANNER_002.webp);
-  }
-      70%{
-  background-image: url(../assets/background_BANNER_002.webp);
-  }
-    75%{
-  background-image: url(../assets/background_BANNER_003.webp);
-  }
-      95%{
-  background-image: url(../assets/background_BANNER_003.webp);
-  }
-      100%{
-  background-image: url(../assets/background_BANNER.webp);
-  }
-
-}
 
 .CONTENEDORESBOTONESMENU{
   position: relative;
@@ -316,7 +293,7 @@ html, body{
   justify-content: center;
   align-items: center;
   display: flex;
-     animation: slideDown 1s ease-out 7.9s, fadeIn 1s ease-in-out 7.9s forwards;
+     animation: fadeIn 1s ease-in-out 7.9s forwards;
 
 }
 .botonesmenu{
@@ -1257,6 +1234,9 @@ margin: 0 auto;
   height: 40%;
   animation: carruselmenuMEDIA 20s ease-in-out infinite, slideDown 0.5s ease-out 7.9s, fadeIn 0.5s ease-in-out 7.9s;
 }
+.IMAGENLOGOBANNER{
+  display: block;
+}
 
 @keyframes carruselmenuMEDIA {
 
@@ -1287,6 +1267,7 @@ margin: 0 auto;
 
 .CONTENEDORESBOTONESMENU{
   height: 60%;
+  transform: translateY(-10%);
 }
 
 
