@@ -270,6 +270,18 @@ html, body{
   background-repeat: no-repeat;
   background-position: bottom;
   animation: carruselmenu 20s ease-in-out infinite, slideDown 0.5s ease-out 7.9s, fadeIn 0.5s ease-in-out 7.9s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.IMAGENLOGOBANNER{
+  width: 200PX;
+  height: 200PX;
+  background-image: url(../assets/logoprograma03.webp);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
 }
  
 @keyframes carruselmenu {
@@ -1243,6 +1255,33 @@ margin: 0 auto;
 
 .logo{
   height: 40%;
+  animation: carruselmenuMEDIA 20s ease-in-out infinite, slideDown 0.5s ease-out 7.9s, fadeIn 0.5s ease-in-out 7.9s;
+}
+
+@keyframes carruselmenuMEDIA {
+
+    0%{
+  background-image: url(../assets/background_BANNER_MEDIA.webp);
+  }
+      35%{
+  background-image: url(../assets/background_BANNER_MEDIA.webp);
+  }
+    40%{
+  background-image: url(../assets/background_BANNER_002_MEDIA_002.webp);
+  }
+      70%{
+  background-image: url(../assets/background_BANNER_002_MEDIA_002.webp);
+  }
+    75%{
+  background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  }
+      95%{
+  background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  }
+      100%{
+  background-image: url(../assets/background_BANNER_MEDIA.webp);
+  }
+
 }
 
 
