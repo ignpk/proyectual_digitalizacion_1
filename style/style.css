@@ -644,18 +644,18 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
 
 .logospinner{
   position: absolute;
+    border-radius: 50%;
   width: 80px;
   height: 80px;
   background-image: url(../assets/icon-512.png);
   background-size: cover;
 }
 .spinner {
-  border: 3px solid rgba(255, 255, 255, 0);
-  border-top: 8px solid rgba(255, 255, 255, 0.704);
+  border-top: 3px solid rgb(255, 255, 255);
   border-radius: 50%;
   width: 130px;
   height: 130px;
-  animation: spin 0.4s linear infinite;
+  animation: spin 0.6s linear infinite;
 
 }
 
