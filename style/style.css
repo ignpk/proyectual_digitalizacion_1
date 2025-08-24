@@ -269,8 +269,9 @@ html, body{
     background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
-  animation: carruselmenu 30s ease-in-out infinite;
+  animation: carruselmenu 20s ease-in-out infinite, slideDown 0.5s ease-out 3.9s, fadeIn 0.5s ease-in-out 3.9s;
 }
+ 
 @keyframes carruselmenu {
   0%{
   background-image: url(../assets/background_BANNER.webp);
@@ -303,6 +304,7 @@ html, body{
   justify-content: center;
   align-items: center;
   display: flex;
+     animation: slideDown 1s ease-out 3.9s, fadeIn 1s ease-in-out 3.9s forwards;
 
 }
 .botonesmenu{
@@ -628,7 +630,9 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgb(0, 0, 0);
+  background-color: rgb(92, 26, 126);
+  background-image: url(../assets/background001.webp);
+  background-size: auto;
   z-index: 9999;
   display: none; 
 }
@@ -637,12 +641,20 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   justify-content: center;
   align-items: center;
 }
+
+.logospinner{
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-image: url(../assets/icon-512.png);
+  background-size: cover;
+}
 .spinner {
-  border: 8px solid rgba(212, 0, 255, 0.429);
-  border-top: 8px solid rgb(255, 5, 226);
+  border: 3px solid rgba(255, 255, 255, 0);
+  border-top: 8px solid rgba(255, 255, 255, 0.704);
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 130px;
+  height: 130px;
   animation: spin 0.4s linear infinite;
 
 }
@@ -727,7 +739,7 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   position: fixed;
   z-index: 999999999999999999;
   pointer-events: none;
-  animation: cargando 1s ;
+  animation: cargando 1.1s ;
 filter: opacity(0);
 }
 @keyframes cargando{
