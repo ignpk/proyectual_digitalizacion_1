@@ -457,6 +457,7 @@ border-radius: 3px;
     height: 100%;
     border: none;
     transition: 0.3s ease;
+    overflow: hidden;
   }
 
 
@@ -467,6 +468,7 @@ border-radius: 3px;
     display: inline-block;
   }
   .overlay-bloqueo {
+    overflow: hidden;
     position: absolute;
     top: 0;
     left: 0;
@@ -474,20 +476,74 @@ border-radius: 3px;
     height: 100%;
 border-radius: 3px;
 background-size: contain;
-background-image: url(../assets/cartas/BACK.webp);
+background-color: rgba(92,26,126,1);
+border: 3px dashed #7b27a4;
+box-shadow: 0px 0px 0px 10px rgba(92,26,126,1);
   }
+
+.oro{
+animation: orobrillo 4s ease-in-out infinite;
+    box-shadow: 0px 0px 6px 3px rgb(255, 212, 69);
+
+;
+}
+@keyframes orobrillo{
+0%{
+  filter: brightness(1) saturate(1) contrast(1);
+}
+50%{
+  filter: brightness(1.2) saturate(1.1) contrast(2) ;
+}
+100%{
+  filter: brightness(1) saturate(1) contrast(1);
+}
+}
+
+
+/* Haz de luz */
+.oro::before,.plata::before {
+  content: "";
+  position: absolute;
+  top: -150%;
+  left: -150%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 43%,
+    rgba(255, 255, 255, 0.623) 50%,
+    rgba(255, 255, 255, 0) 57%
+  );
+  transform: rotate(25deg);
+  animation: shine 4s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+          filter: opacity(0%);
+    transform: translate(-100%, -100%) rotate(25deg);
+  }
+    50% {
+      filter: opacity(100%)
+  }
+  100% {
+          filter: opacity(0%);
+    transform: translate(100%, 100%) rotate(25deg);
+  }
+}
+
+
 .overnormal{
-filter: sepia(1) grayscale(1) brightness(0.6) ;
 }
 
 .overraro{
-filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.7) ;
 
 }
 
 .overespecial{
-filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(0.7) ;
+  background-image: url(../assets/cartas/MENU_LEGENDARIO.webp);
 }
+
 
 
 

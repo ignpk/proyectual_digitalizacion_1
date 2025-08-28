@@ -159,29 +159,27 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
 // ------------------------- DOM CONTENT LOADED --------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------------- quitar zoom doble tap ------------------------
+// ------------------------- bloquear zoom global -------------------------
 
-  // Bloquear zoom por gesto (Safari iOS)
-  document.addEventListener('gesturestart', function (e) {
-    e.preventDefault();
-  });
+// Evita pinch zoom (Safari iOS principalmente)
+document.addEventListener('gesturestart', e => e.preventDefault());
 
-  // Bloquear zoom por doble toque (double-tap)
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', function (event) {
-    const now = new Date().getTime();
-    if (now - lastTouchEnd <= 300) {
-      event.preventDefault(); // ← evita el zoom
-    }
-    lastTouchEnd = now;
-  }, false);
+// Evita zoom por doble tap
+let lastTouchEnd = 0;
+document.addEventListener('touchend', event => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
 
-  // Prevenir el zoom por doble toque en elementos con foco (iOS a veces lo permite igual)
-  document.addEventListener('touchstart', function (event) {
-    if (event.touches.length > 1) {
-      event.preventDefault();
-    }
-  }, { passive: false });
+// Evita zoom con multitouch (Android/iOS)
+document.addEventListener('touchstart', event => {
+  if (event.touches.length > 1) {
+    event.preventDefault();
+  }
+}, { passive: false });
 
   // ------------------------ --------------------------------------------------------------------------
 
@@ -219,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (colores[tipo]) {
         contenido.style.backgroundColor = colores[tipo].fondo;
         contenido.style.borderColor = colores[tipo].borde;
-      }
+      }t
       modal.classList.remove("oculto");
       document.body.style.overflow = "hidden";
     }
