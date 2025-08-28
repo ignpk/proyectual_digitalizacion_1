@@ -478,25 +478,34 @@ border-radius: 3px;
 background-size: contain;
 background-color: rgba(92,26,126,1);
 border: 3px dashed #7b27a4;
-box-shadow: 0px 0px 0px 10px rgba(92,26,126,1);
+
+    box-shadow: 0 0 0 10px rgba(92,26,126,1);
+  user-select: none;       /* no seleccionable */
+  -webkit-tap-highlight-color: transparent; /* quita el flash en móviles */
   }
-
+.overlay-bloqueo:active,
+.overlay-bloqueo:focus {
+  box-shadow: 0 0 0 10px rgba(92,26,126,1) !important;
+  outline: none !important;
+}
 .oro{
-animation: orobrillo 4s ease-in-out infinite;
-    box-shadow: 0px 0px 6px 3px rgb(255, 212, 69);
+animation: orobrillo 4s linear infinite;
+}
 
-;
-}
-@keyframes orobrillo{
-0%{
-  filter: brightness(1) saturate(1) contrast(1);
-}
-50%{
-  filter: brightness(1.2) saturate(1.1) contrast(2) ;
-}
-100%{
-  filter: brightness(1) saturate(1) contrast(1);
-}
+@keyframes orobrillo {
+  0%, 100% {
+    box-shadow:
+      0 0 4px rgba(255, 212, 69, 0),
+      0 0 8px rgba(255, 212, 69, 0);
+      filter: brightness(1);
+  }
+  50% {
+    box-shadow:
+      0 0 4px rgb(243, 255, 69),
+      0 0 8px rgba(255, 212, 69, 0.801),
+      0 0 10px rgba(255, 212, 69, 0.543);
+            filter: brightness(1.4);
+  }
 }
 
 
@@ -532,13 +541,6 @@ animation: orobrillo 4s ease-in-out infinite;
   }
 }
 
-
-.overnormal{
-}
-
-.overraro{
-
-}
 
 .overespecial{
   background-image: url(../assets/cartas/MENU_LEGENDARIO.webp);

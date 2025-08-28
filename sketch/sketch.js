@@ -217,7 +217,7 @@ document.addEventListener('touchstart', event => {
       if (colores[tipo]) {
         contenido.style.backgroundColor = colores[tipo].fondo;
         contenido.style.borderColor = colores[tipo].borde;
-      }t
+      }
       modal.classList.remove("oculto");
       document.body.style.overflow = "hidden";
     }
