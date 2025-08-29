@@ -679,6 +679,7 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   background-size: auto;
   z-index: 9999;
   display: none; 
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 #pantallaNegra.activo {
   display: flex; 
