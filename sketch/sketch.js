@@ -234,132 +234,74 @@ document.addEventListener('touchstart', event => {
     }
   });
 
-// ------------------ FUNCIONES DE PANTALLA NEGRA ------------------
-function mostrarPantallaNegra() {
-  const pantallaNegra = document.getElementById('pantallaNegra');
-  if (pantallaNegra) {
-    pantallaNegra.classList.add('activo');
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-  }
-}
+  // ----------------- BLOQUEO DE CARTAS -----------------
+  document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
+  const carouselItems = document.querySelectorAll(".carousel-item");
+  const fondonegro = document.querySelector(".fondonegro");
 
-function ocultarPantallaNegra() {
-  const pantallaNegra = document.getElementById('pantallaNegra');
-  if (pantallaNegra) {
-    pantallaNegra.classList.remove('activo');
-    setTimeout(() => {
-      document.body.style.overflow = "auto";
-      document.documentElement.style.overflow = "auto";
-    }, 400); // fade-out duration igual que CSS
-  }
-}
+  // Se asume que #pantallaNegra está en el HTML con spinner y sin display por defecto (display:none)
+  const pantallaNegra = document.getElementById("pantallaNegra");
 
-// ------------------ BLOQUEO DE CARTAS ------------------
-document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
-
-const carouselItems = document.querySelectorAll(".carousel-item");
-const fondonegro = document.querySelector(".fondonegro");
-
-carouselItems.forEach(item => item.style.display = "none");
-fondonegro.style.display = "none";
-
-// Variables para cartel amarillo y requisitos activos
-let cartelActivo = null;
-let requisitosActivos = [];
-
-// Enter para verificar código
-document.getElementById("codigoGlobal").addEventListener("keypress", e => {
-  if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
-});
-
-// ------------------ BOTON VERIFICAR ------------------
-document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
-  const codigo = document.getElementById("codigoGlobal").value.trim();
-  if (!codigo) return;
-
-  let encontrado = false;
-  let desbloqueada = false;
-
-  document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
-    const overlay = wrapper.querySelector(".overlay-bloqueo");
-    const pass = wrapper.getAttribute("data-pass");
-
-    if (codigo.toLowerCase() === pass.toLowerCase()) {
-      encontrado = true;
-
-      if (overlay) {
-        overlay.remove();
-        desbloqueada = true;
-
-        const boton = wrapper.querySelector(".cartaejemplo");
-        const id = boton?.getAttribute("data-target");
-        const item = document.getElementById(id);
-
-        if (item) {
-          // Mostrar pantalla negra y registrar tiempo de inicio
-          mostrarPantallaNegra();
-          const inicio = Date.now();
-          const minTiempo = 1000; // 1 segundo mínimo
-
-          // Ocultar todos los carousel-items y mostrar solo el actual
-          carouselItems.forEach(i => i.style.display = "none");
-          item.style.display = "flex";
-          fondonegro.style.display = "block";
-
-          const imagenes = item.querySelectorAll("img");
-          let cargadas = 0;
-
-          const checkFinCarga = () => {
-            cargadas++;
-            if (cargadas === imagenes.length) {
-              const tiempoPasado = Date.now() - inicio;
-              const restante = minTiempo - tiempoPasado;
-              setTimeout(() => {
-                ocultarPantallaNegra();
-                document.body.style.overflow = "hidden";
-              }, restante > 0 ? restante : 0);
-            }
-          };
-
-          if (imagenes.length === 0) {
-            // No hay imágenes, esperar mínimo 1 segundo
-            const tiempoPasado = Date.now() - inicio;
-            const restante = minTiempo - tiempoPasado;
-            setTimeout(() => {
-              ocultarPantallaNegra();
-              document.body.style.overflow = "hidden";
-            }, restante > 0 ? restante : 0);
-          } else {
-            imagenes.forEach(img => {
-              if (img.complete) {
-                checkFinCarga();
-              } else {
-                img.addEventListener("load", checkFinCarga);
-                img.addEventListener("error", checkFinCarga);
-              }
-            });
-          }
-
-          // Scroll al wrapper
-          setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-
-          // Chequear desbloqueos automáticos encadenados
-          chequearDesbloqueosAutomaticos();
-        }
-      }
-    }
+  document.getElementById("codigoGlobal").addEventListener("keypress", e => {
+    if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
   });
 
-  if (!encontrado) {
-    mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
-  } else if (!desbloqueada) {
-    mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
+  carouselItems.forEach(item => item.style.display = "none");
+  fondonegro.style.display = "none";
+
+  // Variables para cartel amarillo y requisitos activos
+  let cartelActivo = null;
+  let requisitosActivos = [];
+
+  document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
+    const codigo = document.getElementById("codigoGlobal").value.trim();
+    if (!codigo) return;
+
+    let encontrado = false;
+    let desbloqueada = false;
+
+    document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+      const overlay = wrapper.querySelector(".overlay-bloqueo");
+      const pass = wrapper.getAttribute("data-pass");
+
+if (codigo.toLowerCase() === pass.toLowerCase()) {
+  encontrado = true;
+
+  if (overlay) {
+    overlay.remove();
+    desbloqueada = true;
+    mostrarPantallaNegra();
+
+    setTimeout(() => {
+      ocultarPantallaNegra();
+
+      const boton = wrapper.querySelector(".cartaejemplo");
+      const id = boton?.getAttribute("data-target");
+      const item = document.getElementById(id);
+      if (item) {
+        carouselItems.forEach(i => i.style.display = "none");
+        item.style.display = "flex";
+        fondonegro.style.display = "block";
+        document.body.style.overflow = "hidden";
+      }
+      setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+    }, 2000);
+
+    // Llamar para chequear desbloqueos automáticos encadenados
+    chequearDesbloqueosAutomaticos();
   }
+}
 
-  document.getElementById("codigoGlobal").value = "";
-});
+    });
 
+    if (!encontrado) {
+      mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
+    } else if (!desbloqueada) {
+      mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
+    }
+
+    document.getElementById("codigoGlobal").value = "";
+  });
 
   // ------------- ABRIR CARTAS YA DESBLOQUEADAS ---------------
   document.querySelectorAll(".cartaejemplo").forEach(boton => {
