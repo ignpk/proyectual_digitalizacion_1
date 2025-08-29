@@ -814,6 +814,7 @@ filter: opacity(0);
     z-index: 999999;
     transform-style: preserve-3d;
     overscroll-behavior: none;
+
   }
 
 
@@ -919,13 +920,14 @@ overflow: visible;
 }
 
 .tarjeta.flip {
-  animation: giro2 0.8s forwards;
+  animation: giro2 1s ease-in-out;
   width: 309px;
   height: 450px;
 }
+
 @keyframes giro2 {
-  0% {  transform: rotateY(0deg) scale(2) rotate(-20deg) ;  }
-  100% { transform: rotateY(360deg);  }
+  0% {  transform: rotateY(0deg) scale(0) rotate(-20deg) ;  }
+  100% { transform: rotateY(720deg);  }
 }
 
 
