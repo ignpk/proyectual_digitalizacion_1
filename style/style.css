@@ -813,7 +813,6 @@ filter: opacity(0);
     z-index: 999999;
     transform-style: preserve-3d;
     overscroll-behavior: none;
-        animation: fadeIn 1s ease-in-out;
   }
 
 
@@ -919,7 +918,7 @@ overflow: visible;
 }
 
 .tarjeta.flip {
-  animation: fadeIn 0.3s ease-in-out, zoom 0.3s ease-in-out;
+  animation: fadeIn 0.2s ease-in-out, zoom 0.2s ease-in-out;
   width: 309px;
   height: 450px;
 }
@@ -934,13 +933,12 @@ overflow: visible;
 }
 
 .animacion-primera-vez {
-  animation: fadeIn 1s ease-in-out, zoomprimeravez 1s ease-in-out;
+  animation:fadeIn 0.2s ease-in-out, zoomprimeravez 0.5s ease-in-out;
 }
 
 @keyframes zoomprimeravez {
   0%{
     transform: scale(1.5);
-    filter: brightness(20) grayscale(1) blur(20px);
 
   }
     100%{
