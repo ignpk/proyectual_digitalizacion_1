@@ -3,6 +3,10 @@
   color: white;
   text-decoration: none;
     font-family:Arial, Helvetica, sans-serif !important;
+    user-select: none;
+    -webkit-user-drag: none;
+    outline: none;
+
 }
 
 *:focus,
@@ -20,6 +24,7 @@ html, body{
   height: 100dvh;
   margin: 0;
   padding: 0;
+  touch-action: pan-x pan-y;
 
 }
 
@@ -115,7 +120,6 @@ html, body{
 .fondonegro,
 #ventanaExpansiones,
 .BOTONDESBLOQUEAR,
-.contenedorbotoncerrar,
 .overlay-fondo{
     backdrop-filter: blur(5px);
 
@@ -678,6 +682,7 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   background-size: auto;
    z-index: 9999999;
   display: none; 
+  pointer-events: none;
   
 }
 
@@ -685,6 +690,7 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   display: flex; 
   justify-content: center;
   align-items: center;
+  pointer-events: none;
 }
 
 .logospinner{
@@ -701,6 +707,7 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   width: 130px;
   height: 130px;
   animation: spin 0.6s linear infinite;
+    pointer-events: none;
 
 }
 
@@ -1119,7 +1126,7 @@ transform: translateY(50px);
    overflow-y: auto;
   overflow-x: hidden;
   position: absolute;
-  padding-top: 20%;
+  padding-top: 100px;
 width: 100%;
 height: 90vh;
  
@@ -1147,7 +1154,8 @@ height: 90vh;
 .imagenbannernoticia{
  width: 100%;
   height: 300px;
-  background-size: contain;background-repeat: no-repeat;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
 }
 
@@ -1158,28 +1166,30 @@ height: 90vh;
 
 
 
-  /*-----------------------------MEDIA--------------------------------*/
 
-  
-  @media only screen and (max-width: 600px){
+
+  /*-----------------------------BOTONES DE INTERRACCION------------------------------*/
 
 
 
 .contenedorbotoncerrar{
-  z-index: 999;
+  z-index: 9;
     display: flex;
   position: fixed;
-  width: 300px;
-background-color: rgba(255, 255, 255, 0.107);
-border: 3px solid rgba(255, 255, 255, 0.083);
+  flex-direction: row;
+  width: 100%;
+    height: 70px;
+background-color: rgba(224, 217, 20, 0);
+border: 3px solid rgba(255, 255, 255, 0);
 border-radius: 10px;
-transform: translateX(-50%);
-left: 50%;
+transform: translateY(0);
+left: 0;
   align-items: center;
   justify-content: space-around;
   padding: 10px;
-margin: 0 auto;
-  bottom: 20px;
+margin: auto 0;
+  top: 20px;
+  backdrop-filter: blur(0px);
 }
 
 
@@ -1188,8 +1198,9 @@ margin: 0 auto;
   font-family: Arial;
   width: 40px;
   height: 40px;
-  font-size: 120%;
+  font-size: 90%;
   background-size: cover;
+    cursor: pointer;
 }
 
 .botonatras:nth-child(2), .botonatrasexpansiones{
@@ -1203,7 +1214,10 @@ margin: 0 auto;
   font-size: 70%;
 }
 
-
+.botonatras:nth-child(3){
+pointer-events: none;
+display: none;
+}
 
 
   /*-----------------------------EXPANSIONES--------------------------------*/
@@ -1225,9 +1239,6 @@ margin: 0 auto;
   width: 80%;
   height: 70%;
 }
-
-
-
   /*-----------------------------carrusel expansiones-------------------------------*/
 
 .carruseldeexpansiones-container {
@@ -1280,11 +1291,44 @@ margin: 0 auto;
 }
 
 
+  /*-----------------------------MEDIA--------------------------------*/
 
-    }
+
+
+
+
+
 
 @media only screen and (max-width: 500px){
 
+.botonatras:nth-child(3){
+pointer-events: all;
+display: flex;
+}
+
+
+.contenedorbotoncerrar{
+  z-index: 999;
+  width: 300px;
+background-color: rgba(255, 255, 255, 0.107);
+border: 3px solid rgba(255, 255, 255, 0.083);
+transform: translateX(-50%);
+left: 50%;
+  padding: 10px;
+margin: 0 auto;
+top: 90%;
+    backdrop-filter: blur(5px);
+}
+
+
+.botonatras:nth-child(1), .botonatras:nth-child(2), .botonatras:nth-child(3), .botonatrasexpansiones {
+  font-family: Arial;
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+    cursor: pointer;
+
+}
 
 .logo{
   height: 40%;
@@ -1353,8 +1397,8 @@ display: none;
 
 
 
-  
   }
+  
 
   @media only screen and (max-width: 360px){
 
