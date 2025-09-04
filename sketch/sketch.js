@@ -447,4 +447,48 @@ document.addEventListener("DOMContentLoaded", () => {
     contenedorLineas.addEventListener('touchend', resetLineas);
     contenedorLineas.addEventListener('touchcancel', resetLineas);
   });
+
+  
+  // Función para sacar el color promedio de una imagen
+function obtenerColorDominante(img, callback) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  img.crossOrigin = "Anonymous"; // necesario si es de otro dominio
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    const data = ctx.getImageData(0, 0, img.width, img.height).data;
+    let r=0, g=0, b=0, count=0;
+
+    for (let i=0; i<data.length; i+=4) {
+      r += data[i];
+      g += data[i+1];
+      b += data[i+2];
+      count++;
+    }
+    r = Math.floor(r/count);
+    g = Math.floor(g/count);
+    b = Math.floor(b/count);
+
+    callback(`rgb(${r},${g},${b})`);
+  };
+}
+
+// Función que cambia el meta theme-color
+function cambiarColorBarra(color) {
+  let meta = document.querySelector("meta[name=theme-color]");
+  meta.setAttribute("content", color);
+}
+
+// Detectar click en cada imagen y cambiar el color
+document.querySelectorAll(".imagen").forEach(img => {
+  img.addEventListener("click", () => {
+    obtenerColorDominante(img, color => {
+      cambiarColorBarra(color);
+    });
+  });
+});
 });
