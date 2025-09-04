@@ -1,79 +1,37 @@
-// Función para sacar el color promedio de una imagen
-function obtenerColorDominante(img, callback) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-
-  img.crossOrigin = "Anonymous"; // necesario si es de otro dominio
-  img.onload = () => {
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0, img.width, img.height);
-
-    const data = ctx.getImageData(0, 0, img.width, img.height).data;
-    let r=0, g=0, b=0, count=0;
-
-    for (let i=0; i<data.length; i+=4) {
-      r += data[i];
-      g += data[i+1];
-      b += data[i+2];
-      count++;
-    }
-    r = Math.floor(r/count);
-    g = Math.floor(g/count);
-    b = Math.floor(b/count);
-
-    callback(`rgb(${r},${g},${b})`);
-  };
+// ------------------------- Galería de cartas -------------------------
+function mostrarGaleria() {
+  document.getElementById('galeriaContainer').style.display = 'block';
+}
+function cerrarGaleria() {
+  document.getElementById('galeriaContainer').style.display = 'none';
+}
+function mostrarQuees() {
+  document.getElementById('queesContainer').style.display = 'block';
+}
+function cerrarQuees() {
+  document.getElementById('queesContainer').style.display = 'none';
+}
+function mostrarNoticias() {
+  document.getElementById('noticiasContainer').style.display = 'block';
+}
+function cerrarNoticias() {
+  document.getElementById('noticiasContainer').style.display = 'none';
 }
 
-// Función que cambia el meta theme-color
-function cambiarColorBarra(color) {
-  let meta = document.querySelector("meta[name=theme-color]");
-  meta.setAttribute("content", color);
-}
-
-// Detectar click en cada imagen y cambiar el color
-document.querySelectorAll(".imagen").forEach(img => {
-  img.addEventListener("click", () => {
-    obtenerColorDominante(img, color => {
-      cambiarColorBarra(color);
-    });
-  });
-});
-
-
-// ------------------------- Utilidades de mostrar/ocultar ------------------------
-const containers = {
-  galeria: document.getElementById('galeriaContainer'),
-  quees: document.getElementById('queesContainer'),
-  noticias: document.getElementById('noticiasContainer')
-};
-
-const toggleContainer = (key, show = true) => {
-  if (containers[key]) containers[key].style.display = show ? 'block' : 'none';
-};
-
-window.mostrarGaleria = () => toggleContainer('galeria', true);
-window.cerrarGaleria = () => toggleContainer('galeria', false);
-window.mostrarQuees = () => toggleContainer('quees', true);
-window.cerrarQuees = () => toggleContainer('quees', false);
-window.mostrarNoticias = () => toggleContainer('noticias', true);
-window.cerrarNoticias = () => toggleContainer('noticias', false);
-
-// ------------------------- Escáner QR ------------------------
+// ------------------------- Escáner QR -------------------------
 let scanner;
 const btnAbrir = document.getElementById("btn-abrir-escaner");
 const overlay = document.getElementById("overlay");
-const resultado = document.getElementById("resultado");
 const cerrar = document.getElementById("cerrar-overlay");
+const resultado = document.getElementById("resultado");
 
-btnAbrir?.addEventListener("click", () => {
+btnAbrir.addEventListener("click", () => {
   overlay.style.display = "flex";
   if (!scanner) scanner = new Html5Qrcode("reader");
   scanner.start(
     { facingMode: "environment" },
     { fps: 10, qrbox: 250 },
-    decodedText => {
+    (decodedText) => {
       resultado.innerText = "Código QR: " + decodedText;
       document.getElementById("codigoGlobal").value = decodedText;
       document.getElementById("botonVerificarCodigo").click();
@@ -82,7 +40,7 @@ btnAbrir?.addEventListener("click", () => {
   ).catch(err => console.error("No se pudo iniciar el escáner:", err));
 });
 
-cerrar?.addEventListener("click", () => {
+cerrar.addEventListener("click", () => {
   if (scanner) {
     scanner.stop().then(() => {
       overlay.style.display = "none";
@@ -93,42 +51,54 @@ cerrar?.addEventListener("click", () => {
   }
 });
 
-// ------------------------- QR de cada carta ------------------------
-document.getElementById("botonCambiar")?.addEventListener("click", () => {
-  document.querySelectorAll(".carousel-item").forEach(item => {
-    if (window.getComputedStyle(item).display !== "none") {
+// ------------------------- QR de cada carta por separado -------------------------
+document.getElementById("botonCambiar").addEventListener("click", function () {
+  const carruseles = document.querySelectorAll(".carousel-item");
+  carruseles.forEach(item => {
+    const estilo = window.getComputedStyle(item);
+    if (estilo.display !== "none") {
       const qr = item.querySelector(".codigoqrdecarta");
       if (qr) {
-        qr.classList.toggle("mostrar");
-        qr.style.display = qr.classList.contains("mostrar") ? "block" : "none";
+        if (qr.classList.contains("mostrar")) {
+          qr.classList.remove("mostrar");
+          setTimeout(() => { qr.style.display = "none"; }, 400);
+        } else {
+          qr.style.display = "block";
+          setTimeout(() => { qr.classList.add("mostrar"); }, 10);
+        }
       }
     }
   });
 });
 
-// ------------------------- Botón Expansiones ------------------------
-window.abrirVentanaExpansiones = () => document.getElementById("ventanaExpansiones").style.display = "flex";
-window.cerrarVentanaExpansiones = () => document.getElementById("ventanaExpansiones").style.display = "none";
+// ------------------------- Botón Expansiones -------------------------
+function abrirVentanaExpansiones() {
+  document.getElementById("ventanaExpansiones").style.display = "flex";
+}
+function cerrarVentanaExpansiones() {
+  document.getElementById("ventanaExpansiones").style.display = "none";
+}
 
-// ------------------------- Carrusel de expansiones ------------------------
+// ------------------------- Carrusel de expansiones -------------------------
 let indiceCarruseldeExpansiones = 0;
-window.moverCarruseldeExpansiones = direccion => {
+function moverCarruseldeExpansiones(direccion) {
   const carrusel = document.querySelector('.carruseldeexpansiones');
   const totalItems = document.querySelectorAll('.carruseldeexpansiones-item').length;
-  indiceCarruseldeExpansiones = (indiceCarruseldeExpansiones + direccion + totalItems) % totalItems;
+  indiceCarruseldeExpansiones += direccion;
+  if (indiceCarruseldeExpansiones < 0) indiceCarruseldeExpansiones = totalItems - 1;
+  if (indiceCarruseldeExpansiones >= totalItems) indiceCarruseldeExpansiones = 0;
   carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
-};
+}
 
-// ------------------------- Lazy loading de imágenes ------------------------
-const observer = new IntersectionObserver(entries => {
+// ------------------------- Optimizador de imágenes -------------------------
+const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const el = entry.target;
-      if (!el.dataset.loaded && el.dataset.style) {
-        el.setAttribute('style', el.dataset.style);
-        el.dataset.loaded = "true";
-        observer.unobserve(el);
-      }
+      if (el.dataset.loaded) return;
+      if (el.dataset.style) el.setAttribute('style', el.dataset.style);
+      el.dataset.loaded = "true";
+      observer.unobserve(el);
     }
   });
 });
@@ -141,9 +111,9 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
   if (el.dataset.style) observer.observe(el);
 });
 
-// ------------------------- DOMContentLoaded ------------------------
+// ------------------------- DOMContentLoaded -------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // Bloqueo de zoom global
+  // Bloquear zoom global
   document.addEventListener('gesturestart', e => e.preventDefault());
   let lastTouchEnd = 0;
   document.addEventListener('touchend', event => {
@@ -156,20 +126,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { passive: false });
 
   // Pantalla negra
-  const pantallaNegra = document.getElementById('pantallaNegra');
-  const mostrarPantallaNegra = () => {
-    pantallaNegra?.classList.add('activo');
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-  };
-  const ocultarPantallaNegra = () => {
-    pantallaNegra?.classList.remove('activo');
-    document.body.style.overflow = "auto";
-    document.documentElement.style.overflow = "auto";
-  };
+  function mostrarPantallaNegra() {
+    const pantallaNegra = document.getElementById('pantallaNegra');
+    if (pantallaNegra) {
+      pantallaNegra.classList.add('activo');
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    }
+  }
+  function ocultarPantallaNegra() {
+    const pantallaNegra = document.getElementById('pantallaNegra');
+    if (pantallaNegra) {
+      pantallaNegra.classList.remove('activo');
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    }
+  }
 
   // Alertas personalizadas
-  const mostrarAlerta = (mensaje, tipo) => {
+  function mostrarAlerta(mensaje, tipo) {
     const modal = document.getElementById("alertaModal");
     const texto = document.getElementById("textoAlerta");
     const contenido = document.querySelector(".contenido-alerta");
@@ -186,16 +161,14 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.classList.remove("oculto");
       document.body.style.overflow = "hidden";
     }
-  };
-
+  }
   window.cerrarAlerta = () => {
     document.getElementById("alertaModal")?.classList.add("oculto");
     document.body.style.overflow = "auto";
   };
-
   document.addEventListener("keydown", e => {
     if (e.key === "Enter" && !document.getElementById("alertaModal")?.classList.contains("oculto")) {
-      window.cerrarAlerta();
+      cerrarAlerta();
     }
   });
 
@@ -210,11 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
   fondonegro.style.display = "none";
 
   // Cartel amarillo y requisitos activos
-  let cartelActivo = null, requisitosActivos = [];
+  let cartelActivo = null;
+  let requisitosActivos = [];
   document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
     const codigo = document.getElementById("codigoGlobal").value.trim();
     if (!codigo) return;
-    let encontrado = false, desbloqueada = false;
+    let encontrado = false;
+    let desbloqueada = false;
     document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
       const overlay = wrapper.querySelector(".overlay-bloqueo");
       const pass = wrapper.getAttribute("data-pass");
@@ -279,10 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
     fondonegro.style.display = "none";
     document.body.style.overflow = "auto";
   };
-
   document.querySelectorAll('.botonatras').forEach(boton => {
     if (boton.textContent.trim() === "X") {
-      boton.addEventListener('click', e => {
+      boton.addEventListener('click', (e) => {
         e.stopPropagation();
         cerrarCarrusel();
       });
@@ -311,16 +285,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Genera el HTML de las cartas requeridas con su estado
   function generarContenidoCartel(listaIds) {
-    return `<div class='cartas-requeridas'>${listaIds.map(passId => {
+    let html = "<div class='cartas-requeridas'>";
+    listaIds.forEach(passId => {
       const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
       if (cartaWrapper) {
         const boton = cartaWrapper.querySelector('.cartaejemplo');
         const fondo = boton?.getAttribute('data-style') || "";
-        const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo');
-        return `<div class="carta-mini" style="${fondo}">${bloqueada ? "<div class='mini-overlay'></div>" : ""}</div>`;
+        const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
+        html += `<div class="carta-mini" style="${fondo}">${bloqueada ? "<div class='mini-overlay'></div>" : ""}</div>`;
       }
-      return "";
-    }).join('')}</div>`;
+    });
+    html += "</div>";
+    return html;
   }
 
   // Mostrar cartel dentro de un overlay negro
@@ -390,7 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.carousel-item').forEach(contenedor => {
     contenedor.querySelectorAll('.carta').forEach(carta => {
       let isDragging = false, circulosCreados = false;
-      const crearCirculos = () => {
+      function crearCirculos() {
         if (circulosCreados) return;
         (carta.getAttribute("data-circle") || "circle").split(/[\s,]+/).forEach(clase => {
           const c = document.createElement("div");
@@ -401,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
           carta.appendChild(neg);
         });
         circulosCreados = true;
-      };
+      }
       const start = () => { isDragging = true; crearCirculos(); carta.style.transition = "none"; };
       const move = e => {
         if (!isDragging) return;
@@ -463,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
       grupoBLineas.push(linea);
     });
     let ticking = false;
-    const moverLineas = e => {
+    function moverLineas(e) {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const touch = e.type.includes('touch');
@@ -483,15 +459,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         ticking = true;
       }
-    };
-    const resetLineas = () => [...grupoALineas, ...grupoBLineas].forEach(linea => linea.style.transform = 'translate(0,0)');
+    }
+    function resetLineas() {
+      [...grupoALineas, ...grupoBLineas].forEach(linea => linea.style.transform = 'translate(0,0)');
+    }
     contenedorLineas.addEventListener('mousemove', moverLineas);
     contenedorLineas.addEventListener('touchmove', moverLineas, { passive: true });
     contenedorLineas.addEventListener('mouseleave', resetLineas);
     contenedorLineas.addEventListener('touchend', resetLineas);
-    contenedorLineas.addEventListener('touchcancel', resetLineas);
+        contenedorLineas.addEventListener('touchcancel', resetLineas);
   });
-
-  
-  
-});
+    });
