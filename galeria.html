@@ -1,69 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <link rel="stylesheet" tipe="text/css" href="style/style.css" />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Fredericka+the+Great&family=Kranky&family=Lacquer&family=Slackside+One&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="/assets/icon-192.png">   
-<meta charset="UTF-8" />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Michi Box Card Game</title>
+
+    <!-- Estilos -->
     <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/png" href="/assets/icon-192.png" />
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Fredericka+the+Great&family=Kranky&family=Lacquer&family=Slackside+One&display=swap" rel="stylesheet" />
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript" defer></script>
   </head>
   <body class="galeriabackground">
     <main>
 
 
-<!----------------------------ALERTA--------------------------------->
-
+      <!-- Alerta Modal -->
       <div id="alertaModal" class="modal-alerta oculto">
         <div class="contenido-alerta">
-<DIV class="michiconfundido"></DIV>
-          <p id="textoAlerta" ></p>
+          <div class="michiconfundido"></div>
+          <p id="textoAlerta"></p>
           <button onclick="cerrarAlerta()">OK</button>
         </div>
       </div>
 
-<!------------------------PANTALLA NEGRA CARGANDO ------------------------------------>
-<div class="pantallacargando">
-   <div class="spinner"></div>
-   <div class="logospinner"></div>
-</div>
-
-<!------------------------PANTALLA NEGRA CARGANDO al desbloquear carta------------------------------------->
-
-
-      <div class="pantallaNegra" id="pantallaNegra">
- <div class="spinner"></div>
-    <div class="logospinner"></div>
+      <!-- Pantalla Negra Cargando -->
+      <div class="pantallacargando">
+        <div class="spinner"></div>
+        <div class="logospinner"></div>
       </div>
 
+      <!-- Pantalla Negra al Desbloquear Carta -->
+      <div class="pantallaNegra" id="pantallaNegra">
+        <div class="spinner"></div>
+        <div class="logospinner"></div>
+      </div>
 
-
-
-
-
-<!----------------------boton de codigo--------------------------------------->
-
-
-  <div id="CANJEARCODIGO" class="BOTONDESBLOQUEAR" id="inputCodigoContainer">
-    <input type="text" id="codigoGlobal" placeholder="INGRESAR CÓDIGO" autocomplete="off" />
-    <button id="botonVerificarCodigo">🔓</button>
-  </div>
+      <!-- Botón de Código -->
+      <div id="CANJEARCODIGO" class="BOTONDESBLOQUEAR">
+        <input type="text" id="codigoGlobal" placeholder="INGRESAR CÓDIGO" autocomplete="off" />
+        <button id="botonVerificarCodigo">🔓</button>
+      </div>
 
 <!------------------------------------------------------------->
 
 
       <div id="GALERIA" class="carousel-container">
 
-<div  class="cartasgaleriacontainer">
+<div id="MICHIBOX001" class="cartasgaleriacontainer">
   <div class="expansion" style="background-image: url(./assets/logoprograma03.webp);"></div>
   <div class="contenedorcolores">
 
@@ -96,7 +90,7 @@
       <div class="overlay-bloqueo overnormal"></div>
     </div>
     <div class="carta-wrapper" data-pass="MAGIC">
-      <button class="cartaejemplo comun"  data-lazy="true" data-style="background-image: url(./assets/cartas/MINIATURAS/008.webp);" data-target="carousel-item-8"></button>
+      <button class="cartaejemplo comun"  data-lazy="true" data-style="background-image: url(./assets/cartas/MINIATURAS/008.webp);" data-target="carousel-i6tem-8"></button>
       <div class="overlay-bloqueo overnormal"></div>
     </div>
     <div class="carta-wrapper" data-pass="GOLD">
@@ -802,77 +796,63 @@
 </div>
 <!-----------------------------------------------------------------------------> 
       </div>
+<!-----------------------------------------------------------------------------> 
 
-    <DIV class="contenedorbotoncerrar">
+<DIV class="contenedorbotoncerrar">
   <a class="botonatras" onclick="abrirVentanaExpansiones()" style="background-image: url(./assets/expansiones.webp);"> EXPANSIONES </a>
-<a href="#" id="botonCerrar" class="botonatras" onclick="cerrarGaleriaDesdeIframe()">X</a>
-<a id="btn-abrir-escaner" class="botonatras" style="background-image: url(./assets/qr.webp);"> ESCANEAR </a>
-
-    </DIV>
-
-
+  <a href="#" id="botonCerrar" class="botonatras" onclick="cerrarGaleriaDesdeIframe()">X</a>
+  <a id="btn-abrir-escaner" class="botonatras" style="background-image: url(./assets/qr.webp);"> ESCANEAR </a>
+</DIV>
 
 <div id="overlay">
   <div id="reader"></div>
   <p id="resultado"></p>
-
-         <DIV class="contenedorbotoncerrar">
-          <button id="cerrar-overlay" class="botonatrasexpansiones">X</button>
-       </DIV>
+  <DIV class="contenedorbotoncerrar">
+    <button id="cerrar-overlay" class="botonatrasexpansiones">X</button>
+  </DIV>
 </div>
-
-
 
 
 <!-- VENTANA EMERGENTE expansiones---------------------------------------------------------->
 <div id="ventanaExpansiones" style="display: none;">
   <div class="ventana-emergente">
-
-
-               <div class="carruseldeexpansiones-container">
-    <button class="carruseldeexpansiones-btn prev" onclick="moverCarruseldeExpansiones(-1)">‹</button>
-
-    <div class="carruseldeexpansiones">
-      <div data-lazy="true"  class="carruseldeexpansiones-item lazy-michi" style="background-image: url(./assets/expansion001.webp);"></div>
-      <div data-lazy="true"  class="carruseldeexpansiones-item lazy-michi" style="background-image: url(./assets/expansion002.webp);"></div>
-      <div data-lazy="true"  class="carruseldeexpansiones-item lazy-michi" style="background-image: url(./assets/expansion002.webp);"></div>
-    </div>
-
+      <div class="carruseldeexpansiones-container">
+        <button class="carruseldeexpansiones-btn prev" onclick="moverCarruseldeExpansiones(-1)">‹</button>
+        <div class="carruseldeexpansiones">
+          <a href="#MICHIBOX001" onclick="cerrarVentanaExpansiones()" data-lazy="true"  class="carruseldeexpansiones-item lazy-michi" style="background-image: url(./assets/expansion001.webp);"></a>
+          <div data-lazy="true"  class="carruseldeexpansiones-item lazy-michi" style="background-image: url(./assets/expansion002.webp);"></div>
+          <div data-lazy="true"  class="carruseldeexpansiones-item lazy-michi" style="background-image: url(./assets/expansion002.webp);"></div>
+        </div>
     <button class="carruseldeexpansiones-btn next" onclick="moverCarruseldeExpansiones(1)">›</button>
-  </div>
-              
-
-
-       <DIV class="contenedorbotoncerrar">
-          <a onclick="cerrarVentanaExpansiones()" class="botonatrasexpansiones">X</a>
-       </DIV>
-
-
+      </div>
+    <DIV class="contenedorbotoncerrar">
+      <a onclick="cerrarVentanaExpansiones()" class="botonatrasexpansiones">X</a>
+    </DIV>
   </div>
 </div>
 
 
     </main>
+
+    <!-- Scripts -->
     <script>
       AOS.init();
     </script>
-    <script src="sketch/sketch.js"></script>
+    <script src="sketch/sketch.js" defer></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(() => console.log("Service Worker registrado"))
+          .catch((error) => console.error("Error al registrar el Service Worker", error));
+      }
 
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js")
-      .then(() => console.log("Service Worker registrado"))
-      .catch((error) => console.error("Error al registrar el Service Worker", error));
-  }
-</script>
-
-<script>
-  function cerrarGaleriaDesdeIframe() {
-    if (window.parent && typeof window.parent.cerrarGaleria === 'function') {
-      window.parent.cerrarGaleria();
-    }
-  }
-</script>
+      function cerrarGaleriaDesdeIframe() {
+        if (window.parent && typeof window.parent.cerrarGaleria === "function") {
+          window.parent.cerrarGaleria();
+        }
+      }
+    </script>
 
   </body>
 </html>

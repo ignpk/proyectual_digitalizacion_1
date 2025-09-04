@@ -47,8 +47,6 @@ html, body{
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   z-index: 1000;
 }
 
@@ -70,7 +68,11 @@ html, body{
 .line-container,
 .main-container,
 .cartel,
-.overlaY{
+.overlaY,
+#galeriaContainer,
+#queesContainer,
+#noticiasContainer,
+.lineascolores{
   width: 100%;
   height: 100%;
 }
@@ -94,6 +96,7 @@ html, body{
   outline: none;
 }
 
+.tarjeta, 
 .carta,
 .fondo-rainbow,
 .medio,
@@ -110,7 +113,21 @@ html, body{
 .circle3,
 .circle4,
 .circle5,
-.circle6{
+.circle6,
+.IMAGENLOGOBANNER,
+.botondescargarapp,
+.botondescargarapp img,
+ .overlay-bloqueo,
+ .oro::before,.plata::before,
+ .mini-overlay,
+ .logospinner,
+ .codigoqrdecarta,
+ .QRRARO::before,
+ .lineascolores,
+ .michi,
+ .bordecarta,
+ .contenedorQUEESyNOTICIAS,
+ .carruseldeexpansiones-btn{
   position: absolute;
 }
 
@@ -122,6 +139,7 @@ html, body{
 .BOTONDESBLOQUEAR,
 .overlay-fondo{
     backdrop-filter: blur(5px);
+    
 
 }
 
@@ -285,7 +303,6 @@ html, body{
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  position: absolute;
 }
  
 
@@ -327,7 +344,6 @@ html, body{
 
 
 .botondescargarapp{
-  position: absolute;
   display: none;
   width: 300px;
   height: 60px;
@@ -350,7 +366,6 @@ pointer-events: none;
 .botondescargarapp img{
   top: -10px;
   right: -5px;
-position: absolute;
 width: 80px;
 height: 80px;
 pointer-events: none;
@@ -472,7 +487,6 @@ border-radius: 3px;
   }
   .overlay-bloqueo {
     overflow: hidden;
-    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -515,7 +529,6 @@ animation: orobrillo 4s linear infinite;
 /* Haz de luz */
 .oro::before,.plata::before {
   content: "";
-  position: absolute;
   top: -150%;
   left: -150%;
   width: 200%;
@@ -558,15 +571,16 @@ animation: orobrillo 4s linear infinite;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   background: rgba(0, 0, 0, 0.467);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9998;
     animation: fadeIn 0.3s ease-in-out;
+      width: 100%;
+  height: 100%;
 }
+
 
 .cartel-advertencia {
   padding: 5%;
@@ -610,7 +624,6 @@ animation: orobrillo 4s linear infinite;
 }
 
 .mini-overlay {
-  position: absolute;
   inset: 0;
   background: rgba(255, 208, 0, 0.763);
   border-radius: 3px;
@@ -658,14 +671,10 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
 }
 
 .alerta-desbloqueo .circulo-imagen img {
-  width: 55px;
+  width: 80px;
   height: 80px;
   object-fit: cover;
   display: block;
-  border-radius: 3px;
-  filter: sepia(1) saturate(3) hue-rotate(350deg) brightness(1) ;
-  box-shadow: 0px 0px 14px 7px rgb(255, 204, 0);
-  transform: rotate(10deg);
 }
 
 
@@ -694,7 +703,6 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
 }
 
 .logospinner{
-  position: absolute;
     border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -826,7 +834,6 @@ filter: opacity(0);
 /* --------------------------QR DE CARTA------------------------- */
 .codigoqrdecarta {
   display: none;
-  position: absolute;
   z-index: 999999999999999999999999;
   opacity: 0;
   transform: scale(0.95);
@@ -859,7 +866,6 @@ background-color:rgba(0, 0, 0, 0.545);
 /* HAZ DE LUZ */
 .QRRARO::before {
   content: "";
-  position: absolute;
   top: -300%;
   left: 100%;
   width: 20px;
@@ -919,7 +925,6 @@ overflow: visible;
 
 .tarjeta {
   z-index: 10;
-  position: absolute; 
   perspective: 2000px;
   transform-style: preserve-3d;
 }
@@ -970,12 +975,6 @@ overflow: hidden;
 }
 
 
-.lineascolores{
-  width: 100%;
-  height: 100%;
-    position: absolute;
-}
-
 .fondo-rainbow{
   background: linear-gradient(45deg, rgba(0,255,76,1) 0%, rgba(255,0,228,1) 49%, rgba(0,202,255,1) 71%, rgba(255,248,0,1) 100%);
 }
@@ -988,7 +987,6 @@ overflow: hidden;
 
 .michi{
   background-size: cover;
-  position: absolute;
   width: 309px; 
   height: 450px;
 }
@@ -1029,7 +1027,6 @@ overflow: hidden;
 
 .bordecarta{
   z-index: 18;
-  position: absolute;
   background-image: url(../assets/cartas/borde.webp);
   background-size: cover;
 
@@ -1125,7 +1122,6 @@ transform: translateY(50px);
 .contenedorQUEESyNOTICIAS{
    overflow-y: auto;
   overflow-x: hidden;
-  position: absolute;
   padding-top: 100px;
 width: 100%;
 height: 90vh;
@@ -1229,6 +1225,7 @@ display: none;
   z-index: 999999999;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 .ventana-emergente {
@@ -1259,19 +1256,10 @@ display: none;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  animation: entrada 0.5s ease;
+  animation: zoom 0.2s ease-in-out;
 }
-@keyframes entrada{
-  0%{
-    transform: scale(1.5);
-  }
-    100%{
-    transform: scale(1);
-  }
-}
-.carruseldeexpansiones-btn {
 
-  position: absolute;
+.carruseldeexpansiones-btn {
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0);
@@ -1280,6 +1268,7 @@ display: none;
   cursor: pointer;
   z-index: 10;
   padding: 10px;
+
 }
 
 .carruseldeexpansiones-btn.prev {
