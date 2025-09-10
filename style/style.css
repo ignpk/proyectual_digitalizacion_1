@@ -1278,6 +1278,7 @@ display: none;
 .carruseldeexpansiones {
   transition: transform 0.5s ease;
   width: 100%;
+    animation: fadeIn 0.2s ease-in-out, zoom 0.2s ease-in-out;
 }
 
 .carruseldeexpansiones-item {
@@ -1290,16 +1291,17 @@ display: none;
   justify-content: center;
   align-items: last baseline;
   display: flex;
+animation: sobreflotar 1.5s ease-in-out alternate infinite;
 }
-.carruseldeexpansiones-item  p{
-  font-size: 100%;
-  font-size: 150%;
-  color: rgba(255, 255, 255, 0.496);
-  text-align: center;
-    font-family: "Covered By Your Grace", cursive !important;
-     letter-spacing: 3px;
-  font-style: normal;
+@keyframes sobreflotar {
+  0%{
+    transform: translateY(-15px);
+  }
+  100%{
+    transform: translateY(10px);
+  }
 }
+
 
 .carruseldeexpansiones-btn {
   top: 50%;
