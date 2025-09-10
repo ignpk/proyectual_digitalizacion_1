@@ -262,105 +262,143 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+// Cartel amarillo con requisitos
+document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    e.stopPropagation();
+    const mensajePersonalizado = overlay.getAttribute('data-cartel');
+    const requisitos = overlay.getAttribute('data-requiere');
+    let contenidoFinal = '';
+    if (mensajePersonalizado) {
+      contenidoFinal += `<p>${mensajePersonalizado}</p>`;
+      if (requisitos) contenidoFinal += generarContenidoCartel(JSON.parse(requisitos));
+    } else if (requisitos) {
+      contenidoFinal = generarContenidoCartel(JSON.parse(requisitos));
+    } else {
+      contenidoFinal = "<p>⚠ Carta bloqueada.</p>";
+    }
+    mostrarCartelEnOverlay(contenidoFinal);
+  });
+});
 
-  // Cartel amarillo con requisitos
-  window.totalInicialBloqueos = document.querySelectorAll('.overlay-bloqueo:not(.overespecial)').length;
-  document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
-    overlay.addEventListener('click', e => {
-      e.stopPropagation();
-      const mensajePersonalizado = overlay.getAttribute('data-cartel');
-      const requisitos = overlay.getAttribute('data-requiere');
-      let contenidoFinal = '';
-      if (mensajePersonalizado) {
-        contenidoFinal += `<p>${mensajePersonalizado}</p>`;
-        if (requisitos) contenidoFinal += generarContenidoCartel(JSON.parse(requisitos));
-      } else if (requisitos) {
-        contenidoFinal = generarContenidoCartel(JSON.parse(requisitos));
-      } else {
-        contenidoFinal = "<p>⚠ Carta bloqueada.</p>";
+// Genera el HTML de las cartas requeridas con su estado
+function generarContenidoCartel(listaIds) {
+  let html = "<div class='cartas-requeridas'>";
+  listaIds.forEach(passId => {
+    const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
+    if (cartaWrapper) {
+      const boton = cartaWrapper.querySelector('.cartaejemplo');
+      const fondo = boton?.getAttribute('data-style') || "";
+      const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
+      html += `<div class="carta-mini" style="${fondo}">${bloqueada ? "<div class='mini-overlay'></div>" : ""}</div>`;
+    }
+  });
+  html += "</div>";
+  return html;
+}
+
+// Mostrar cartel dentro de un overlay negro
+function mostrarCartelEnOverlay(htmlContenido) {
+  const overlayFondo = document.createElement('div');
+  overlayFondo.className = 'overlay-fondo';
+  const cartel = document.createElement('div');
+  cartel.className = 'cartel-advertencia';
+  cartel.innerHTML = `${htmlContenido}<button class="btn-cerrar-cartel">OK</button>`;
+  overlayFondo.appendChild(cartel);
+  document.body.appendChild(overlayFondo);
+  cartel.querySelector('.btn-cerrar-cartel').addEventListener('click', () => overlayFondo.remove());
+}
+
+function mostrarAlertaDesbloqueo() {
+  const alerta = document.createElement('div');
+  alerta.className = 'alerta-desbloqueo';
+  alerta.innerHTML = `<span class="mensaje">¡CARTA LEGENDARIA DESBLOQUEADA!</span>
+    <div class="circulo-imagen"><img src="../assets/icon-192.png" alt="Carta"></div>`;
+  document.body.appendChild(alerta);
+  setTimeout(() => alerta.classList.add('visible'), 50);
+  setTimeout(() => {
+    alerta.classList.remove('visible');
+    setTimeout(() => alerta.remove(), 500);
+  }, 5000);
+}
+
+// Desbloqueo por cantidad O por rareza específica (separado por expansión)
+function chequearDesbloqueosPorCantidadORareza() {
+  document.querySelectorAll('.cartasgaleriacontainer').forEach(expansion => {
+    // Cantidad de cartas desbloqueadas dentro de la expansión
+    const todasCartas = Array.from(expansion.querySelectorAll('.carta-wrapper:not(.overespecial)'));
+    const desbloqueadas = todasCartas.filter(wrapper => !wrapper.querySelector('.overlay-bloqueo')).length;
+
+    // Conteo de rarezas por expansión
+    const normalesTotal = expansion.querySelectorAll('.carta-wrapper .cartaejemplo.comun').length;
+    const rarasTotal = expansion.querySelectorAll('.carta-wrapper .cartaejemplo.plata').length;
+    const normalesBloqueadas = expansion.querySelectorAll('.overlay-bloqueo.overnormal').length;
+    const rarasBloqueadas = expansion.querySelectorAll('.overlay-bloqueo.overraro').length;
+
+    const normalesDesbloqueadas = normalesTotal - normalesBloqueadas;
+    const rarasDesbloqueadas = rarasTotal - rarasBloqueadas;
+
+    // Recorremos cartas que piden cantidad o rareza dentro de la expansión
+    expansion.querySelectorAll('.carta-wrapper[data-requiere-cantidad], .carta-wrapper[data-requiere-rareza]').forEach(wrapper => {
+      const overlay = wrapper.querySelector('.overlay-bloqueo');
+      if (!overlay) return;
+
+      // Desbloqueo por cantidad
+      if (wrapper.hasAttribute('data-requiere-cantidad')) {
+        const cantidadNecesaria = parseInt(wrapper.getAttribute('data-requiere-cantidad'), 10);
+        if (desbloqueadas >= cantidadNecesaria) {
+          overlay.remove();
+          setTimeout(() => mostrarAlertaDesbloqueo(), 3000);
+        }
       }
-      mostrarCartelEnOverlay(contenidoFinal);
+
+      // Desbloqueo por rareza
+      if (wrapper.hasAttribute('data-requiere-rareza')) {
+        const rarezas = wrapper.getAttribute('data-requiere-rareza').split(',');
+        let desbloquear = true;
+        rarezas.forEach(r => {
+          if (r === "normal" && normalesDesbloqueadas !== normalesTotal) desbloquear = false;
+          if (r === "raro" && rarasDesbloqueadas !== rarasTotal) desbloquear = false;
+        });
+        if (desbloquear) {
+          overlay.remove();
+          setTimeout(() => mostrarAlertaDesbloqueo(), 3000);
+        }
+      }
     });
   });
+}
 
-  // Genera el HTML de las cartas requeridas con su estado
-  function generarContenidoCartel(listaIds) {
-    let html = "<div class='cartas-requeridas'>";
-    listaIds.forEach(passId => {
-      const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
-      if (cartaWrapper) {
-        const boton = cartaWrapper.querySelector('.cartaejemplo');
-        const fondo = boton?.getAttribute('data-style') || "";
-        const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
-        html += `<div class="carta-mini" style="${fondo}">${bloqueada ? "<div class='mini-overlay'></div>" : ""}</div>`;
-      }
+// Chequea y desbloquea cartas automáticamente según requisitos
+function chequearDesbloqueosAutomaticos() {
+  const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
+  let cambios = false;
+  cartasBloqueadas.forEach(overlay => {
+    const wrapper = overlay.closest('.carta-wrapper');
+    if (!wrapper) return;
+    const requiere = overlay.getAttribute('data-requiere');
+    if (!requiere) return;
+    const requisitos = JSON.parse(requiere);
+    const todasDesbloqueadas = requisitos.every(id => {
+      const cartaReq = document.querySelector(`.carta-wrapper[data-pass="${id}"]`);
+      return cartaReq && !cartaReq.querySelector('.overlay-bloqueo');
     });
-    html += "</div>";
-    return html;
-  }
+    if (todasDesbloqueadas) {
+      overlay.remove();
+      cambios = true;
+      setTimeout(() => mostrarAlertaDesbloqueo(), 3000);
+    }
+  });
+  if (cambios) chequearDesbloqueosAutomaticos();
 
-  // Mostrar cartel dentro de un overlay negro
-  function mostrarCartelEnOverlay(htmlContenido) {
-    const overlayFondo = document.createElement('div');
-    overlayFondo.className = 'overlay-fondo';
-    const cartel = document.createElement('div');
-    cartel.className = 'cartel-advertencia';
-    cartel.innerHTML = `${htmlContenido}<button class="btn-cerrar-cartel">OK</button>`;
-    overlayFondo.appendChild(cartel);
-    document.body.appendChild(overlayFondo);
-    cartel.querySelector('.btn-cerrar-cartel').addEventListener('click', () => overlayFondo.remove());
-  }
+  // ahora chequeamos cantidad y rarezas
+  chequearDesbloqueosPorCantidadORareza();
+}
 
-  function mostrarAlertaDesbloqueo(mensaje) {
-    const alerta = document.createElement('div');
-    alerta.className = 'alerta-desbloqueo';
-    alerta.innerHTML = `<span class="mensaje">${mensaje}</span>
-      <div class="circulo-imagen"><img src="../assets/icon-192.png" alt="Carta"></div>`;
-    document.body.appendChild(alerta);
-    setTimeout(() => alerta.classList.add('visible'), 50);
-    setTimeout(() => {
-      alerta.classList.remove('visible');
-      setTimeout(() => alerta.remove(), 500);
-    }, 5000);
-  }
-
-  // Desbloqueo de legendarias por cantidad de cartas desbloqueadas
-  function chequearDesbloqueosPorCantidad() {
-    const bloqueadasAhora = document.querySelectorAll('.overlay-bloqueo:not(.overespecial)').length;
-    const desbloqueadas = window.totalInicialBloqueos - bloqueadasAhora;
-    document.querySelectorAll('.carta-wrapper[data-requiere-cantidad]').forEach(wrapper => {
-      const cantidadNecesaria = parseInt(wrapper.getAttribute('data-requiere-cantidad'), 10);
-      const overlay = wrapper.querySelector('.overlay-bloqueo');
-      if (overlay && desbloqueadas >= cantidadNecesaria) {
-        overlay.remove();
-        setTimeout(() => mostrarAlertaDesbloqueo("¡CARTA LEGENDARIA DESBLOQUEADA!"), 3000);
-      }
-    });
-  }
-
-  // Chequea y desbloquea cartas automáticamente según requisitos
-  function chequearDesbloqueosAutomaticos() {
-    const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
-    let cambios = false;
-    cartasBloqueadas.forEach(overlay => {
-      const wrapper = overlay.closest('.carta-wrapper');
-      if (!wrapper) return;
-      const requiere = overlay.getAttribute('data-requiere');
-      if (!requiere) return;
-      const requisitos = JSON.parse(requiere);
-      const todasDesbloqueadas = requisitos.every(id => {
-        const cartaReq = document.querySelector(`.carta-wrapper[data-pass="${id}"]`);
-        return cartaReq && !cartaReq.querySelector('.overlay-bloqueo');
-      });
-      if (todasDesbloqueadas) {
-        overlay.remove();
-        cambios = true;
-        setTimeout(() => mostrarAlertaDesbloqueo("¡CARTA LEGENDARIA DESBLOQUEADA!"), 3000);
-      }
-    });
-    if (cambios) chequearDesbloqueosAutomaticos();
-    chequearDesbloqueosPorCantidad();
-  }
+// Ejecutar al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+  chequearDesbloqueosAutomaticos();
+});
 
   // Efectos carta
   document.querySelectorAll('.carousel-item').forEach(contenedor => {
