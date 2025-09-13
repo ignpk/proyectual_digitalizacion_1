@@ -1050,6 +1050,24 @@ overflow: hidden;
   }
 }
 
+@keyframes parpadeorayosx {
+0%, 30%, 31%, 31.6%, 32.2%, 98.2%, 98.5%, 100%{
+  filter: opacity(0);
+}
+
+30.5%, 31.3%, 32%, 32.5%, 98%, 98.3%, 99.2%, 99.5%{
+  filter: opacity(1);
+}
+33%{
+    filter: opacity(1) brightness(2) saturate(1.2);
+}
+50%{
+    filter: opacity(1) brightness(1) saturate(1);
+}
+
+}
+
+
 @keyframes animacion {
   from { background-position: 0 0; }
   to { background-position: -1236px 0; } /* Se mueve 4 frames (342px * 4) */
