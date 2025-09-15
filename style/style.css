@@ -314,7 +314,6 @@ html, body{
   align-items: center;
   display: flex;
      animation: fadeIn 1s ease-in-out 7.9s forwards;
-
 }
 .botonesmenu{
     justify-content: center;
@@ -328,7 +327,9 @@ html, body{
   aspect-ratio: 1 / 1; 
 }
 
-
+.iconomenu:nth-child(1){
+display: none;
+}
 
 .descripcionbanner{
   position:absolute;
@@ -342,6 +343,21 @@ html, body{
 
 }
 
+.infoandroid{
+  transform: rotate(5DEG);
+  right: 3%;
+  top: 1%;
+  width: 300PX;
+  height: 230PX;
+  background-image: url(../assets/cartel_android.webp);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  z-index: 999;
+}
 
 .botondescargarapp{
   display: none;
@@ -1377,6 +1393,16 @@ animation: sobreflotar 1.5s ease-in-out alternate infinite, brillosobres 2.5s ea
 
 @media only screen and (max-width: 500px){
 
+  .iconomenu:nth-child(1){
+display: block;
+}
+
+  .infoandroid{
+  display: none;
+
+}
+
+
 .botonatras:nth-child(3){
 pointer-events: all;
 display: flex;
@@ -1445,6 +1471,7 @@ top: 90%;
 .CONTENEDORESBOTONESMENU{
   height: 60%;
   transform: translateY(-10%);
+
 }
 
 
