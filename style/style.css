@@ -1320,6 +1320,17 @@ animation: sobreflotar 1.5s ease-in-out alternate infinite, brillosobres 2.5s ea
 
   }
 }
+
+@keyframes desplazamientolateral {
+  0%{
+    transform: translateX(-100%) translateY(-15px);
+  }
+  100%{
+    transform: translateX(100%) translateY(10px);
+
+  }
+}
+
 @keyframes brillosobres{
   0%{
             filter: brightness(1)saturate(1) contrast(1);
