@@ -5,18 +5,35 @@ function mostrarGaleria() {
 function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
 }
+
 function mostrarQuees() {
   document.getElementById('queesContainer').style.display = 'block';
 }
 function cerrarQuees() {
   document.getElementById('queesContainer').style.display = 'none';
 }
+
+// ------------------------- Noticias -------------------------
 function mostrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'block';
 }
+
 function cerrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'none';
+  // Marcamos que ya se vieron las noticias
+  localStorage.setItem("noticiasVistas", "true");
 }
+
+// ------------------------- Mostrar noticias al abrir la app -------------------------
+window.addEventListener("load", () => {
+  const esPWA = window.matchMedia('(display-mode: standalone)').matches 
+                || window.navigator.standalone === true;
+
+  // Solo si está en PWA instalada y no vio noticias antes
+  if (esPWA && !localStorage.getItem("noticiasVistas")) {
+    mostrarNoticias();
+  }
+});
 
 // ------------------------- Escáner QR -------------------------
 let scanner;

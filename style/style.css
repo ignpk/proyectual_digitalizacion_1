@@ -1323,7 +1323,7 @@ display: none;
   justify-content: center;
   align-items: last baseline;
   display: flex;
-animation: sobreflotar 1.5s ease-in-out alternate infinite, brillosobres 2.5s ease-in-out alternate infinite;
+animation: sobreflotar 1.2s ease-in-out alternate infinite, brillosobres 1.8s ease-in-out alternate infinite;
 }
 @keyframes sobreflotar {
   0%{
