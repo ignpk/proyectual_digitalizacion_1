@@ -467,18 +467,19 @@ transition: 0.3s ease;
   }
   
   .cartasgaleriacontainer{
-    gap: 40px;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: auto;
     flex-wrap: wrap;
+  animation: slideDown 1s ease-out, fadeIn 1s ease-in-out;
   }
 
 .contenedorcolores{
   gap: 20px;
   flex-wrap: wrap;
-  width: 85%;
+  padding: 20px 5%;
+  width: 100%;
   height: auto;
 }
 
@@ -814,7 +815,7 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
   background-size: auto;
   position: fixed;
   z-index: 999999999999999999;
-  pointer-events: none;
+  pointer-events: none !important;
   animation: cargando 1.1s ;
 filter: opacity(0);
 }
@@ -851,14 +852,13 @@ filter: opacity(0);
     text-align: center;
     width: 100%;
     position: absolute;
-    top: 5%;
-    font-size: 120%;
+    top: 2%;
     color: rgba(255, 255, 255, 0.536);
   }
 .PLEGENDARIO,
   .PNORMAL,
   .PRARO{
-    transform: translateY(25px) rotate(-3deg);
+    transform: translateY(40px) rotate(-3deg);
         font-family: "Covered By Your Grace", cursive !important;
      letter-spacing: 2px;
   font-style: normal;
@@ -1158,7 +1158,6 @@ display: none;
 }
 
 .expansion{
-  transform: translateY(40px);
   pointer-events: none;
   width: 100%;
   height: 180px;

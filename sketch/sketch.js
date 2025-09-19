@@ -90,6 +90,23 @@ function moverCarruseldeExpansiones(direccion) {
   carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
 }
 
+// Mostrar la expansión seleccionada y ocultar las demás
+function mostrarExpansion(numero) {
+  const expansiones = document.querySelectorAll('.cartasgaleriacontainer');
+  expansiones.forEach(expansion => {
+    if (expansion.getAttribute('data-expansion') === numero) {
+      expansion.style.display = 'block'; // mostrar la elegida
+    } else {
+      expansion.style.display = 'none'; // ocultar las demás
+    }
+  });
+}
+
+// Mostrar expansión 1 por defecto al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarExpansion("1");
+});
+
 // ------------------------- Optimizador de imágenes -------------------------
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -197,6 +214,16 @@ document.addEventListener("DOMContentLoaded", () => {
         encontrado = true;
         if (overlay) {
           overlay.remove();
+
+             // 🔥 Cambiar a la expansión del contenedor padre
+    const contenedor = wrapper.closest(".cartasgaleriacontainer");
+    if (contenedor) {
+      const expansionNum = contenedor.getAttribute("data-expansion");
+      if (expansionNum) {
+        mostrarExpansion(expansionNum);
+      }
+    }
+
           desbloqueada = true;
           const boton = wrapper.querySelector(".cartaejemplo");
           const id = boton?.getAttribute("data-target");
@@ -215,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => item.classList.remove("animacion-primera-vez"), 3000);
               }
             }, 2000);
-            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 2500);
             setTimeout(chequearDesbloqueosAutomaticos, 0);
           }
         }
