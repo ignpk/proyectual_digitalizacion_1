@@ -64,7 +64,6 @@ html, body{
 .arriba,
 .bordecarta,
 .efectoholograficolineas,
-.capaholograficaestrellas,
 .line-container,
 .main-container,
 .cartel,
@@ -89,7 +88,6 @@ html, body{
 .sombra,
 .overlay,
 .efectoholograficolineas,
-.capaholograficaestrellas,
 .bordecarta,
 .michi{
   pointer-events: none;
@@ -581,7 +579,6 @@ animation: orobrillo 4s linear infinite;
 
 
 
-
 /* --------------------------------------requisitos y alerta de legendarias------------------------------------ */
 
 .overlay-fondo {
@@ -1063,6 +1060,18 @@ overflow: hidden;
   }
   100%{
     transform: translateY(8px) scale(1.03);
+  }
+}
+
+@keyframes brillomonedaoro {
+  0%{
+    filter: brightness(1) saturate(1) contrast(1);
+  }
+    60%{
+    filter: brightness(1) saturate(1) contrast(1);
+  }
+    100%{
+    filter: brightness(2) saturate(2) contrast(2);
   }
 }
 
