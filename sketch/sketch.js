@@ -352,19 +352,57 @@ function mostrarCartelEnOverlay(htmlContenido) {
   document.body.appendChild(overlayFondo);
   cartel.querySelector('.btn-cerrar-cartel').addEventListener('click', () => overlayFondo.remove());
 }
-
 function mostrarAlertaDesbloqueo() {
+  // Crear el fondo que cubre toda la pantalla
+  const fondo = document.createElement('div');
+  fondo.className = 'fondoexplosion';
+
+  // Generar estrellas dentro del fondo (todas desde arriba a la derecha)
+  for (let i = 0; i < 25; i++) {
+    const estrella = document.createElement('div');
+    estrella.className = 'estrella';
+    estrella.style.top = `0px`;
+    estrella.style.right = `0px`;
+
+    // Trayectoria aleatoria hacia la izquierda y hacia abajo
+    const desplazamientoX = -(Math.random() * window.innerWidth); // siempre hacia la izquierda
+    const desplazamientoY = Math.random() * window.innerHeight; // siempre hacia abajo
+
+    estrella.style.setProperty('--dx', `${desplazamientoX}px`);
+    estrella.style.setProperty('--dy', `${desplazamientoY}px`);
+    estrella.style.animationDelay = `${Math.random() * 0.8}s`;
+
+    fondo.appendChild(estrella);
+  }
+
+  document.body.appendChild(fondo);
+
+  // Crear la alerta
   const alerta = document.createElement('div');
   alerta.className = 'alerta-desbloqueo';
-  alerta.innerHTML = `<span class="mensaje">¡CARTA LEGENDARIA DESBLOQUEADA!</span>
-    <div class="circulo-imagen"><img src="../assets/icon-192.png" alt="Carta"></div>`;
+  alerta.innerHTML = `
+    <span class="mensaje">¡CARTA LEGENDARIA DESBLOQUEADA!</span>
+    <div class="circulo-imagen"><img src="../assets/icon-192.png" alt="Carta"></div>
+  `;
   document.body.appendChild(alerta);
-  setTimeout(() => alerta.classList.add('visible'), 50);
+
+  // Mostrar con delay
+  setTimeout(() => {
+    fondo.classList.add('visible');
+    alerta.classList.add('visible');
+  }, 50);
+
+  // Ocultar y eliminar
   setTimeout(() => {
     alerta.classList.remove('visible');
-    setTimeout(() => alerta.remove(), 500);
+    fondo.classList.remove('visible');
+    setTimeout(() => {
+      alerta.remove();
+      fondo.remove();
+    }, 1000);
   }, 5000);
 }
+
 
 // Desbloqueo por cantidad O por rareza específica (separado por expansión)
 function chequearDesbloqueosPorCantidadORareza() {
