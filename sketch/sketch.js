@@ -270,23 +270,44 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("codigoGlobal").value = "";
   });
 
-  // Abrir cartas desbloqueadas
-  document.querySelectorAll(".cartaejemplo").forEach(boton => {
-    boton.addEventListener("click", e => {
-      e.stopPropagation();
-      const wrapper = boton.closest(".carta-wrapper");
-      if (!wrapper.querySelector(".overlay-bloqueo")) {
-        const id = boton.getAttribute("data-target");
-        const item = document.getElementById(id);
-        if (item) {
-          carouselItems.forEach(i => i.style.display = "none");
-          item.style.display = "flex";
-          fondonegro.style.display = "block";
-          document.body.style.overflow = "hidden";
+// Abrir cartas desbloqueadas
+document.querySelectorAll(".cartaejemplo").forEach(boton => {
+  boton.addEventListener("click", e => {
+    e.stopPropagation();
+
+    const wrapper = boton.closest(".carta-wrapper");
+    if (!wrapper.querySelector(".overlay-bloqueo")) {
+
+      const id = boton.getAttribute("data-target");
+      const item = document.getElementById(id);
+      if (item) {
+        carouselItems.forEach(i => i.style.display = "none");
+        item.style.display = "flex";
+        fondonegro.style.display = "block";
+        document.body.style.overflow = "hidden";
+
+        // Overlay de carga para legendarias
+        if (item.classList.contains("Clegendario") && !item.dataset.cargaMostrada) {
+          item.dataset.cargaMostrada = "true";
+
+          const tarjeta = item.querySelector(".tarjeta");
+          const overlayCarta = document.createElement("div");
+          overlayCarta.className = "overlay-revelado";
+
+          tarjeta.appendChild(overlayCarta);
+
+          setTimeout(() => {
+            // opcional: animación fade-out
+            overlayCarta.classList.add("fade-out");
+            setTimeout(() => overlayCarta.remove(), 500); // espera fade-out
+          }, 2000);
         }
       }
-    });
+
+    }
   });
+});
+
 
   // Cerrar carrusel
   const cerrarCarrusel = () => {
