@@ -352,30 +352,138 @@ function mostrarCartelEnOverlay(htmlContenido) {
   document.body.appendChild(overlayFondo);
   cartel.querySelector('.btn-cerrar-cartel').addEventListener('click', () => overlayFondo.remove());
 }
+
 function mostrarAlertaDesbloqueo() {
-  // Crear el fondo que cubre toda la pantalla
+
+
+// crear el flash de luz
+const flash = document.createElement('div');
+flash.className = 'flash-luz';
+document.body.appendChild(flash);
+
+// activar flash
+setTimeout(() => {
+  flash.classList.add('visible');
+}, 50);
+
+// limpiar flash
+setTimeout(() => {
+  flash.remove();
+}, 1000);
+
+
+
+  // fondo
   const fondo = document.createElement('div');
   fondo.className = 'fondoexplosion';
+  document.body.appendChild(fondo);
 
-  // Generar estrellas dentro del fondo (todas desde arriba a la derecha)
-  for (let i = 0; i < 25; i++) {
-    const estrella = document.createElement('div');
-    estrella.className = 'estrella';
-    estrella.style.top = `0px`;
-    estrella.style.right = `0px`;
+  // parámetros
+  const NUM_ESTRELLAS = 30;
+  const stars = [];
 
-    // Trayectoria aleatoria hacia la izquierda y hacia abajo
-    const desplazamientoX = -(Math.random() * window.innerWidth); // siempre hacia la izquierda
-    const desplazamientoY = Math.random() * window.innerHeight; // siempre hacia abajo
+  // punto inicial (pegado al ángulo superior derecho)
+  const marginRight = 8;
+  const startXBase = window.innerWidth - marginRight; // x en px (derecha)
+  const startYBase = 8; // y en px (desde arriba)
 
-    estrella.style.setProperty('--dx', `${desplazamientoX}px`);
-    estrella.style.setProperty('--dy', `${desplazamientoY}px`);
-    estrella.style.animationDelay = `${Math.random() * 0.8}s`;
+  // crear estrellas
+  for (let i = 0; i < NUM_ESTRELLAS; i++) {
+    const star = document.createElement('div');
+    star.className = 'estrella';
 
-    fondo.appendChild(estrella);
+    // tamaño aleatorio
+    const size = 5 + Math.random() * 25; // 
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.left = `0px`;
+    star.style.top = `0px`;
+
+    // cola
+    const cola = document.createElement('div');
+    cola.className = 'cola';
+    star.appendChild(cola);
+
+    // posición inicial con un poco de jitter
+    const jitterX = - (Math.random() * 12); // hacia la izquierda un poco
+    const jitterY = Math.random() * 8 - 4;  // +/- 4px vertical
+
+    const startX = startXBase + jitterX - size + 150; // +100px a la derecha
+const startY = startYBase + jitterY - 50;
+
+    // velocidades iniciales (px/s)
+    const vx = - (120 + Math.random() * 380);     // siempre hacia la izquierda
+    const vy = -20 + Math.random() * 180;         // pequeño "lanzamiento" vertical
+
+    const ttl = 1.2 + Math.random() * 1.6; // duración de vida
+
+    // guardar objeto, sin aceleración lateral
+    stars.push({
+      el: star,
+      cola,
+      x: startX,
+      y: startY,
+      vx,
+      vy,
+      ax: 0, // sin curva
+      size,
+      ttl,
+      born: performance.now()
+    });
+
+    // poner elemento en DOM
+    fondo.appendChild(star);
   }
 
-  document.body.appendChild(fondo);
+  // animación por frames
+  let last = performance.now();
+  function raf(now) {
+    const dt = Math.min(0.04, (now - last) / 1000);
+    last = now;
+
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const s = stars[i];
+      const age = (now - s.born) / 1000;
+
+      // si expiró o salió demasiado fuera, eliminar
+      if (age > s.ttl || s.y > window.innerHeight + 300 || s.x < -300) {
+        s.el.remove();
+        stars.splice(i, 1);
+        continue;
+      }
+
+      // física: solo gravedad, sin curva
+      const gravity = 600;
+      s.vx += 0;        // sin oscilación
+      s.vy += gravity * dt;
+
+      // integrar posición
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+
+      // estilo
+      const lifeRatio = Math.max(0, Math.min(1, age / s.ttl));
+      const scale = 1 - lifeRatio * 0.45;
+      s.el.style.transform = `translate(${s.x}px, ${s.y}px) scale(${scale})`;
+ s.el.style.opacity = `${Math.max(0, 1 - lifeRatio * 1)}`;
+
+
+      // cola
+      const speed = Math.hypot(s.vx, s.vy);
+      const tailLen = Math.min(140, speed * 0.11 + s.size * 1.5);
+      const angleRad = Math.atan2(s.vy, s.vx);
+      const tailAngleDeg = angleRad * 180 / Math.PI + 180;
+
+      s.cola.style.width = `${tailLen}px`;
+      s.cola.style.height = `${Math.max(1, Math.round(s.size / 5))}px`;
+      s.cola.style.opacity = `${Math.max(0, 1 - lifeRatio * 2)}`;
+
+      s.cola.style.transform = `translate(0%, -50%) rotate(${tailAngleDeg}deg)`;
+    }
+
+    if (stars.length > 0) requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
 
   // Crear la alerta
   const alerta = document.createElement('div');
@@ -386,13 +494,13 @@ function mostrarAlertaDesbloqueo() {
   `;
   document.body.appendChild(alerta);
 
-  // Mostrar con delay
+  // aparecer
   setTimeout(() => {
     fondo.classList.add('visible');
     alerta.classList.add('visible');
   }, 50);
 
-  // Ocultar y eliminar
+  // limpiar después
   setTimeout(() => {
     alerta.classList.remove('visible');
     fondo.classList.remove('visible');
@@ -404,12 +512,20 @@ function mostrarAlertaDesbloqueo() {
 }
 
 
+
 // Desbloqueo por cantidad O por rareza específica (separado por expansión)
 function chequearDesbloqueosPorCantidadORareza() {
   document.querySelectorAll('.cartasgaleriacontainer').forEach(expansion => {
-    // Cantidad de cartas desbloqueadas dentro de la expansión
-    const todasCartas = Array.from(expansion.querySelectorAll('.carta-wrapper:not(.overespecial)'));
-    const desbloqueadas = todasCartas.filter(wrapper => !wrapper.querySelector('.overlay-bloqueo')).length;
+// Cantidad de cartas desbloqueadas dentro de la expansión
+const todasCartas = Array.from(expansion.querySelectorAll('.carta-wrapper'))
+  .filter(wrapper => {
+    const boton = wrapper.querySelector('.cartaejemplo');
+    // Excluye las legendarias (oro)
+    return boton && !boton.classList.contains('oro');
+  });
+
+const desbloqueadas = todasCartas.filter(wrapper => !wrapper.querySelector('.overlay-bloqueo')).length;
+
 
     // Conteo de rarezas por expansión
     const normalesTotal = expansion.querySelectorAll('.carta-wrapper .cartaejemplo.comun').length;
