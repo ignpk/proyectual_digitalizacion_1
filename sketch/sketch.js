@@ -393,7 +393,7 @@ setTimeout(() => {
     star.className = 'estrella';
 
     // tamaño aleatorio
-    const size = 5 + Math.random() * 25; // 
+    const size = 3 + Math.random() * 10; // 
     star.style.width = `${size}px`;
     star.style.height = `${size}px`;
     star.style.left = `0px`;
@@ -463,7 +463,7 @@ const startY = startYBase + jitterY - 50;
 
       // estilo
       const lifeRatio = Math.max(0, Math.min(1, age / s.ttl));
-      const scale = 1 - lifeRatio * 0.45;
+      const scale = 1 - lifeRatio * 1;
       s.el.style.transform = `translate(${s.x}px, ${s.y}px) scale(${scale})`;
  s.el.style.opacity = `${Math.max(0, 1 - lifeRatio * 1)}`;
 
