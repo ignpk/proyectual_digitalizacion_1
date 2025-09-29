@@ -299,8 +299,8 @@ document.querySelectorAll(".cartaejemplo").forEach(boton => {
           setTimeout(() => {
             // opcional: animación fade-out
             overlayCarta.classList.add("fade-out");
-            setTimeout(() => overlayCarta.remove(), 500); // espera fade-out
-          }, 2000);
+            setTimeout(() => overlayCarta.remove(), 800); // espera fade-out
+          }, 1300);
         }
       }
 
