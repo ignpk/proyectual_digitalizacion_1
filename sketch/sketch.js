@@ -63,6 +63,15 @@ function loadProgress() {
   }
 }
 
+
+// --- Persistencia de "carga mostrada" por carta (para que el overlay sólo aparezca la primera vez) ---
+function _keyCarga(id) { return `michi.cargaMostrada::${id}`; }
+function isCargaMostrada(id) {
+  try { return !!localStorage.getItem(_keyCarga(id)); } catch (e) { return false; }
+}
+function setCargaMostrada(id) {
+  try { localStorage.setItem(_keyCarga(id), '1'); } catch (e) { /* ignore */ }
+}
 // ------------------------- Escáner QR -------------------------
 let scanner;
 const btnAbrir = document.getElementById("btn-abrir-escaner");
@@ -277,6 +286,26 @@ document.addEventListener("DOMContentLoaded", () => {
           const boton = wrapper.querySelector(".cartaejemplo");
           const id = boton?.getAttribute("data-target");
           const item = document.getElementById(id);
+
+                    // marcar carga como mostrada para que no vuelva a aparecer más tarde
+          if (id && item && item.classList.contains("Clegendario")) {
+            // mostramos el "overlay-revelado" aquí también la primera vez
+            if (!isCargaMostrada(id)) {
+              setCargaMostrada(id);
+              const tarjetaForLoad = item.querySelector(".tarjeta");
+              if (tarjetaForLoad) {
+                const overlayCartaInit = document.createElement("div");
+                overlayCartaInit.className = "overlay-revelado";
+                tarjetaForLoad.appendChild(overlayCartaInit);
+                setTimeout(() => {
+                  overlayCartaInit.classList.add("fade-out");
+                  setTimeout(() => overlayCartaInit.remove(), 800);
+                }, 1300);
+              }
+            }
+          }
+
+
           if (item) {
             carouselItems.forEach(i => i.style.display = "none");
             item.style.display = "flex";
@@ -303,42 +332,41 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Abrir cartas desbloqueadas
-  document.querySelectorAll(".cartaejemplo").forEach(boton => {
-    boton.addEventListener("click", e => {
-      e.stopPropagation();
+document.querySelectorAll(".cartaejemplo").forEach(boton => {
+  boton.addEventListener("click", e => {
+    e.stopPropagation();
 
-      const wrapper = boton.closest(".carta-wrapper");
-      if (!wrapper.querySelector(".overlay-bloqueo")) {
+    const wrapper = boton.closest(".carta-wrapper");
+    if (!wrapper.querySelector(".overlay-bloqueo")) {
 
-        const id = boton.getAttribute("data-target");
-        const item = document.getElementById(id);
-        if (item) {
-          carouselItems.forEach(i => i.style.display = "none");
-          item.style.display = "flex";
-          fondonegro.style.display = "block";
-          document.body.style.overflow = "hidden";
+      const id = boton.getAttribute("data-target");
+      const item = document.getElementById(id);
+      if (item) {
+        carouselItems.forEach(i => i.style.display = "none");
+        item.style.display = "flex";
+        fondonegro.style.display = "block";
+        document.body.style.overflow = "hidden";
 
-          // Overlay de carga para legendarias
-          if (item.classList.contains("Clegendario") && !item.dataset.cargaMostrada) {
-            item.dataset.cargaMostrada = "true";
+        // Overlay de carga para legendarias: ahora consultamos localStorage para no repetirlo
+        if (item.classList.contains("Clegendario") && !isCargaMostrada(id)) {
+          setCargaMostrada(id); // persistimos inmediatamente para evitar race conditions
+          const tarjeta = item.querySelector(".tarjeta");
+          const overlayCarta = document.createElement("div");
+          overlayCarta.className = "overlay-revelado";
 
-            const tarjeta = item.querySelector(".tarjeta");
-            const overlayCarta = document.createElement("div");
-            overlayCarta.className = "overlay-revelado";
+          tarjeta.appendChild(overlayCarta);
 
-            tarjeta.appendChild(overlayCarta);
-
-            setTimeout(() => {
-              // opcional: animación fade-out
-              overlayCarta.classList.add("fade-out");
-              setTimeout(() => overlayCarta.remove(), 800); // espera fade-out
-            }, 1300);
-          }
+          setTimeout(() => {
+            // opcional: animación fade-out
+            overlayCarta.classList.add("fade-out");
+            setTimeout(() => overlayCarta.remove(), 800); // espera fade-out
+          }, 1300);
         }
-
       }
-    });
+
+    }
   });
+});
 
 
   // Cerrar carrusel
