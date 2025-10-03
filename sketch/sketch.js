@@ -1,69 +1,5 @@
-// ------------------------- Estado Global -------------------------
-let appState = {
-  cartasDesbloqueadas: [],
-  rarezas: {},
-  expansiones: {},
-  progreso: {},
-  cualquierDatoExtra: {}
-};
 
-// ------------------------- Guardar Estado -------------------------
-function guardarEstado() {
-  localStorage.setItem("appState", JSON.stringify(appState));
-}
 
-// ------------------------- Cargar Estado -------------------------
-function cargarEstado() {
-  const data = localStorage.getItem("appState");
-  if (data) {
-    appState = JSON.parse(data);
-  }
-}
-
-// ------------------------- Aplicar Estado al DOM -------------------------
-function aplicarEstado() {
-  // Restaurar cartas desbloqueadas
-  appState.cartasDesbloqueadas.forEach(passId => {
-    const carta = document.querySelector(`.carta-wrapper[data-pass="${passId}"],
-                                          .carta-wrapper[data-auto="${passId}"],
-                                          .carta-wrapper[data-requisito="${passId}"]`);
-    if (carta) {
-      const overlay = carta.querySelector(".overlay-bloqueo");
-      if (overlay) overlay.remove();
-    }
-  });
-
-  // Restaurar contador o progreso extra
-  if (appState.progreso.contador) {
-    const cont = document.getElementById("contador");
-    if (cont) cont.textContent = appState.progreso.contador;
-  }
-}
-
-// ------------------------- Funciones de progreso -------------------------
-function desbloquearCarta(pass) {
-  if (!appState.cartasDesbloqueadas.includes(pass)) {
-    appState.cartasDesbloqueadas.push(pass);
-    guardarEstado();
-  }
-}
-
-function sumarContador() {
-  if (!appState.progreso.contador) appState.progreso.contador = 0;
-  appState.progreso.contador++;
-  const cont = document.getElementById("contador");
-  if (cont) cont.textContent = appState.progreso.contador;
-  guardarEstado();
-}
-
-// ------------------------- Inicialización -------------------------
-document.addEventListener("DOMContentLoaded", () => {
-  cargarEstado();
-  aplicarEstado();
-
-  chequearDesbloqueosAutomaticos();
-  chequearDesbloqueosPorCantidadORareza();
-});
 
 // ------------------------- Galería de cartas -------------------------
 function mostrarGaleria() {
@@ -84,8 +20,10 @@ function cerrarQuees() {
 function mostrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'block';
 }
+
 function cerrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'none';
+  // Marcamos que ya se vieron las noticias
   localStorage.setItem("noticiasVistas", "true");
 }
 
@@ -93,6 +31,8 @@ function cerrarNoticias() {
 window.addEventListener("load", () => {
   const esPWA = window.matchMedia('(display-mode: standalone)').matches 
                 || window.navigator.standalone === true;
+
+  // Solo si está en PWA instalada y no vio noticias antes
   if (esPWA && !localStorage.getItem("noticiasVistas")) {
     mostrarNoticias();
   }
@@ -131,6 +71,26 @@ cerrar.addEventListener("click", () => {
   }
 });
 
+// ------------------------- QR de cada carta por separado -------------------------
+document.getElementById("botonCambiar").addEventListener("click", function () {
+  const carruseles = document.querySelectorAll(".carousel-item");
+  carruseles.forEach(item => {
+    const estilo = window.getComputedStyle(item);
+    if (estilo.display !== "none") {
+      const qr = item.querySelector(".codigoqrdecarta");
+      if (qr) {
+        if (qr.classList.contains("mostrar")) {
+          qr.classList.remove("mostrar");
+          setTimeout(() => { qr.style.display = "none"; }, 400);
+        } else {
+          qr.style.display = "block";
+          setTimeout(() => { qr.classList.add("mostrar"); }, 10);
+        }
+      }
+    }
+  });
+});
+
 // ------------------------- Botón Expansiones -------------------------
 function abrirVentanaExpansiones() {
   document.getElementById("ventanaExpansiones").style.display = "flex";
@@ -150,22 +110,46 @@ function moverCarruseldeExpansiones(direccion) {
   carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
 }
 
+// Mostrar la expansión seleccionada y ocultar las demás
 function mostrarExpansion(numero) {
   const expansiones = document.querySelectorAll('.cartasgaleriacontainer');
   expansiones.forEach(expansion => {
     if (expansion.getAttribute('data-expansion') === numero) {
-      expansion.style.display = 'block';
+      expansion.style.display = 'block'; // mostrar la elegida
     } else {
-      expansion.style.display = 'none';
+      expansion.style.display = 'none'; // ocultar las demás
     }
   });
 }
 
+// Mostrar expansión 1 por defecto al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
   mostrarExpansion("1");
 });
 
+// ------------------------- Optimizador de imágenes -------------------------
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      if (el.dataset.loaded) return;
+      if (el.dataset.style) el.setAttribute('style', el.dataset.style);
+      el.dataset.loaded = "true";
+      observer.unobserve(el);
+    }
+  });
+});
 
+document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
+  if (!el.dataset.style && el.hasAttribute('style')) {
+    el.dataset.style = el.getAttribute('style');
+    el.removeAttribute('style');
+  }
+  if (el.dataset.style) observer.observe(el);
+});
+
+// ------------------------- DOMContentLoaded -------------------------
+document.addEventListener("DOMContentLoaded", () => {
   // Bloquear zoom global
   document.addEventListener('gesturestart', e => e.preventDefault());
   let lastTouchEnd = 0;
