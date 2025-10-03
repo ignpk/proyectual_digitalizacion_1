@@ -1,3 +1,66 @@
+// ========================= Michi Box - app.js =========================
+
+// ------------------------- Estado Global -------------------------
+let appState = {
+  cartasDesbloqueadas: [],
+  rarezas: {},
+  expansiones: {},
+  progreso: {},
+  cualquierDatoExtra: {}
+};
+
+// ------------------------- Guardar Estado -------------------------
+function guardarEstado() {
+  localStorage.setItem("appState", JSON.stringify(appState));
+}
+
+// ------------------------- Cargar Estado -------------------------
+function cargarEstado() {
+  const data = localStorage.getItem("appState");
+  if (data) {
+    appState = JSON.parse(data);
+  }
+}
+
+// ------------------------- Aplicar Estado al DOM -------------------------
+function aplicarEstado() {
+  // Restaurar cartas desbloqueadas
+  appState.cartasDesbloqueadas.forEach(passId => {
+    const carta = document.querySelector(`.carta-wrapper[data-pass="${passId}"],
+                                          .carta-wrapper[data-auto="${passId}"],
+                                          .carta-wrapper[data-requisito="${passId}"]`);
+    if (carta) {
+      const overlay = carta.querySelector(".overlay-bloqueo");
+      if (overlay) overlay.remove();
+    }
+  });
+
+  // Restaurar progresos
+  if (appState.progreso.contador) {
+    const cont = document.getElementById("contador");
+    if (cont) cont.textContent = appState.progreso.contador;
+  }
+}
+
+// ------------------------- Funciones de desbloqueo -------------------------
+function desbloquearCarta(pass) {
+  if (!appState.cartasDesbloqueadas.includes(pass)) {
+    appState.cartasDesbloqueadas.push(pass);
+    guardarEstado();
+  }
+}
+
+function sumarContador() {
+  if (!appState.progreso.contador) appState.progreso.contador = 0;
+  appState.progreso.contador++;
+  const cont = document.getElementById("contador");
+  if (cont) cont.textContent = appState.progreso.contador;
+  guardarEstado();
+}
+
+
+
+
 // ------------------------- Galería de cartas -------------------------
 function mostrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'block';
@@ -147,6 +210,16 @@ document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
 
 // ------------------------- DOMContentLoaded -------------------------
 document.addEventListener("DOMContentLoaded", () => {
+  cargarEstado();       // 🔥 carga del estado guardado
+  aplicarEstado();      // 🔥 aplica el estado al DOM
+
+  mostrarExpansion("1"); 
+  chequearDesbloqueosAutomaticos(); 
+  chequearDesbloqueosPorCantidadORareza(); 
+
+
+// ------------------------- DOMContentLoaded -------------------------
+
   // Bloquear zoom global
   document.addEventListener('gesturestart', e => e.preventDefault());
   let lastTouchEnd = 0;
