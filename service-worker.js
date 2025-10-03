@@ -1,83 +1,81 @@
-const CACHE_NAME = "michi-box-v1";
-
-// Archivos base (HTML, CSS, JS, manifest)
-const urlsToCache = [
-  "/",
-  "/index.html",
-  "/galeria.html",
-  "/quees.html",
-  "/noticias.html",
-  "/style/style.css",
-  "/style/normalize.css",
-  "/sketch/sketch.js",
-  "/manifest.json"
+// ...existing code...
+const CACHE_NAME = 'michi-box-v1';
+const PRECACHE_URLS = [
+  '/', 
+  '/index.html',
+  '/manifest.json',
+  '/style/normalize.css',
+  '/style/style.css',
+  '/sketch/sketch.js',
+  '/galeria.html',
+  '/quees.html',
+  '/noticias.html',
+  '/assets/icon-192.png',
+  '/assets/icon-512.png'
 ];
 
-// ------------------------------------
-// Instalación: cacheamos todo
-// ------------------------------------
-self.addEventListener("install", event => {
+// Install: precache
+self.addEventListener('install', event => {
   event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
+  );
+  self.skipWaiting();
+});
 
-      // Cacheamos los archivos base
-      await cache.addAll(urlsToCache);
+// Activate: clean old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+    ))
+  );
+  self.clients.claim();
+});
 
-      // Cacheamos automáticamente todas las imágenes de /assets/ que estén en el DOM
-      // Nota: esto solo funcionará si se ejecuta desde una página que ya las carga
-      try {
-        const allClients = await self.clients.matchAll({ includeUncontrolled: true });
-        for (const client of allClients) {
-          const response = await client.postMessage({ action: "GET_ASSETS" });
-          // La página responderá con los paths de las imágenes, que luego agregamos al cache
-        }
-      } catch (e) {
-        console.log("No se pudieron obtener imágenes dinámicamente:", e);
+// Fetch: navigation -> network-first, assets -> cache-first + runtime update
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Only handle GET requests
+  if (req.method !== 'GET') return;
+
+  // Navigation: network-first fallback to cached index.html
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req).then(res => {
+        // Update cache with latest index
+        const copy = res.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put('/index.html', copy));
+        return res;
+      }).catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // For same-origin static assets: cache-first, then update cache in background
+  event.respondWith(
+    caches.match(req).then(cached => {
+      if (cached) {
+        // Fetch in background to update cache
+        fetch(req).then(resp => {
+          if (resp && resp.ok) {
+            const respClone = resp.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(req, respClone));
+          }
+        }).catch(()=>{});
+        return cached;
       }
-
-      self.skipWaiting();
-    })()
-  );
-});
-
-// ------------------------------------
-// Activación: limpiar caches antiguos
-// ------------------------------------
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null))
-    ).then(() => self.clients.claim())
-  );
-});
-
-// ------------------------------------
-// Fetch: cache first
-// ------------------------------------
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) return cachedResponse;
-
-      return fetch(event.request).then(networkResponse => {
-        const requestURL = new URL(event.request.url);
-
-        // Guardamos dinámicamente en cache si es /assets/
-        if (requestURL.pathname.startsWith("/assets/")) {
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, networkResponse.clone()));
-        }
-
-        return networkResponse;
-      }).catch(() => new Response("Recurso no disponible offline", { status: 404 }));
+      return fetch(req).then(resp => {
+        if (!resp || !resp.ok) return resp;
+        const respClone = resp.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(req, respClone));
+        return resp;
+      }).catch(() => {
+        // optional fallback for images or fonts
+        if (req.destination === 'image') return caches.match('/assets/icon-192.png');
+        return new Response('', { status: 504, statusText: 'offline' });
+      });
     })
-  );
-});
-
-
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
   );
 });
