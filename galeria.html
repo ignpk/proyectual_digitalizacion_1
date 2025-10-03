@@ -1414,6 +1414,25 @@
 
     <script src="sketch/sketch.js" defer></script>
     <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').then(reg => {
+      console.log("Service Worker registrado");
+    });
+
+    // Enviar al SW la lista de imágenes que queremos cachear
+    navigator.serviceWorker.addEventListener('message', async event => {
+      if (event.data && event.data.action === "GET_ASSETS") {
+        // Tomamos todas las imágenes en el DOM que estén dentro de /assets/
+        const assets = Array.from(document.querySelectorAll('img'))
+                            .map(img => img.src)
+                            .filter(src => src.includes('/assets/'));
+        // Respondemos al SW
+        event.source.postMessage({ action: "ASSETS_LIST", assets });
+      }
+    });
+  }
+
+
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
           .register("service-worker.js")
