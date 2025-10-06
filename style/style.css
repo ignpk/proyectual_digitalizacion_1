@@ -919,6 +919,48 @@ animation: flashAnim 1.3s ease-out forwards;
 	}
 }
 
+@keyframes anim_025 {
+  0% {
+    transform: translate(0, 0);
+  }
+
+
+  30% {
+    transform: translate(100%, -100%);
+  }
+    100% {
+    transform: translate(100%, -100%);
+  }
+  
+}
+@keyframes anim_025b {
+  0% {
+    transform: translate(0, 0) ;
+  }
+
+  70% {
+    transform: translate(0, 0) ;
+  }
+  100% {
+    transform: translate(100%, -50%);
+  }
+}
+@keyframes anim_025c {
+  0% {
+    transform: translate(0, 0) ;
+  }
+    20% {
+    transform: translate(0, 0) ;
+  }
+
+  50% {
+    transform: translate(100%, -50%);
+  }
+  100% {
+    transform: translate(100%, -50%);
+  }
+}
+
 .pantallacargando{
     justify-content: center;
   align-items: center;
