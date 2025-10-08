@@ -12,6 +12,7 @@ const PRECACHE_URLS = [
   '/noticias.html',
   '/assets/icon-192.png',
   '/assets/icon-512.png'
+  
 ];
 
 // Install: precache

@@ -1515,6 +1515,15 @@ animation: sobreflotar 1.2s ease-in-out alternate infinite, brillosobres 1.8s ea
 
   }
 }
+@keyframes desplazamientovertical {
+  0%{
+    transform: translateY(100%);
+  }
+  100%{
+    transform: translateY(-100%);
+
+  }
+}
 
 @keyframes brillosobres{
   0%{
