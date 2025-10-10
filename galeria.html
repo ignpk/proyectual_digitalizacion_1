@@ -954,7 +954,7 @@
                         <P class="textorareza PRARO" >RARA </P>
           <div class="tarjeta">
             <div class="carta frente" data-circle="circle4 circle2">
-              <img loading="lazy" class="medio" src="assets/cartas/RARAS/023/023fondo.webp" style="filter: opacity(70%);" />                
+              <img loading="lazy" class="medio" src="assets/cartas/RARAS/023/023fondo.webp" />                
                               <div class="lineascolores" style="z-index: 9; transform: rotate(-45deg) scale(1.75); filter:grayscale(1) brightness(0) opacity(50%);"></div>  
 
               <img loading="lazy" class="arriba" src="./assets/cartas/RARAS/023/023fondobrillos.webp" style="z-index: 10; filter: opacity(50%);" />
@@ -1113,7 +1113,14 @@
           "></div>
           <img loading="lazy" class="michi" src="assets/cartas/RARAS/030/030_nube_abajo_01.webp" style=" z-index: 10;  animation: desplazamientovertical  15s linear infinite">
           <img loading="lazy" class="michi" src="assets/cartas/RARAS/030/030_nube_abajo_02.webp" style=" z-index: 10;  animation: desplazamientovertical  17s linear infinite">
-          <img loading="lazy" class="michi" src="assets/cartas/RARAS/030/030_michi.webp" style=" z-index: 11;  animation: flotar 1.4s ease-in-out alternate infinite">
+
+              <div data-lazy="true" class="michi lazy-michi" data-style="
+              z-index: 11;
+              background-image: url('/assets/cartas/RARAS/030/030_fondo_animacion_02_michi.webp'); 
+              animation: animacion 0.6s steps(4) forwards infinite, flotar 1.4s ease-in-out alternate infinite;
+              background-size: 1236px 450px;
+          "></div>
+
           <img loading="lazy" class="michi" src="assets/cartas/RARAS/030/030_nube_arriba_01.webp" style=" z-index: 12;  animation: desplazamientovertical  16s linear infinite">
           <img loading="lazy" class="michi" src="assets/cartas/RARAS/030/030_nube_arriba_02.webp" style=" z-index: 12;  animation: desplazamientovertical  18s linear infinite">
 
