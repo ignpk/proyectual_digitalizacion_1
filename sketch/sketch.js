@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 1️⃣ Copiar al portapapeles
       navigator.clipboard.writeText(codigo).then(() => {
-        console.log("Código copiado:", codigo);
 
         // 2️⃣ Cerrar regalos.html
         if (window.parent && typeof window.parent.cerrarRegalos === "function") {
