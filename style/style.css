@@ -1427,14 +1427,27 @@ gap: 20px;
 
 /* 🌟 Estilo del botón original */
 .botonCopiar {
+    font-size: 90%;
+    font-weight: bold;
       width: 120px;
   height: 50px;
-  background: linear-gradient(0deg, rgba(17, 148, 7, 1) 26%, rgba(17, 209, 0, 1) 46%);
+  background: linear-gradient(0deg, rgb(7, 110, 0) 26%, rgb(14, 167, 0) 46%);
   color: white;
-border: 3px solid rgb(45, 180, 0);
+border: 3px solid rgb(86, 214, 27);
   border-radius: 7px;
+  animation: bordelatido 1s linear infinite alternate;
 }
+@keyframes bordelatido{
+    0%{
+box-shadow: 0px 0px 8px 6px rgba(0, 211, 46, 0.553);
+  }
+  100%{
+box-shadow: 0px 0px 10px 8px rgba(0, 211, 46, 0.845);
+  }
+}
+
 .botonCopiarSINSTOCK {
+  font-weight: bold;
       width: 120px;
   height: 50px;
   background: linear-gradient(0deg, rgb(148, 7, 7) 26%, rgb(209, 0, 0) 46%);
@@ -1453,6 +1466,8 @@ border: 3px solid rgb(255, 107, 58);
   color: rgb(0, 0, 0);
 border: 3px solid rgb(119, 119, 119);
   border-radius: 7px;
+      font-size: 90%;
+font-weight: bold;
 }
 
 
