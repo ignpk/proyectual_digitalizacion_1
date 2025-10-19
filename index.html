@@ -42,7 +42,8 @@
       <a onclick="mostrarGaleria()" class="iconomenu lazy-michi" style="background-image: url(./assets/galeriacartasicon.webp);"></a>
       <a onclick="mostrarQuees()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_QUE_ES.webp);"></a>
       <a onclick="mostrarNoticias()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_NOTICIAS.webp);"></a>
-            <div class="iconomenu lazy-michi" style="background-image: url(./assets/boton_tienda.webp); filter: grayscale(1) brightness(0.8);"></div>
+      <a onclick="mostrarRegalos()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_tienda.webp);"></a>
+
     </div>
 </div>
 <DIV class="infoandroid" data-lazy="true"></DIV>
@@ -60,7 +61,7 @@
 
     <!------------------------galeria html------------------------------------>
   <div id="galeriaContainer">
-    <iframe src="galeria.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    <iframe id="iframeGaleria" src="galeria.html" style="width: 100%; height: 100%; border: none;"></iframe>
   </div>
 
   <!------------------------------------------------------------------------>
@@ -78,7 +79,10 @@
     <iframe src="noticias.html" style="width: 100%; height: 100%; border: none;"></iframe>
   </div>
 
-  <!------------------------------------------------------------------------>
+  <!-----------------------------------REGALOS HTML------------------------------------->
+    <div id="regalosContainer" >
+    <iframe src="regalos.html" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
 
 </main>
 

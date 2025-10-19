@@ -1,4 +1,74 @@
-// ...existing code...
+document.addEventListener("DOMContentLoaded", () => {
+  const botones = document.querySelectorAll(".botonCopiar");
+
+  botones.forEach(boton => {
+    const codigo = boton.getAttribute("data-codigo");
+
+    // 🔸 Si el código ya fue canjeado antes, mostrar el botón gris
+    if (localStorage.getItem("canjeado_" + codigo) === "true") {
+      desactivarBoton(boton);
+    }
+
+    boton.addEventListener("click", () => {
+      // Evitar que se vuelva a usar si ya está canjeado
+      if (localStorage.getItem("canjeado_" + codigo) === "true") return;
+
+      // 1️⃣ Copiar al portapapeles
+      navigator.clipboard.writeText(codigo).then(() => {
+        console.log("Código copiado:", codigo);
+
+        // 2️⃣ Cerrar regalos.html
+        if (window.parent && typeof window.parent.cerrarRegalos === "function") {
+          window.parent.cerrarRegalos();
+        }
+
+        // 3️⃣ Mostrar galería
+        if (window.parent && typeof window.parent.mostrarGaleria === "function") {
+          window.parent.mostrarGaleria();
+        }
+
+        // 4️⃣ Canjear el código en galería
+        setTimeout(() => {
+          const iframeGaleria = window.parent.document.getElementById("iframeGaleria");
+          if (!iframeGaleria) return;
+
+          const docGaleria = iframeGaleria.contentDocument || iframeGaleria.contentWindow.document;
+          const inputCodigo = docGaleria.getElementById("codigoGlobal");
+          const botonVerificar = docGaleria.getElementById("botonVerificarCodigo");
+
+          if (inputCodigo && botonVerificar) {
+            inputCodigo.value = codigo;
+            botonVerificar.click();
+
+            // 5️⃣ Marcar como canjeado
+            localStorage.setItem("canjeado_" + codigo, "true");
+            desactivarBoton(boton);
+
+      // 6️⃣ Mostrar mensaje visual con clase CSS
+const mensaje = document.createElement("div");
+
+mensaje.classList.add("mensajeCanjeado");
+window.parent.document.body.appendChild(mensaje);
+
+// Eliminar el cartel automáticamente después de 2 segundos
+setTimeout(() => {
+  mensaje.remove();
+}, 2000);
+
+          }
+        }, 800);
+      });
+    });
+  });
+
+// 🔧 Función para volver gris y desactivar un botón (usando clase CSS)
+function desactivarBoton(boton) {
+  boton.textContent = "CANJEADO";
+  boton.classList.remove("botonCopiar");
+  boton.classList.add("botonCanjeado");
+  boton.disabled = true;
+}
+});
 // ------------------------- Galería de cartas -------------------------
 function mostrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'block';
@@ -6,6 +76,7 @@ function mostrarGaleria() {
 function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
 }
+// ------------------------- que es michi box -------------------------
 
 function mostrarQuees() {
   document.getElementById('queesContainer').style.display = 'block';
@@ -13,7 +84,14 @@ function mostrarQuees() {
 function cerrarQuees() {
   document.getElementById('queesContainer').style.display = 'none';
 }
+// ------------------------- regalos -------------------------
 
+function mostrarRegalos() {
+  document.getElementById('regalosContainer').style.display = 'block';
+}
+function cerrarRegalos() {
+  document.getElementById('regalosContainer').style.display = 'none';
+}
 // ------------------------- Noticias -------------------------
 function mostrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'block';
@@ -763,5 +841,13 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
       contenedorLineas.addEventListener('touchend', resetLineas);
           contenedorLineas.addEventListener('touchcancel', resetLineas);
     });
+
+
+
+
+
+
 });
-// ...existing code...
+
+
+
