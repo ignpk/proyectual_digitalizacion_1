@@ -1434,7 +1434,14 @@ gap: 20px;
 border: 3px solid rgb(45, 180, 0);
   border-radius: 7px;
 }
-
+.botonCopiarSINSTOCK {
+      width: 120px;
+  height: 50px;
+  background: linear-gradient(0deg, rgb(148, 7, 7) 26%, rgb(209, 0, 0) 46%);
+  color: white;
+border: 3px solid rgb(255, 107, 58);
+  border-radius: 7px;
+}
 
 
 /* 🩶 Estilo del botón cuando ya fue canjeado */
