@@ -1,3 +1,22 @@
+// 🔧 Función reutilizable para mostrar el overlay de revelado de cartas legendarias
+function mostrarOverlayRevelado(item) {
+  if (item.classList.contains("Clegendario") && !item.dataset.cargaMostrada) {
+    item.dataset.cargaMostrada = "true";
+
+    const tarjeta = item.querySelector(".tarjeta");
+    if (tarjeta) {
+      const overlayCarta = document.createElement("div");
+      overlayCarta.className = "overlay-revelado";
+      tarjeta.appendChild(overlayCarta);
+
+      setTimeout(() => {
+        overlayCarta.classList.add("fade-out");
+        setTimeout(() => overlayCarta.remove(), 800);
+      }, 1300);
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const botones = document.querySelectorAll(".botonCopiar");
 
@@ -10,23 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     boton.addEventListener("click", () => {
-      // Evitar que se vuelva a usar si ya está canjeado
       if (localStorage.getItem("canjeado_" + codigo) === "true") return;
 
-      // 1️⃣ Copiar al portapapeles
       navigator.clipboard.writeText(codigo).then(() => {
 
-        // 2️⃣ Cerrar regalos.html
+        // 🔹 Cerrar regalos y abrir galería
         if (window.parent && typeof window.parent.cerrarRegalos === "function") {
           window.parent.cerrarRegalos();
         }
 
-        // 3️⃣ Mostrar galería
         if (window.parent && typeof window.parent.mostrarGaleria === "function") {
           window.parent.mostrarGaleria();
         }
 
-        // 4️⃣ Canjear el código en galería
+        // 🔹 Esperar 1 segundo antes de canjear el código
         setTimeout(() => {
           const iframeGaleria = window.parent.document.getElementById("iframeGaleria");
           if (!iframeGaleria) return;
@@ -39,35 +55,59 @@ document.addEventListener("DOMContentLoaded", () => {
             inputCodigo.value = codigo;
             botonVerificar.click();
 
+            // 🔓 Mostrar overlay de revelado si la carta desbloqueada es legendaria
+            setTimeout(() => {
+              const cartaLegendaria = docGaleria.querySelector(`.carta-wrapper[data-pass="${codigo}"]`);
+              if (cartaLegendaria) {
+                const id = cartaLegendaria.querySelector(".cartaejemplo")?.getAttribute("data-target");
+                const item = docGaleria.getElementById(id);
+                if (item) mostrarOverlayRevelado(item, true); // 👈 se pasa "true" si es por código
+              }
+            }, 1000);
+
             // 5️⃣ Marcar como canjeado
             localStorage.setItem("canjeado_" + codigo, "true");
             desactivarBoton(boton);
 
-      // 6️⃣ Mostrar mensaje visual con clase CSS
-const mensaje = document.createElement("div");
-
-mensaje.classList.add("mensajeCanjeado");
-window.parent.document.body.appendChild(mensaje);
-
-// Eliminar el cartel automáticamente después de 2 segundos
-setTimeout(() => {
-  mensaje.remove();
-}, 2000);
-
+            // 6️⃣ Mostrar mensaje visual
+            const mensaje = document.createElement("div");
+            mensaje.classList.add("mensajeCanjeado");
+            window.parent.document.body.appendChild(mensaje);
+            setTimeout(() => mensaje.remove(), 2000);
           }
-        }, 800);
+        }, 1000); // ⏳ Espera 1 segundo antes de canjear
       });
     });
   });
 
-// 🔧 Función para volver gris y desactivar un botón (usando clase CSS)
-function desactivarBoton(boton) {
-  boton.textContent = "CANJEADO";
-  boton.classList.remove("botonCopiar");
-  boton.classList.add("botonCanjeado");
-  boton.disabled = true;
-}
+  function desactivarBoton(boton) {
+    boton.textContent = "CANJEADO";
+    boton.classList.remove("botonCopiar");
+    boton.classList.add("botonCanjeado");
+    boton.disabled = true;
+  }
+
+  // 🌀 Función modificada: overlay con duración extendida si es por código
+  function mostrarOverlayRevelado(item, esPorCodigo = false) {
+    if (!item.classList.contains("Clegendario") || item.dataset.cargaMostrada) return;
+    item.dataset.cargaMostrada = "true";
+
+    const tarjeta = item.querySelector(".tarjeta");
+    const overlayCarta = document.createElement("div");
+    overlayCarta.className = "overlay-revelado";
+    tarjeta.appendChild(overlayCarta);
+
+    // ⏱️ Duración extendida si vino desde un canje por código
+    const duracion = esPorCodigo ? 2800 : 1300;
+
+    setTimeout(() => {
+      overlayCarta.classList.add("fade-out");
+      setTimeout(() => overlayCarta.remove(), 800);
+    }, duracion);
+  }
 });
+
+
 // ------------------------- Galería de cartas -------------------------
 function mostrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'block';
@@ -381,43 +421,32 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("codigoGlobal").value = "";
   });
 
-  // Abrir cartas desbloqueadas
-  document.querySelectorAll(".cartaejemplo").forEach(boton => {
-    boton.addEventListener("click", e => {
-      e.stopPropagation();
 
-      const wrapper = boton.closest(".carta-wrapper");
-      if (!wrapper.querySelector(".overlay-bloqueo")) {
+  
+ // Abrir cartas desbloqueadas
+document.querySelectorAll(".cartaejemplo").forEach(boton => {
+  boton.addEventListener("click", e => {
+    e.stopPropagation();
 
-        const id = boton.getAttribute("data-target");
-        const item = document.getElementById(id);
-        if (item) {
-          carouselItems.forEach(i => i.style.display = "none");
-          item.style.display = "flex";
-          fondonegro.style.display = "block";
-          document.body.style.overflow = "hidden";
+    const wrapper = boton.closest(".carta-wrapper");
+    if (!wrapper.querySelector(".overlay-bloqueo")) {
+      const id = boton.getAttribute("data-target");
+      const item = document.getElementById(id);
 
-          // Overlay de carga para legendarias
-          if (item.classList.contains("Clegendario") && !item.dataset.cargaMostrada) {
-            item.dataset.cargaMostrada = "true";
+      if (item) {
+        // Ocultar otras cartas y mostrar la seleccionada
+        carouselItems.forEach(i => i.style.display = "none");
+        item.style.display = "flex";
+        fondonegro.style.display = "block";
+        document.body.style.overflow = "hidden";
 
-            const tarjeta = item.querySelector(".tarjeta");
-            const overlayCarta = document.createElement("div");
-            overlayCarta.className = "overlay-revelado";
-
-            tarjeta.appendChild(overlayCarta);
-
-            setTimeout(() => {
-              // opcional: animación fade-out
-              overlayCarta.classList.add("fade-out");
-              setTimeout(() => overlayCarta.remove(), 800); // espera fade-out
-            }, 1300);
-          }
-        }
-
+        // 🪄 Mostrar overlay de revelado si es legendaria
+        mostrarOverlayRevelado(item);
       }
-    });
+    }
   });
+});
+
 
 
   // Cerrar carrusel
@@ -733,6 +762,10 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
     chequearDesbloqueosAutomaticos();
   });
 
+
+
+
+  
     // Efectos carta
     document.querySelectorAll('.carousel-item').forEach(contenedor => {
       contenedor.querySelectorAll('.carta').forEach(carta => {
