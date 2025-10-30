@@ -43,7 +43,8 @@ html, body{
 #galeriaContainer,
 #queesContainer,
 #noticiasContainer,
-#regalosContainer{
+#regalosContainer,
+#donarContainer{
   display: none; 
   position: fixed;
   top: 0;
@@ -72,6 +73,7 @@ html, body{
 #galeriaContainer,
 #queesContainer,
 #regalosContainer,
+#donarContainer,
 #noticiasContainer,
 .lineascolores{
   width: 100%;
@@ -1420,6 +1422,23 @@ gap: 20px;
     text-align: center;
   font-size: 60%;
 }
+
+.botondonarcontainer{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.botondonar {
+  padding: 15px;
+    font-weight: bold;
+  background: linear-gradient(0deg, rgb(7, 110, 0) 26%, rgb(14, 167, 0) 46%);
+  color: white;
+border: 3px solid rgb(86, 214, 27);
+  border-radius: 7px;
+}
+
 
 /* 🌟 Estilo del botón original */
 .botonCopiar {

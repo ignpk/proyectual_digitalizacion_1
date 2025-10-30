@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link rel="stylesheet" tipe="text/css" href="style/style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="/assets/icon-192.png">   
+<meta charset="UTF-8" />
+
+    <title>Michi Box Card Game</title>
+    <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+  </head>
+  <body class="queesbackground">
+    <main>
+
+      <div class="contenedorQUEESyNOTICIAS">
+
+            <div class="separacion"></div>
+
+                <DIV class="imagenbannernoticia" data-lazy="true" style="background-image: url(./assets/DONAR_BANNER.webp);"></DIV>
+
+<p>
+  <b>AYUDÁ A HACER CRECER <br> ESTE UNIVERSO</b><br><br> 
+  Cada aporte contribuye a seguir desarrollando nuevas cartas, historias y experiencias para todos los jugadores y coleccionistas.  
+  Este proyecto independiente se sostiene con mucho esfuerzo y dedicación, y tu apoyo hace posible que siga expandiéndose y evolucionando.  
+</p>
+
+<div class="botondonarcontainer">
+
+   <a class="botondonar" href="http://link.mercadopago.com.ar/michibox">DONAR</a>
+
+</div>
+
+            <div class="separacion"></div>
+
+
+</div>
+
+
+    <DIV class="contenedorbotoncerrar">
+<a href="#" id="botonCerrar" class="botonatrasexpansiones" onclick="cerrarDonarDesdeIframe()">X</a>
+    </DIV>
+
+
+
+
+    </main>
+    <script>
+      AOS.init();
+    </script>
+    <script src="sketch/sketch.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("Service Worker registrado"))
+      .catch((error) => console.error("Error al registrar el Service Worker", error));
+  }
+</script>
+
+<script>
+  function cerrarDonarDesdeIframe() {
+    if (window.parent && typeof window.parent.cerrarDonar === 'function') {
+      window.parent.cerrarDonar();
+    }
+  }
+</script>
+
+  </body>
+</html>

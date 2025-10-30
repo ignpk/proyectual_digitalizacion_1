@@ -131,6 +131,14 @@ function mostrarRegalos() {
 function cerrarRegalos() {
   document.getElementById('regalosContainer').style.display = 'none';
 }
+// ------------------------- DONAR -------------------------
+
+function mostrarDonar() {
+  document.getElementById('donarContainer').style.display = 'block';
+}
+function cerrarDonar() {
+  document.getElementById('donarContainer').style.display = 'none';
+}
 // ------------------------- Noticias -------------------------
 function mostrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'block';
