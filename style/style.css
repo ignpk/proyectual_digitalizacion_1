@@ -1437,6 +1437,10 @@ gap: 20px;
   color: white;
 border: 3px solid rgb(86, 214, 27);
   border-radius: 7px;
+    user-select: auto !important;
+  pointer-events: auto !important;
+  -webkit-user-drag: auto !important;
+  cursor: pointer;
 }
 
 
