@@ -209,7 +209,7 @@ html, body{
   padding: 5%;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  animation: slideDown 0.4s ease-out;
+  animation: zoom 0.4s ease-in-out;
 }
 .michiconfundido{
   width: 100%;
@@ -229,7 +229,7 @@ html, body{
 
 .modal-alerta button,
 .btn-cerrar-cartel {
-  background-color: #ffffff1e;
+  background-color: #ffffff7b;
   color: rgb(0, 0, 0);
   padding: 10px 20px;
   border: 2PX SOLID rgba(255, 255, 255, 0.28);
@@ -400,35 +400,40 @@ pointer-events: none;
 .BOTONDESBLOQUEAR{
   filter: opacity(0);
   overscroll-behavior: none;
-border: none;
+pointer-events: none;
   font-family:Helvetica;
 position: absolute;
-  width: 0px;
-  pointer-events: none;
+  width: 100%;
+  height: 100PX;
+  background-color: rgba(255, 0, 0, 0);
+  z-index: 99999999999999;
+  display: none;
 }
-/*--
+
 #codigoGlobal {
-  border: none;
+
   color: rgb(255, 255, 255); 
 }
 #codigoGlobal::placeholder {
-  border: none;
+
   color: rgba(255, 255, 255, 0.895); 
 }
 .BOTONDESBLOQUEAR input{
+  padding: 10px;
+  border: 2px solid white;
   outline: none;
   font-weight: lighter;
-background-color: rgba(255, 255, 255, 0);
-border: none;
+background-color: rgba(255, 255, 255, 0.197);
 }
 .BOTONDESBLOQUEAR button{
   cursor: pointer;
+  width: 40px;
   height: 40px;
 font-size: 150%;
-border: none;
-background-color: rgba(255, 255, 255, 0);
+
+background-color: rgba(255, 255, 255, 0.544);
 transition: 0.3s ease;
-}--*/
+}
 
 
 
@@ -484,22 +489,32 @@ transition: 0.3s ease;
 
   .cartaejemplo{
     cursor: pointer;
-    filter: saturate(1.2) contrast(1.2);
+    filter: saturate(1) contrast(1);
 border-radius: 3px;
     background-size: cover;
+    background-position: center;
     width: 100%;
     height: 100%;
     border: none;
     transition: 0.3s ease;
     overflow: hidden;
-  }
+background-color: rgba(93, 26, 126, 0);
 
+    display: flex;
+justify-content: center;
+align-items: end;
+  }
+.cartaejemplo P{
+font-size: 60%;
+}
 
   .carta-wrapper {
         width: 103px;
     height: 150px;
     position: relative;
     display: inline-block;
+    background-color: rgba(92,26,126,1);
+border: 3px dashed #7a27a4d6;
   }
   .overlay-bloqueo {
     overflow: hidden;
@@ -510,7 +525,7 @@ border-radius: 3px;
 border-radius: 3px;
 background-size: contain;
 background-color: rgba(92,26,126,1);
-border: 3px dashed #7a27a4d6;
+
   user-select: none;       /* no seleccionable */
   -webkit-tap-highlight-color: transparent; /* quita el flash en móviles */
   }
@@ -573,9 +588,15 @@ animation: orobrillo 4s linear infinite;
 }
 
 
-.overespecial{
+.SIGNOPREGUNTA{
   background-image: url(../assets/cartas/MENU_LEGENDARIO.webp);
 }
+
+.SIGNOPREGUNTADIMENSION{
+    background-image: url(../assets/cartas/MENU_DIMENSION.webp);
+
+}
+
 
 
 
@@ -606,13 +627,63 @@ animation: orobrillo 4s linear infinite;
   gap: 10PX;
     width: 70%;
   height: auto;
-  background: rgb(240, 196, 1, 1);
+  background: rgba(240, 196, 1, 0);
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
   font-size: 18px;
   z-index: 9999;
   text-align: center;
-    animation: slideDown 0.4s ease-out;
+    animation: zoom 0.3s ease-in-out;
+}
+
+
+
+
+/* ROJO */
+.cartel-rojo-estilo {
+  background: rgb(255, 70, 70);
+  color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.cartel-rojo-estilo p b {
+  color: white;
+}
+
+/* AZUL */
+.cartel-azul-estilo {
+  background: rgb(70, 130, 255);
+  color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.cartel-azul-estilo p b {
+  color: white;
+}
+
+/* VERDE */
+.cartel-verde-estilo {
+  background-image: url(../assets/cartas/portal.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100vh;
+}
+.cartel-verde-estilo p {
+  color: white !important;
+}
+.cartel-verde-estilo p b {
+  color: rgb(7, 246, 42) !important;
+}
+
+/* naranja */
+.cartel-naranja-estilo {
+  background: rgb(255, 200, 0);
+  color: white;
+  border: 8px solid rgb(255, 242, 220);
+box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
+}
+.cartel-naranja-estilo p b {
+  color: white;
 }
 
 
@@ -627,6 +698,10 @@ animation: orobrillo 4s linear infinite;
   color: rgb(125, 125, 125);
 }
 
+.cartel-verde p{
+  color: rgb(255, 255, 255) !important;
+}
+
 .carta-mini {
   width: 70px;
   height: 100px;
@@ -639,26 +714,53 @@ animation: orobrillo 4s linear infinite;
 
 .mini-overlay {
   inset: 0;
-  background: rgba(255, 208, 0, 0.763);
+  background: rgba(255, 255, 255, 0.678);
   border-radius: 3px;
-border: 2px dashed rgb(177, 145, 0);
-box-shadow: 0px 0px 0px 2px rgb(240, 196, 1, 1) inset;
+  border: 3px dashed #ffffff;
+  box-shadow: 0px 0px 0px 3px rgb(255, 255, 255) inset;
 }
 .alerta-desbloqueo {
-  height: 50PX;
+  height: 90PX;
+  width: 300px;
   display: flex;
   position: fixed;
   top: 5%;
   right: -300px; 
-background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0) 79%);
   padding: 10px;
   border-radius: 5px;
   transition: right 0.5s ease, opacity 0.5s ease;
   opacity: 0;
   z-index: 99999999 !important;
-  color: black !important;
   align-items: center;
 }
+
+/* AMARILLO (DEFAULT) */
+.alerta-amarillo {
+        background-image: url(../assets/icon_legendaria.webp);
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+/* ROJO */
+.alerta-rojo {
+  background: linear-gradient(90deg, rgba(255,60,60,1) 80%, rgba(255,60,60,0) 79%);
+}
+
+/* AZUL */
+.alerta-azul {
+  background: linear-gradient(90deg, rgba(70,130,255,1) 80%, rgba(70,130,255,0) 79%);
+}
+
+/* VERDE */
+.alerta-verde {
+
+    background-image: url(../assets/icon_portal.webp);
+    background-size: contain;
+    background-position:right;
+    background-repeat: no-repeat;
+}
+
 
 .alerta-desbloqueo.visible {
   right: 0;
@@ -667,7 +769,6 @@ background: linear-gradient(90deg,rgba(240, 196, 1, 1) 80%, rgba(255, 234, 0, 0)
 
 
 .alerta-desbloqueo .mensaje {
-  color: black !important;
   font-family: Arial, Helvetica, sans-serif !important;
   font-weight: bold !important;
   font-size: 70%;
@@ -1014,7 +1115,8 @@ filter: opacity(0);
   }
 .PLEGENDARIO,
   .PNORMAL,
-  .PRARO{
+  .PRARO,
+  .PCARTOON{
     transform: translateY(40px) rotate(-3deg);
         font-family: "Covered By Your Grace", cursive !important;
      letter-spacing: 2px;
@@ -1025,13 +1127,17 @@ filter: opacity(0);
   .PNORMAL{
 color: rgb(191, 191, 191);
   }
-    .PRARO{
+  .PRARO{
 color: rgb(236, 130, 255);
 text-shadow: 0px 0px 7px rgb(255, 0, 234);
   }
-    .PLEGENDARIO{
+  .PLEGENDARIO{
 color: rgb(255, 250, 235);
 text-shadow: 0px 0px 7px rgb(255, 202, 57);
+  }
+ .PCARTOON{
+color: rgb(144, 157, 255);
+text-shadow: 0px 0px 7px rgb(56, 109, 255);
   }
 
 
@@ -1106,8 +1212,11 @@ background-color:rgba(0, 0, 0, 0.545);
 
 
   .Cnormal{
-background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(20, 176, 122, 0.465) 100%);
+background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(161, 161, 161, 0.465) 100%);
 
+  }
+    .Csticker{
+background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(0, 145, 255, 0.465) 100%);
   }
     .Craro{
     background: radial-gradient(circle,rgba(255, 255, 255, 0) 60%, rgba(238, 0, 255, 0.473) 100%);
@@ -1144,9 +1253,11 @@ overflow: visible;
 @keyframes zoom{
   0%{
     transform: scale(0.9);
+    filter: opacity(0);
   }
     100%{
     transform: scale(1);
+        filter: opacity(1);
   }
 }
 
@@ -1408,6 +1519,11 @@ gap: 20px;
   width: 150px;
   margin: 20px 0px;
 }
+
+.compra:nth-child(1), .compra:nth-child(2), .compra:nth-child(3) {
+display: none;
+}
+
 .imagenproducto{
   width: 150px;
   height: 150px;
@@ -1423,9 +1539,14 @@ gap: 20px;
   font-size: 60%;
 }
 
+.botondonarmenu{
+display: none;
+}
+
+
 .botondonarcontainer{
-  width: 100%;
-  height: auto;
+  width: 0;
+  height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1578,7 +1699,7 @@ display: none;
   position: relative;
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+
 }
 
 .carruseldeexpansiones {
@@ -1587,12 +1708,13 @@ display: none;
 }
 
 .carruseldeexpansiones-item {
+  
+  text-align: center;
   min-width: 100%;
   height: 500px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  animation: zoom 0.2s ease-in-out;
   justify-content: center;
   align-items: last baseline;
   display: flex;
@@ -1677,17 +1799,28 @@ animation: sobreflotar 1.2s ease-in-out alternate infinite, brillosobres 1.8s ea
 display: block;
 }
 
+.botondonarmenu{
+display: block;
+}
+
   .infoandroid{
   display: none;
 
 }
+.botondonarcontainer{
+  width: 100%;
+  height: 50px;
 
+}
 
 .botonatras:nth-child(3){
 pointer-events: all;
 display: flex;
 }
 
+.compra:nth-child(1), .compra:nth-child(2), .compra:nth-child(3) {
+display: block;
+}
 
 .contenedorbotoncerrar{
   z-index: 999;
@@ -1724,25 +1857,25 @@ top: 90%;
 @keyframes carruselmenuMEDIA {
 
     0%{
-  background-image: url(../assets/background_BANNER_MEDIA.webp);
+  background-image: url(../assets/background_BANNER_004_MEDIA_004.webp);
   }
       35%{
-  background-image: url(../assets/background_BANNER_MEDIA.webp);
+  background-image: url(../assets/background_BANNER_004_MEDIA_004.webp);
   }
     40%{
-  background-image: url(../assets/background_BANNER_002_MEDIA_002.webp);
+  background-image: url(../assets/background_BANNER_005_MEDIA_005.webp);
   }
       70%{
-  background-image: url(../assets/background_BANNER_002_MEDIA_002.webp);
+  background-image: url(../assets/background_BANNER_005_MEDIA_005.webp);
   }
     75%{
-  background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  background-image: url(../assets/background_BANNER_006_MEDIA_006.webp);
   }
       95%{
-  background-image: url(../assets/background_BANNER_003_MEDIA_003.webp);
+  background-image: url(../assets/background_BANNER_006_MEDIA_006.webp);
   }
       100%{
-  background-image: url(../assets/background_BANNER_MEDIA.webp);
+  background-image: url(../assets/background_BANNER_004_MEDIA_004.webp);
   }
 
 }

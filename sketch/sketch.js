@@ -475,210 +475,234 @@ document.querySelectorAll(".cartaejemplo").forEach(boton => {
       });
     }
   });
-// Cartel amarillo con requisitos
+
+  /* ==========================================================
+   SISTEMA DE CARTEL DE BLOQUEO + ANIMACIÓN DE DESBLOQUEO
+   ========================================================== */
+
+// CLICK EN CARTAS BLOQUEADAS
 document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
   overlay.addEventListener('click', e => {
     e.stopPropagation();
+
     const mensajePersonalizado = overlay.getAttribute('data-cartel');
     const requisitos = overlay.getAttribute('data-requiere');
-    let contenidoFinal = '';
+
+    // Detectar color por clase del overlay
+    const color =
+      overlay.classList.contains("cartel-rojo") ? "rojo" :
+      overlay.classList.contains("cartel-azul") ? "azul" :
+      overlay.classList.contains("cartel-verde") ? "verde" :
+       overlay.classList.contains("cartel-naranja") ? "naranja" :
+      "amarillo"; // por defecto
+
+    // Construcción del contenido HTML
+    let contenidoFinal = "";
+
     if (mensajePersonalizado) {
-      contenidoFinal += `<p>${mensajePersonalizado}</p>`;
+      contenidoFinal += `${mensajePersonalizado}`;
       if (requisitos) contenidoFinal += generarContenidoCartel(JSON.parse(requisitos));
     } else if (requisitos) {
       contenidoFinal = generarContenidoCartel(JSON.parse(requisitos));
     } else {
       contenidoFinal = "<p>⚠ Carta bloqueada.</p>";
     }
-    mostrarCartelEnOverlay(contenidoFinal);
+
+    mostrarCartelEnOverlay(contenidoFinal, color);
   });
 });
 
-  // Genera el HTML de las cartas requeridas con su estado
-  function generarContenidoCartel(listaIds) {
-    let html = "<div class='cartas-requeridas'>";
-    listaIds.forEach(passId => {
-      const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
-      if (cartaWrapper) {
-        const boton = cartaWrapper.querySelector('.cartaejemplo');
-        const fondo = boton?.getAttribute('data-style') || "";
-        const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
-        html += `<div class="carta-mini" style="${fondo}">${bloqueada ? "<div class='mini-overlay'></div>" : ""}</div>`;
-      }
-    });
-    html += "</div>";
-    return html;
-  }
 
-  // Mostrar cartel dentro de un overlay negro
-  function mostrarCartelEnOverlay(htmlContenido) {
-    const overlayFondo = document.createElement('div');
-    overlayFondo.className = 'overlay-fondo';
-    const cartel = document.createElement('div');
-    cartel.className = 'cartel-advertencia';
-    cartel.innerHTML = `${htmlContenido}<button class="btn-cerrar-cartel">OK</button>`;
-    overlayFondo.appendChild(cartel);
-    document.body.appendChild(overlayFondo);
-    cartel.querySelector('.btn-cerrar-cartel').addEventListener('click', () => overlayFondo.remove());
-  }
+// Genera el HTML que muestra miniaturas de cartas requeridas
+function generarContenidoCartel(listaIds) {
+  let html = "<div class='cartas-requeridas'>";
 
-  function mostrarAlertaDesbloqueo() {
+  listaIds.forEach(passId => {
+    const cartaWrapper = document.querySelector(`.carta-wrapper[data-pass="${passId}"]`);
+
+    if (cartaWrapper) {
+      const boton = cartaWrapper.querySelector('.cartaejemplo');
+      const fondo = boton?.getAttribute('data-style') || "";
+      const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
+
+      html += `
+        <div class="carta-mini" style="${fondo}">
+          ${bloqueada ? "<div class='mini-overlay'></div>" : ""}
+        </div>`;
+    }
+  });
+
+  html += "</div>";
+  return html;
+}
 
 
-  // crear el flash de luz
+
+// CREA EL CARTEL NEGRO CON TEXTO
+function mostrarCartelEnOverlay(htmlContenido, color = "amarillo") {
+  const overlayFondo = document.createElement('div');
+  overlayFondo.className = 'overlay-fondo';
+
+  const cartel = document.createElement('div');
+  cartel.className = 'cartel-advertencia';
+  cartel.classList.add(`cartel-${color}-estilo`);
+
+  cartel.innerHTML = `${htmlContenido}<button class="btn-cerrar-cartel">OK</button>`;
+
+  overlayFondo.appendChild(cartel);
+  document.body.appendChild(overlayFondo);
+
+  cartel.querySelector('.btn-cerrar-cartel')
+        .addEventListener('click', () => overlayFondo.remove());
+}
+
+
+
+/* ==========================================================
+   ANIMACIÓN DE DESBLOQUEO (FLASH + CHISPAS + ALERTA)
+   ========================================================== */
+
+function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
+
+  /* ----- FLASH DE LUZ ----- */
   const flash = document.createElement('div');
   flash.className = 'flash-luz';
   document.body.appendChild(flash);
-
-  // activar flash
-  setTimeout(() => {
-    flash.classList.add('visible');
-  }, 50);
-
-  // limpiar flash
-  setTimeout(() => {
-    flash.remove();
-  }, 1000);
+  setTimeout(() => flash.classList.add('visible'), 50);
+  setTimeout(() => flash.remove(), 1000);
 
 
-
-    // fondo
-    const fondo = document.createElement('div');
-    fondo.className = 'fondoexplosion';
-    document.body.appendChild(fondo);
-
-    // parámetros
-    const NUM_ESTRELLAS = 30;
-    const stars = [];
-
-    // punto inicial (pegado al ángulo superior derecho)
-    const marginRight = 8;
-    const startXBase = window.innerWidth - marginRight; // x en px (derecha)
-    const startYBase = 8; // y en px (desde arriba)
-
-    // crear estrellas
-    for (let i = 0; i < NUM_ESTRELLAS; i++) {
-      const star = document.createElement('div');
-      star.className = 'estrella';
-
-      // tamaño aleatorio
-      const size = 3 + Math.random() * 10; // 
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
-      star.style.left = `0px`;
-      star.style.top = `0px`;
-
-      // cola
-      const cola = document.createElement('div');
-      cola.className = 'cola';
-      star.appendChild(cola);
-
-      // posición inicial con un poco de jitter
-      const jitterX = - (Math.random() * 12); // hacia la izquierda un poco
-      const jitterY = Math.random() * 8 - 4;  // +/- 4px vertical
-
-      const startX = startXBase + jitterX - size + 150; // +100px a la derecha
-  const startY = startYBase + jitterY - 50;
-
-      // velocidades iniciales (px/s)
-      const vx = - (120 + Math.random() * 380);     // siempre hacia la izquierda
-      const vy = -20 + Math.random() * 180;         // pequeño "lanzamiento" vertical
-
-      const ttl = 1.2 + Math.random() * 1.6; // duración de vida
-
-      // guardar objeto, sin aceleración lateral
-      stars.push({
-        el: star,
-        cola,
-        x: startX,
-        y: startY,
-        vx,
-        vy,
-        ax: 0, // sin curva
-        size,
-        ttl,
-        born: performance.now()
-      });
-
-      // poner elemento en DOM
-      fondo.appendChild(star);
-    }
-
-    // animación por frames
-    let last = performance.now();
-    function raf(now) {
-      const dt = Math.min(0.04, (now - last) / 1000);
-      last = now;
-
-      for (let i = stars.length - 1; i >= 0; i--) {
-        const s = stars[i];
-        const age = (now - s.born) / 1000;
-
-        // si expiró o salió demasiado fuera, eliminar
-        if (age > s.ttl || s.y > window.innerHeight + 300 || s.x < -300) {
-          s.el.remove();
-          stars.splice(i, 1);
-          continue;
-        }
-
-        // física: solo gravedad, sin curva
-        const gravity = 600;
-        s.vx += 0;        // sin oscilación
-        s.vy += gravity * dt;
-
-        // integrar posición
-        s.x += s.vx * dt;
-        s.y += s.vy * dt;
-
-        // estilo
-        const lifeRatio = Math.max(0, Math.min(1, age / s.ttl));
-        const scale = 1 - lifeRatio * 1;
-        s.el.style.transform = `translate(${s.x}px, ${s.y}px) scale(${scale})`;
-   s.el.style.opacity = `${Math.max(0, 1 - lifeRatio * 1)}`;
+  /* ----- FONDO OSCURO ----- */
+  const fondo = document.createElement('div');
+  fondo.className = 'fondoexplosion';
+  document.body.appendChild(fondo);
 
 
-        // cola
-        const speed = Math.hypot(s.vx, s.vy);
-        const tailLen = Math.min(140, speed * 0.11 + s.size * 1.5);
-        const angleRad = Math.atan2(s.vy, s.vx);
-        const tailAngleDeg = angleRad * 180 / Math.PI + 180;
+  /* ----- CHISPAS ----- */
+  const NUM_ESTRELLAS = 30;
+  const stars = [];
 
-        s.cola.style.width = `${tailLen}px`;
-        s.cola.style.height = `${Math.max(1, Math.round(s.size / 5))}px`;
-        s.cola.style.opacity = `${Math.max(0, 1 - lifeRatio * 2)}`;
+  const startXBase = window.innerWidth - 8;
+  const startYBase = 8;
 
-        s.cola.style.transform = `translate(0%, -50%) rotate(${tailAngleDeg}deg)`;
+  for (let i = 0; i < NUM_ESTRELLAS; i++) {
+    const star = document.createElement('div');
+    star.className = 'estrella';
+
+    const size = 3 + Math.random() * 10;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.left = `0px`;
+    star.style.top = `0px`;
+
+    const cola = document.createElement('div');
+    cola.className = 'cola';
+    star.appendChild(cola);
+
+    const jitterX = -(Math.random() * 12);
+    const jitterY = Math.random() * 8 - 4;
+
+    const startX = startXBase + jitterX + 150;
+    const startY = startYBase + jitterY - 50;
+
+    const vx = -(120 + Math.random() * 380);
+    const vy = -20 + Math.random() * 180;
+
+    const ttl = 1.2 + Math.random() * 1.6;
+
+    stars.push({
+      el: star,
+      cola,
+      x: startX,
+      y: startY,
+      vx,
+      vy,
+      ax: 0,
+      size,
+      ttl,
+      born: performance.now()
+    });
+
+    fondo.appendChild(star);
+  }
+
+  let last = performance.now();
+  function raf(now) {
+    const dt = Math.min(0.04, (now - last) / 1000);
+    last = now;
+
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const s = stars[i];
+      const age = (now - s.born) / 1000;
+
+      if (age > s.ttl || s.y > window.innerHeight + 300 || s.x < -300) {
+        s.el.remove();
+        stars.splice(i, 1);
+        continue;
       }
 
-      if (stars.length > 0) requestAnimationFrame(raf);
+      const gravity = 600;
+      s.vy += gravity * dt;
+
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+
+      const lifeRatio = Math.max(0, Math.min(1, age / s.ttl));
+      const scale = 1 - lifeRatio;
+
+      s.el.style.transform = `translate(${s.x}px, ${s.y}px) scale(${scale})`;
+      s.el.style.opacity = `${Math.max(0, 1 - lifeRatio)}`;
+
+      const speed = Math.hypot(s.vx, s.vy);
+      const tailLen = Math.min(140, speed * 0.11 + s.size * 1.5);
+      const angleRad = Math.atan2(s.vy, s.vx);
+      const tailAngleDeg = angleRad * 180 / Math.PI + 180;
+
+      s.cola.style.width = `${tailLen}px`;
+      s.cola.style.height = `${Math.max(1, Math.round(s.size / 5))}px`;
+      s.cola.style.opacity = `${Math.max(0, 1 - lifeRatio * 2)}`;
+      s.cola.style.transform = `translate(0%, -50%) rotate(${tailAngleDeg}deg)`;
     }
-    requestAnimationFrame(raf);
 
-    // Crear la alerta
-    const alerta = document.createElement('div');
-    alerta.className = 'alerta-desbloqueo';
-    alerta.innerHTML = `
-      <span class="mensaje">¡CARTA LEGENDARIA DESBLOQUEADA!</span>
-      <div class="circulo-imagen"><img src="../assets/icon-192.png" alt="Carta"></div>
-    `;
-    document.body.appendChild(alerta);
-
-    // aparecer
-    setTimeout(() => {
-      fondo.classList.add('visible');
-      alerta.classList.add('visible');
-    }, 50);
-
-    // limpiar después
-    setTimeout(() => {
-      alerta.classList.remove('visible');
-      fondo.classList.remove('visible');
-      setTimeout(() => {
-        alerta.remove();
-        fondo.remove();
-      }, 1000);
-    }, 5000);
+    if (stars.length > 0) requestAnimationFrame(raf);
   }
+  requestAnimationFrame(raf);
+
+
+
+  /* ----- MENSAJE POR COLOR ----- */
+  const mensajesColor = {
+    amarillo: "",
+    rojo: "",
+    azul: "",
+    verde: ""
+  };
+
+  const alerta = document.createElement('div');
+  alerta.className = `alerta-desbloqueo alerta-${colorCartel}`;
+  alerta.innerHTML = `
+
+    </div>
+  `;
+
+  document.body.appendChild(alerta);
+
+  setTimeout(() => {
+    fondo.classList.add('visible');
+    alerta.classList.add('visible');
+  }, 50);
+
+  setTimeout(() => {
+    alerta.classList.remove('visible');
+    fondo.classList.remove('visible');
+
+    setTimeout(() => {
+      alerta.remove();
+      fondo.remove();
+    }, 1000);
+  }, 5000);
+}
+
 
 
 
@@ -714,9 +738,18 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
         if (wrapper.hasAttribute('data-requiere-cantidad')) {
           const cantidadNecesaria = parseInt(wrapper.getAttribute('data-requiere-cantidad'), 10);
           if (desbloqueadas >= cantidadNecesaria) {
-            overlay.remove();
-            saveProgress();
-            setTimeout(() => mostrarAlertaDesbloqueo(), 3000);
+          // Detectar color antes de remover
+const colorCartel =
+  overlay.classList.contains("cartel-rojo") ? "rojo" :
+  overlay.classList.contains("cartel-azul") ? "azul" :
+  overlay.classList.contains("cartel-verde") ? "verde" :
+  "amarillo";
+
+overlay.remove();
+saveProgress();
+
+// Activar animación con color correcto
+setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
           }
         }
 
@@ -729,9 +762,16 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
             if (r === "raro" && rarasDesbloqueadas !== rarasTotal) desbloquear = false;
           });
           if (desbloquear) {
-            overlay.remove();
-            saveProgress();
-            setTimeout(() => mostrarAlertaDesbloqueo(), 3000);
+const colorCartel =
+  overlay.classList.contains("cartel-rojo") ? "rojo" :
+  overlay.classList.contains("cartel-azul") ? "azul" :
+  overlay.classList.contains("cartel-verde") ? "verde" :
+  "amarillo";
+
+overlay.remove();
+saveProgress();
+
+setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
           }
         }
       });
@@ -753,10 +793,18 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
         return cartaReq && !cartaReq.querySelector('.overlay-bloqueo');
       });
       if (todasDesbloqueadas) {
-        overlay.remove();
-        saveProgress();
-        cambios = true;
-        setTimeout(() => mostrarAlertaDesbloqueo(), 3000);
+const colorCartel =
+  overlay.classList.contains("cartel-rojo") ? "rojo" :
+  overlay.classList.contains("cartel-azul") ? "azul" :
+  overlay.classList.contains("cartel-verde") ? "verde" :
+  "amarillo";
+
+overlay.remove();
+saveProgress();
+cambios = true;
+
+setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
+
       }
     });
     if (cambios) chequearDesbloqueosAutomaticos();
