@@ -9,8 +9,8 @@
 
 }
 
-*:focus,
-*:active {
+body:focus,
+body:active {
   outline: none !important;
   box-shadow: none !important;
   -webkit-tap-highlight-color: transparent;
@@ -307,6 +307,16 @@ html, body{
   background-repeat: no-repeat;
 }
  
+.botoninstagram{
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background-image: url(../assets/logo_instagram.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: 3%;
+  right: 3%;
+}
 
 .CONTENEDORESBOTONESMENU{
   position: relative;
