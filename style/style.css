@@ -716,8 +716,8 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
 }
 
 .carta-mini {
-  width: 70px;
-  height: 100px;
+  width: 60px;
+  height: 85px;
   background-size: cover;
   background-position: center;
   position: relative;
@@ -730,7 +730,7 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
   background: rgba(255, 255, 255, 0.678);
   border-radius: 3px;
   border: 3px dashed #ffffff;
-  box-shadow: 0px 0px 0px 3px rgb(255, 255, 255) inset;
+
 }
 .alerta-desbloqueo {
   height: 90PX;
