@@ -1742,10 +1742,7 @@ animation: sobreflotar 1.2s ease-in-out alternate infinite, brillosobres 1.8s ea
 
   }
 }
-.ticketssobrefestivo{
-  animation: sobreflotar 10s ease-in-out alternate-reverse infinite;
 
-}
 
 @keyframes desplazamientolateral {
   0%{
