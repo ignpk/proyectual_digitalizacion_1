@@ -307,15 +307,23 @@ html, body{
   background-repeat: no-repeat;
 }
  
-.botoninstagram{
+.botonesredes{
   position: absolute;
   width: 70px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+    top: 3%;
+  right: 3%;
+  gap: 10px;
+}
+
+.botoninstagram{
+  width: 70px;
   height: 70px;
-  background-image: url(../assets/logo_instagram.webp);
   background-size: contain;
   background-repeat: no-repeat;
-  top: 3%;
-  right: 3%;
+
 }
 
 .CONTENEDORESBOTONESMENU{
