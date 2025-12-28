@@ -1,12 +1,5 @@
 
 
-:root {
-  color-scheme: only light;
-}
-img, video, canvas, svg {
-  filter: none !important;
-}
-
 *{
   color: white;
   text-decoration: none;
@@ -14,7 +7,6 @@ img, video, canvas, svg {
     user-select: none;
     -webkit-user-drag: none;
     outline: none;
-
 
 }
 
@@ -322,7 +314,7 @@ html, body{
 .botonesredes{
   position: absolute;
   width: 70px;
-  height: 150px;
+  height: 230px;
   display: flex;
   flex-direction: column;
     top: 3%;
@@ -336,6 +328,17 @@ html, body{
   background-size: contain;
   background-repeat: no-repeat;
 
+  align-items: end;
+  justify-content: center;
+  display: flex;
+
+}
+.botoninstagram p{
+font-size: 60%;
+color: white;
+font-weight: bolder;
+text-shadow: 0px 0px 7px rgba(0,0,0,1);
+transform: translateY(8px);
 }
 
 .CONTENEDORESBOTONESMENU{
