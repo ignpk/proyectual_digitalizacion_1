@@ -1,12 +1,10 @@
+
+
 :root {
-  color-scheme: light;
+  color-scheme: only light;
 }
-
-@media (prefers-color-scheme: dark) {
-  html, body {
-    background-color: #ffffff !important;
-  }
-
+img, video, canvas, svg {
+  filter: none !important;
 }
 
 *{
@@ -16,6 +14,7 @@
     user-select: none;
     -webkit-user-drag: none;
     outline: none;
+
 
 }
 
