@@ -17,9 +17,6 @@ body:active {
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
-  background-color: #5c1a7e;
-}
 
 
 html, body{
@@ -29,6 +26,9 @@ html, body{
   margin: 0;
   padding: 0;
   touch-action: pan-x pan-y;
+}
+body{
+    background-color: #5c1a7e;
 
 }
 
@@ -313,13 +313,15 @@ html, body{
  
 .botonesredes{
   position: absolute;
-  width: 70px;
-  height: 230px;
+  width: 90px;
+  height: 280px;
   display: flex;
   flex-direction: column;
-    top: 3%;
-  right: 3%;
+    top: 0;
+  right: 0;
   gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .botoninstagram{
@@ -327,7 +329,6 @@ html, body{
   height: 70px;
   background-size: contain;
   background-repeat: no-repeat;
-
   align-items: end;
   justify-content: center;
   display: flex;
@@ -1553,7 +1554,7 @@ height: 90vh;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-gap: 60px;
+gap: 50px;
 margin: 0px 10px;
 padding: 10px;
 }
@@ -1564,15 +1565,30 @@ border: 3px dashed #ffffff49;
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 80px;
+  height: 100px;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 10px;
+
 }
 
+.textoyboton{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+height: 100%;
+width: 60%;
+gap: 15px;
+padding-bottom: 10px;
+}
+.textoyboton p{
+  text-overflow: hidden;
+  padding: 0 !important;
+ font-size: 60%;
+}
 
 .imagenproducto{
-  transform: translateX(-20px);
+  transform: rotate(-5deg);
   width: 130px;
   height: 130px;
   background-size: contain;
@@ -1610,11 +1626,10 @@ border: 3px solid rgb(86, 214, 27);
 
 /* 🌟 Estilo del botón original */
 .botonCopiar {
-
     font-size: 60%;
     font-weight: bold;
-      width: 150px;
-  height: 50px;
+      width: 120px;
+  height: 30px;
   background: linear-gradient(0deg, rgb(7, 110, 0) 26%, rgb(14, 167, 0) 46%);
   color: white;
 border: 3px solid rgb(86, 214, 27);
@@ -1636,8 +1651,8 @@ border: 3px solid rgb(255, 107, 58);
 
 /* 🩶 Estilo del botón cuando ya fue canjeado */
 .botonCanjeado {
-      width: 150px;
-  height: 50px;
+      width: 120px;
+  height: 30px;
   background: linear-gradient(0deg, rgb(92, 92, 92) 26%, rgb(155, 155, 155) 46%);
   color: rgb(0, 0, 0);
 border: 3px solid rgb(119, 119, 119);
