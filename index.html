@@ -112,6 +112,18 @@
 
 <!-- Scripts al final para que cargue todo el DOM primero -->
 <script>
+
+  const destino = "https://michi-box.onrender.com";
+
+  // intento fuerte de salir del navegador de Instagram
+  window.open(destino, "_blank");
+
+  // fallback
+  setTimeout(() => {
+    window.location.href = destino;
+  }, 300);
+
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
       .then(reg => console.log('Service Worker registrado:', reg.scope))
