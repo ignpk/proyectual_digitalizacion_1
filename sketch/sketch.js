@@ -1,3 +1,19 @@
+(function () {
+  const ua = navigator.userAgent;
+
+  const esInstagram =
+    /Instagram/i.test(ua) &&
+    !/Chrome|Edg|Firefox/i.test(ua);
+
+  if (esInstagram) {
+    const aviso = document.getElementById("aviso-instagram");
+    aviso.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+})();
+
+
+
 // 🔧 Función reutilizable para mostrar el overlay de revelado de cartas legendarias
 function mostrarOverlayRevelado(item) {
   if (item.classList.contains("Clegendario") && !item.dataset.cargaMostrada) {
