@@ -1,3 +1,50 @@
+#instagram-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-box {
+  max-width: 320px;
+  padding: 24px;
+  background: #111;
+  border-radius: 16px;
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  color: #fff;
+}
+
+.overlay-box h2 {
+  margin-bottom: 12px;
+  font-size: 22px;
+}
+
+.overlay-box ol {
+  text-align: left;
+  margin: 16px auto;
+  padding-left: 20px;
+}
+
+.overlay-box li {
+  margin-bottom: 8px;
+}
+
+.overlay-box .small {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+
 
 
 *{
