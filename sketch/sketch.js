@@ -1,33 +1,4 @@
-function mostrarAvisoInstagram() {
-  const ua = navigator.userAgent;
 
-  const esInstagram =
-    /Instagram/i.test(ua) &&
-    !/Chrome|Edg|Firefox/i.test(ua);
-
-  const aviso = document.getElementById("aviso-instagram");
-
-  if (esInstagram) {
-    aviso.style.display = "flex";
-    document.body.style.overflow = "hidden";
-  } else {
-    aviso.style.display = "none";
-    document.body.style.overflow = "";
-  }
-}
-
-// cuando carga por primera vez
-document.addEventListener("DOMContentLoaded", mostrarAvisoInstagram);
-
-// cuando Instagram reutiliza la página
-window.addEventListener("pageshow", mostrarAvisoInstagram);
-
-// cuando la pestaña vuelve a ser visible
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") {
-    mostrarAvisoInstagram();
-  }
-});
 
 
 

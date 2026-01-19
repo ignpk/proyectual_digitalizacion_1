@@ -1,21 +1,4 @@
-#aviso-instagram {
-  position: fixed;
-  inset: 0;
-  background: #FFD400; /* amarillo */
-  color: #000;         /* negro */
-  display: none;       /* IMPORTANTÍSIMO */
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-  text-align: center;
-  font-family: system-ui, sans-serif;
-}
 
-#aviso-instagram p {
-  font-size: 28px;
-  font-weight: 700;
-  padding: 20px;
-}
 
 
 
