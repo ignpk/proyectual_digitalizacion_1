@@ -1,28 +1,32 @@
+// 🔧 Función unificada para mostrar el overlay de revelado de cartas legendarias
+// ⚠️ DEBE ESTAR FUERA del DOMContentLoaded para ser accesible globalmente
+function mostrarOverlayRevelado(item, esPorCodigo = false) {
+  // Validar que sea legendaria
+  if (!item.classList.contains("Clegendario")) return;
+  
+  // Si ya se mostró Y NO viene de código, no mostrar de nuevo
+  if (item.dataset.cargaMostrada && !esPorCodigo) return;
+  
+  // Marcar como mostrada
+  item.dataset.cargaMostrada = "true";
 
+  const tarjeta = item.querySelector(".tarjeta");
+  if (!tarjeta) return;
 
+  const overlayCarta = document.createElement("div");
+  overlayCarta.className = "overlay-revelado";
+  tarjeta.appendChild(overlayCarta);
 
+  // ⏱️ Duración extendida si vino desde un canje por código
+  const duracion = esPorCodigo ? 2800 : 1300;
 
-
-
-
-// 🔧 Función reutilizable para mostrar el overlay de revelado de cartas legendarias
-function mostrarOverlayRevelado(item) {
-  if (item.classList.contains("Clegendario") && !item.dataset.cargaMostrada) {
-    item.dataset.cargaMostrada = "true";
-
-    const tarjeta = item.querySelector(".tarjeta");
-    if (tarjeta) {
-      const overlayCarta = document.createElement("div");
-      overlayCarta.className = "overlay-revelado";
-      tarjeta.appendChild(overlayCarta);
-
-      setTimeout(() => {
-        overlayCarta.classList.add("fade-out");
-        setTimeout(() => overlayCarta.remove(), 800);
-      }, 1300);
-    }
-  }
+  setTimeout(() => {
+    overlayCarta.classList.add("fade-out");
+    setTimeout(() => overlayCarta.remove(), 800);
+  }, duracion);
 }
+
+// ========================================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   const botones = document.querySelectorAll(".botonCopiar");
@@ -94,24 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
     boton.disabled = true;
   }
 
-  // 🌀 Función modificada: overlay con duración extendida si es por código
-  function mostrarOverlayRevelado(item, esPorCodigo = false) {
-    if (!item.classList.contains("Clegendario") || item.dataset.cargaMostrada) return;
-    item.dataset.cargaMostrada = "true";
-
-    const tarjeta = item.querySelector(".tarjeta");
-    const overlayCarta = document.createElement("div");
-    overlayCarta.className = "overlay-revelado";
-    tarjeta.appendChild(overlayCarta);
-
-    // ⏱️ Duración extendida si vino desde un canje por código
-    const duracion = esPorCodigo ? 2800 : 1300;
-
-    setTimeout(() => {
-      overlayCarta.classList.add("fade-out");
-      setTimeout(() => overlayCarta.remove(), 800);
-    }, duracion);
-  }
 });
 
 
@@ -168,16 +154,26 @@ window.addEventListener("load", () => {
   }
 });
 
-// ------------------------- Guardado / restauración de progreso -------------------------
+// ⏱️ Debounce para evitar guardados excesivos en localStorage
+let saveProgressTimer = null;
+
 function saveProgress() {
-  try {
-    const desbloqueadas = Array.from(document.querySelectorAll('.carta-wrapper'))
-      .filter(w => !w.querySelector('.overlay-bloqueo'))
-      .map(w => w.getAttribute('data-pass'));
-    localStorage.setItem('michi.unlocked', JSON.stringify(desbloqueadas));
-  } catch (e) {
-    console.error('saveProgress error', e);
+  // Cancelar guardado anterior pendiente
+  if (saveProgressTimer) {
+    clearTimeout(saveProgressTimer);
   }
+  
+  // Programar nuevo guardado en 500ms
+  saveProgressTimer = setTimeout(() => {
+    try {
+      const desbloqueadas = Array.from(document.querySelectorAll('.carta-wrapper'))
+        .filter(w => !w.querySelector('.overlay-bloqueo'))
+        .map(w => w.getAttribute('data-pass'));
+      localStorage.setItem('michi.unlocked', JSON.stringify(desbloqueadas));
+    } catch (e) {
+      console.error('saveProgress error', e);
+    }
+  }, 500);
 }
 
 function loadProgress() {
@@ -204,51 +200,57 @@ const overlay = document.getElementById("overlay");
 const cerrar = document.getElementById("cerrar-overlay");
 const resultado = document.getElementById("resultado");
 
-btnAbrir.addEventListener("click", () => {
-  overlay.style.display = "flex";
-  if (!scanner) scanner = new Html5Qrcode("reader");
-  scanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    (decodedText) => {
-      resultado.innerText = "Código QR: " + decodedText;
-      document.getElementById("codigoGlobal").value = decodedText;
-      document.getElementById("botonVerificarCodigo").click();
-      scanner.stop().then(() => overlay.style.display = "none");
-    }
-  ).catch(err => console.error("No se pudo iniciar el escáner:", err));
-});
-
-cerrar.addEventListener("click", () => {
-  if (scanner) {
-    scanner.stop().then(() => {
-      overlay.style.display = "none";
-      resultado.innerText = "";
-    }).catch(() => overlay.style.display = "none");
-  } else {
-    overlay.style.display = "none";
-  }
-});
-
-// ------------------------- QR de cada carta por separado -------------------------
-document.getElementById("botonCambiar").addEventListener("click", function () {
-  const carruseles = document.querySelectorAll(".carousel-item");
-  carruseles.forEach(item => {
-    const estilo = window.getComputedStyle(item);
-    if (estilo.display !== "none") {
-      const qr = item.querySelector(".codigoqrdecarta");
-      if (qr) {
-        if (qr.classList.contains("mostrar")) {
-          qr.classList.remove("mostrar");
-          setTimeout(() => { qr.style.display = "none"; }, 400);
-        } else {
-          qr.style.display = "block";
-          setTimeout(() => { qr.classList.add("mostrar"); }, 10);
-        }
+// ⚠️ SOLO ejecutar si los elementos existen (estamos en galeria.html)
+if (btnAbrir && overlay && cerrar && resultado) {
+  btnAbrir.addEventListener("click", () => {
+    overlay.style.display = "flex";
+    if (!scanner) scanner = new Html5Qrcode("reader");
+    scanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      (decodedText) => {
+        resultado.innerText = "Código QR: " + decodedText;
+        document.getElementById("codigoGlobal").value = decodedText;
+        document.getElementById("botonVerificarCodigo").click();
+        scanner.stop().then(() => overlay.style.display = "none");
       }
+    ).catch(err => console.error("No se pudo iniciar el escáner:", err));
+  });
+
+  cerrar.addEventListener("click", () => {
+    if (scanner) {
+      scanner.stop().then(() => {
+        overlay.style.display = "none";
+        resultado.innerText = "";
+      }).catch(() => overlay.style.display = "none");
+    } else {
+      overlay.style.display = "none";
     }
   });
-});
+}
+
+// ------------------------- QR de cada carta por separado -------------------------
+const botonCambiar = document.getElementById("botonCambiar");
+if (botonCambiar) {
+  botonCambiar.addEventListener("click", function () {
+    const carruseles = document.querySelectorAll(".carousel-item");
+    carruseles.forEach(item => {
+      const estilo = window.getComputedStyle(item);
+      if (estilo.display !== "none") {
+        const qr = item.querySelector(".codigoqrdecarta");
+        if (qr) {
+          if (qr.classList.contains("mostrar")) {
+            qr.classList.remove("mostrar");
+            setTimeout(() => { qr.style.display = "none"; }, 400);
+          } else {
+            qr.style.display = "block";
+            setTimeout(() => { qr.classList.add("mostrar"); }, 10);
+          }
+        }
+      }
+    });
+  });
+}
 
 // ------------------------- Botón Expansiones -------------------------
 function abrirVentanaExpansiones() {
@@ -286,29 +288,87 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarExpansion("1");
 });
 
-// ------------------------- Optimizador de imágenes -------------------------
-const observer = new IntersectionObserver((entries) => {
+
+
+// ------------------------- Optimizador de imágenes MEJORADO -------------------------
+const lazyLoadObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const el = entry.target;
-      if (el.dataset.loaded) return;
-      if (el.dataset.style) el.setAttribute('style', el.dataset.style);
+      
+      // Evitar cargar múltiples veces
+      if (el.dataset.loaded === "true") return;
+      
+      // 1️⃣ CARGAR BACKGROUND-IMAGE (para divs con data-style)
+      if (el.dataset.style) {
+        el.setAttribute('style', el.dataset.style);
+      }
+      
+      // 2️⃣ CARGAR SRC (para imágenes <img> con data-src)
+      if (el.tagName === 'IMG' && el.dataset.src) {
+        el.src = el.dataset.src;
+        
+        // Opcional: agregar clase cuando cargue
+        el.onload = () => {
+          el.classList.add('loaded');
+        };
+        
+        // Manejo de error
+        el.onerror = () => {
+          console.error(`Error cargando imagen: ${el.dataset.src}`);
+          el.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        };
+      }
+      
+      // Marcar como cargado
       el.dataset.loaded = "true";
-      observer.unobserve(el);
+      
+      // Dejar de observar este elemento
+      lazyLoadObserver.unobserve(el);
     }
   });
+}, {
+  // Configuración optimizada
+  rootMargin: '100px',  // Cargar 100px antes de ser visible
+  threshold: 0.01       // Activar cuando 1% sea visible
 });
 
+// Observar todos los elementos lazy
 document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
+  // Si tiene style, guardarlo en data-style
   if (!el.dataset.style && el.hasAttribute('style')) {
     el.dataset.style = el.getAttribute('style');
     el.removeAttribute('style');
   }
-  if (el.dataset.style) observer.observe(el);
+  
+// Si es IMG con src, guardarlo en data-src
+if (el.tagName === 'IMG' && el.hasAttribute('src') && !el.dataset.src) {
+  // Solo procesar si el src NO es ya el placeholder
+  if (!el.src.startsWith('data:image')) {
+    el.dataset.src = el.src;
+    el.removeAttribute('src');
+    // Agregar placeholder transparente
+    el.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  }
+}
+  
+  // Observar el elemento
+  if (el.dataset.style || (el.tagName === 'IMG' && el.dataset.src)) {
+    lazyLoadObserver.observe(el);
+  }
 });
 
 // ------------------------- DOMContentLoaded -------------------------
 document.addEventListener("DOMContentLoaded", () => {
+  // ⚠️ VERIFICAR si estamos en galeria.html
+  const carouselItems = document.querySelectorAll(".carousel-item");
+  const fondonegro = document.querySelector(".fondonegro");
+  
+  // Solo ejecutar si existen elementos de la galería
+  if (carouselItems.length === 0 || !fondonegro) {
+    return; // Salir si no estamos en galeria.html
+  }
+
   // Cargar progreso guardado
   loadProgress();
 
@@ -371,96 +431,113 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Bloqueo de cartas
+// Bloqueo de cartas
   document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
-  const carouselItems = document.querySelectorAll(".carousel-item");
-  const fondonegro = document.querySelector(".fondonegro");
-  document.getElementById("codigoGlobal").addEventListener("keypress", e => {
-    if (e.key === "Enter") document.getElementById("botonVerificarCodigo").click();
-  });
+  
+  const codigoGlobal = document.getElementById("codigoGlobal");
+  const botonVerificarCodigo = document.getElementById("botonVerificarCodigo");
+  
+  if (codigoGlobal && botonVerificarCodigo) {
+    codigoGlobal.addEventListener("keypress", e => {
+      if (e.key === "Enter") botonVerificarCodigo.click();
+    });
+  }
+
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-  // Cartel amarillo y requisitos activos
+// Cartel amarillo y requisitos activos
   let cartelActivo = null;
   let requisitosActivos = [];
-  document.getElementById("botonVerificarCodigo").addEventListener("click", () => {
-    const codigo = document.getElementById("codigoGlobal").value.trim();
-    if (!codigo) return;
-    let encontrado = false;
-    let desbloqueada = false;
-    document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
-      const overlay = wrapper.querySelector(".overlay-bloqueo");
-      const pass = wrapper.getAttribute("data-pass");
-      if (codigo.toLowerCase() === pass.toLowerCase()) {
-        encontrado = true;
-        if (overlay) {
-          overlay.remove();
-          saveProgress();
+  
+  if (botonVerificarCodigo && codigoGlobal) {
+    botonVerificarCodigo.addEventListener("click", () => {
+      const codigo = codigoGlobal.value.trim();
+      if (!codigo) return;
+      let encontrado = false;
+      let desbloqueada = false;
+      document.querySelectorAll(".carta-wrapper").forEach(wrapper => {
+        const overlay = wrapper.querySelector(".overlay-bloqueo");
+        const pass = wrapper.getAttribute("data-pass");
+        if (codigo.toLowerCase() === pass.toLowerCase()) {
+          encontrado = true;
+          if (overlay) {
+            overlay.remove();
+            saveProgress();
 
-             // 🔥 Cambiar a la expansión del contenedor padre
-    const contenedor = wrapper.closest(".cartasgaleriacontainer");
-    if (contenedor) {
-      const expansionNum = contenedor.getAttribute("data-expansion");
-      if (expansionNum) {
-        mostrarExpansion(expansionNum);
-      }
-    }
-
-          desbloqueada = true;
-          const boton = wrapper.querySelector(".cartaejemplo");
-          const id = boton?.getAttribute("data-target");
-          const item = document.getElementById(id);
-          if (item) {
-            carouselItems.forEach(i => i.style.display = "none");
-            item.style.display = "flex";
-            fondonegro.style.display = "block";
-            document.body.style.overflow = "hidden";
-            mostrarPantallaNegra();
-            setTimeout(() => {
-              ocultarPantallaNegra();
-              if (!item.dataset.animado) {
-                item.classList.add("animacion-primera-vez");
-                item.dataset.animado = "true";
-                setTimeout(() => item.classList.remove("animacion-primera-vez"), 3000);
-              }
-            }, 2000);
-            setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 2500);
-            setTimeout(chequearDesbloqueosAutomaticos, 0);
-          }
+               // 🔥 Cambiar a la expansión del contenedor padre
+      const contenedor = wrapper.closest(".cartasgaleriacontainer");
+      if (contenedor) {
+        const expansionNum = contenedor.getAttribute("data-expansion");
+        if (expansionNum) {
+          mostrarExpansion(expansionNum);
         }
       }
+
+            desbloqueada = true;
+            const boton = wrapper.querySelector(".cartaejemplo");
+            const id = boton?.getAttribute("data-target");
+            const item = document.getElementById(id);
+            if (item) {
+              carouselItems.forEach(i => i.style.display = "none");
+              item.style.display = "flex";
+              fondonegro.style.display = "block";
+              document.body.style.overflow = "hidden";
+              mostrarPantallaNegra();
+              setTimeout(() => {
+                ocultarPantallaNegra();
+                if (!item.dataset.animado) {
+                  item.classList.add("animacion-primera-vez");
+                  item.dataset.animado = "true";
+                  setTimeout(() => item.classList.remove("animacion-primera-vez"), 3000);
+                }
+              }, 2000);
+              setTimeout(() => wrapper.scrollIntoView({ behavior: "smooth", block: "center" }), 2500);
+              setTimeout(chequearDesbloqueosAutomaticos, 0);
+            }
+          }
+        }
+      });
+      if (!encontrado) mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
+      else if (!desbloqueada) mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
+      codigoGlobal.value = "";
     });
-    if (!encontrado) mostrarAlerta("CÓDIGO INCORRECTO", "incorrecto");
-    else if (!desbloqueada) mostrarAlerta("CÓDIGO YA INGRESADO", "canjeado");
-    document.getElementById("codigoGlobal").value = "";
-  });
+  }
 
 
   
- // Abrir cartas desbloqueadas
-document.querySelectorAll(".cartaejemplo").forEach(boton => {
-  boton.addEventListener("click", e => {
+// Abrir cartas desbloqueadas - CON EVENT DELEGATION (1 solo listener)
+// ⚠️ SOLO ejecutar si estamos en galeria.html
+const carouselContainer = document.querySelector('.carousel-container');
+if (carouselContainer) {
+  carouselContainer.addEventListener('click', e => {
+    // Buscar si se hizo click en un botón de carta
+    const boton = e.target.closest('.cartaejemplo');
+    if (!boton) return; // Si no es una carta, ignorar
+    
     e.stopPropagation();
 
-    const wrapper = boton.closest(".carta-wrapper");
-    if (!wrapper.querySelector(".overlay-bloqueo")) {
-      const id = boton.getAttribute("data-target");
-      const item = document.getElementById(id);
+    const wrapper = boton.closest('.carta-wrapper');
+    if (!wrapper) return;
+    
+    // Solo abrir si no está bloqueada
+    if (wrapper.querySelector('.overlay-bloqueo')) return;
+    
+    const id = boton.getAttribute('data-target');
+    const item = document.getElementById(id);
 
-      if (item) {
-        // Ocultar otras cartas y mostrar la seleccionada
-        carouselItems.forEach(i => i.style.display = "none");
-        item.style.display = "flex";
-        fondonegro.style.display = "block";
-        document.body.style.overflow = "hidden";
+    if (item) {
+      // Ocultar otras cartas y mostrar la seleccionada
+      carouselItems.forEach(i => i.style.display = "none");
+      item.style.display = "flex";
+      fondonegro.style.display = "block";
+      document.body.style.overflow = "hidden";
 
-        // 🪄 Mostrar overlay de revelado si es legendaria
-        mostrarOverlayRevelado(item);
-      }
+      // 🪄 Mostrar overlay de revelado si es legendaria
+      mostrarOverlayRevelado(item);
     }
   });
-});
+}
 
 
 
@@ -487,9 +564,14 @@ document.querySelectorAll(".cartaejemplo").forEach(boton => {
    SISTEMA DE CARTEL DE BLOQUEO + ANIMACIÓN DE DESBLOQUEO
    ========================================================== */
 
-// CLICK EN CARTAS BLOQUEADAS
-document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
-  overlay.addEventListener('click', e => {
+// CLICK EN CARTAS BLOQUEADAS - CON EVENT DELEGATION
+const galeriaContainer = document.getElementById('GALERIA');
+if (galeriaContainer) {
+  galeriaContainer.addEventListener('click', e => {
+    // Buscar si se hizo click en un overlay bloqueado
+    const overlay = e.target.closest('.overlay-bloqueo.overespecial');
+    if (!overlay) return; // Si no es un overlay bloqueado, ignorar
+    
     e.stopPropagation();
 
     const mensajePersonalizado = overlay.getAttribute('data-cartel');
@@ -500,7 +582,7 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
       overlay.classList.contains("cartel-rojo") ? "rojo" :
       overlay.classList.contains("cartel-azul") ? "azul" :
       overlay.classList.contains("cartel-verde") ? "verde" :
-       overlay.classList.contains("cartel-naranja") ? "naranja" :
+      overlay.classList.contains("cartel-naranja") ? "naranja" :
       "amarillo"; // por defecto
 
     // Construcción del contenido HTML
@@ -517,8 +599,7 @@ document.querySelectorAll('.overlay-bloqueo.overespecial').forEach(overlay => {
 
     mostrarCartelEnOverlay(contenidoFinal, color);
   });
-});
-
+}
 
 // Genera el HTML que muestra miniaturas de cartas requeridas
 function generarContenidoCartel(listaIds) {
