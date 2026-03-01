@@ -2,10 +2,6 @@
 
 
 
-
-
-
-
 *{
   color: white;
   text-decoration: none;
@@ -130,7 +126,7 @@ body{
 .botondescargarapp,
 .botondescargarapp img,
  .overlay-bloqueo,
- .oro::before,.plata::before,
+ .oro::before,.plata::before,.azul::before,
  .mini-overlay,
  .logospinner,
  .codigoqrdecarta,
@@ -148,7 +144,6 @@ body{
 .overlay,
 .fondonegro,
 #ventanaExpansiones,
-.BOTONDESBLOQUEAR,
 .overlay-fondo{
     backdrop-filter: blur(5px);
     
@@ -445,7 +440,6 @@ position: absolute;
   height: 100PX;
   background-color: rgba(255, 0, 0, 0);
   z-index: 99999;
-display: none;
     
 }
 
@@ -455,22 +449,23 @@ display: none;
 }
 #codigoGlobal::placeholder {
 
-  color: rgba(255, 255, 255, 0.895); 
+  color: rgba(255, 255, 255, 0.388); 
 }
 .BOTONDESBLOQUEAR input{
   padding: 10px;
-  border: 2px solid white;
+  border: 2px solid rgba(255, 255, 255, 0.395);
+  border-radius: 5px;
   outline: none;
   font-weight: lighter;
-background-color: rgba(255, 255, 255, 0.197);
+background-color: rgba(255, 255, 255, 0);
 }
 .BOTONDESBLOQUEAR button{
   cursor: pointer;
   width: 40px;
   height: 40px;
 font-size: 150%;
-
-background-color: rgba(255, 255, 255, 0.544);
+border: none;
+background-color: rgba(255, 255, 255, 0);
 transition: 0.3s ease;
 }
 
@@ -524,53 +519,117 @@ transition: 0.3s ease;
   padding: 20px 5%;
   width: 100%;
   height: auto;
+  margin: auto;
 }
-
-  .cartaejemplo{
-    cursor: pointer;
-    filter: saturate(1) contrast(1);
-border-radius: 3px;
-    background-size: cover;
-    background-position: center;
-    width: 100%;
-    height: 100%;
-    border: none;
-    transition: 0.3s ease;
-    overflow: hidden;
-background-color: rgba(93, 26, 126, 0);
-
-    display: flex;
-justify-content: center;
-align-items: end;
-  }
-.cartaejemplo P{
-font-size: 60%;
-}
-
-  .carta-wrapper {
-        width: 103px;
-    height: 150px;
-    position: relative;
-    display: inline-block;
+.CONTENEDORSTICKERS{
+  width: 90%;
+  margin: 40px auto;
+  padding: 30px 0px;
+  border-radius: 25px;
+  border: 3px dashed #7a27a4d6;
     background-color: rgba(92,26,126,1);
-border: 3px dashed #7a27a4d6;
-  }
-  .overlay-bloqueo {
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-border-radius: 3px;
-background-size: contain;
-background-color: rgba(92,26,126,1);
+}
 
-  user-select: none;       /* no seleccionable */
-  -webkit-tap-highlight-color: transparent; /* quita el flash en móviles */
+
+.carta-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 3px solid rgb(117, 53, 149);
+    background-color: rgb(85, 0, 128);
   }
+
+/* 🔒 Cartas bloqueadas - SIN filtro en el wrapper */
+.carta-wrapper:has(.overlay-bloqueo) {
+  pointer-events: none;
+  cursor: pointer;
+}
+
+/* ✅ Cartas desbloqueadas */
+.carta-wrapper:not(:has(.overlay-bloqueo)) {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* 🎨 APLICAR FILTRO SOLO AL BOTÓN DE LA CARTA (no al overlay) */
+.carta-wrapper:has(.overlay-bloqueo) .cartaejemplo {
+  filter: grayscale(100%);
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+
+/* El botón de la carta desbloqueada */
+.cartaejemplo {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: inherit;
+  transition: all 0.3s ease;
+  filter: none;
+  opacity: 1;
+}
+
+/* 🔥 OCULTAR overlay-bloqueo para NORMALES y RAROS */
+.overlay-bloqueo.overnormal,
+.overlay-bloqueo.overraro {
+  display: none !important;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 👑 OVERLAY VISIBLE SOLO para LEGENDARIAS (mantiene color violeta) */
+.overlay-bloqueo.overespecial {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 10;
+  pointer-events: all;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+/* Variaciones de color para diferentes tipos de legendarias */
+.overlay-bloqueo.overespecial.cartel-rojo {
+    background-color: rgba(92,26,126,1);
+  pointer-events: none;
+}
+
+.overlay-bloqueo.overespecial.cartel-azul {
+  background: rgba(70, 130, 255, 0.6);
+  border-color: rgba(100, 150, 255, 0.9);
+}
+
+.overlay-bloqueo.overespecial.cartel-verde {
+    background-color: rgba(92,26,126,1);
+  background-image: url(../assets/cartas/MENU_DIMENSION.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.overlay-bloqueo.overespecial.cartel-amarillo {
+  background: rgba(255, 200, 0, 0.6);
+  border-color: rgba(255, 220, 50, 0.9);
+}
+
+.overlay-bloqueo.overespecial.cartel-naranja {
+  position: absolute;
+  background-color: rgba(92,26,126,1);
+  background-image: url(../assets/cartas/MENU_LEGENDARIO.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
 .oro{
 animation: orobrillo 4s linear infinite;
+}
+
+.azul{
+animation: azulbrillo 4s linear infinite;
 }
 
 @keyframes orobrillo {
@@ -581,19 +640,29 @@ animation: orobrillo 4s linear infinite;
       filter: brightness(1.3) contrast(1.3) sepia(1) saturate(5);
   }
 }
-
+@keyframes azulbrillo {
+  0%, 100% {
+      filter: brightness(1) contrast(1) sepia(0) saturate(1) ;
+  }
+  50% {
+      filter: brightness(1.3) contrast(1.3) sepia(1) saturate(5) hue-rotate(120deg);
+  }
+}
 
 /* Haz de luz */
 
-.oro::before,.plata::before {
+.oro::before, .plata::before, .azul::before {
   content: "";
+  position: absolute; /* 👈 Asegúrate de tener esto */
   top: -150%;
   left: -150%;
   width: 200%;
   height: 200%;
   transform: rotate(25deg);
   animation: shine 4s ease-in-out infinite;
+  pointer-events: none; /* 👈 Para que no interfiera con clicks */
 }
+
 .plata::before {
   background: linear-gradient(
     110deg,
@@ -602,6 +671,16 @@ animation: orobrillo 4s linear infinite;
     rgba(255, 255, 255, 0) 57%
   );
 }
+
+.azul::before {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 43%,
+    rgb(255, 255, 255) 50%,
+    rgba(255, 255, 255, 0) 57%
+  );
+}
+
 .oro::before {
   background: linear-gradient(
     110deg,
@@ -611,32 +690,45 @@ animation: orobrillo 4s linear infinite;
   );
 }
 
+/* 🔒 DESACTIVAR el efecto de brillo cuando la carta está bloqueada */
+.carta-wrapper:has(.overlay-bloqueo) .cartaejemplo.oro::before,
+.carta-wrapper:has(.overlay-bloqueo) .cartaejemplo.plata::before,
+.carta-wrapper:has(.overlay-bloqueo) .cartaejemplo.azul::before {
+  display: none; /* Oculta completamente el brillo */
+  /* O usa: opacity: 0; si prefieres mantener la animación lista */
+}
 
 @keyframes shine {
   0% {
-          filter: opacity(0%);
+    filter: opacity(0%);
     transform: translate(-100%, -100%) rotate(25deg);
   }
-    50% {
-      filter: opacity(100%)
+  50% {
+    filter: opacity(100%);
   }
   100% {
-          filter: opacity(0%);
+    filter: opacity(0%);
     transform: translate(100%, 100%) rotate(25deg);
   }
 }
 
 
-.SIGNOPREGUNTA{
-  background-image: url(../assets/cartas/MENU_LEGENDARIO.webp);
+
+
+.STICKERDIMENSION{
+  width: 80PX !important;
+  height: 80PX !important;
+  border-radius: 50% !important;
+
 }
 
-.SIGNOPREGUNTADIMENSION{
-    background-image: url(../assets/cartas/MENU_DIMENSION.webp);
 
+
+.PORTAL{
+  background-image: url(../assets/cartas/DIMENSIONALES/PORTAL.webp);
+  z-index: 10;
+  animation: GIRAR 10s reverse linear infinite;
 }
-
-
 
 
 /* --------------------------------------requisitos y alerta de legendarias------------------------------------ */
@@ -650,39 +742,34 @@ animation: orobrillo 4s linear infinite;
   justify-content: center;
   align-items: center;
   z-index: 9998;
-    animation: fadeIn 0.3s ease-in-out;
-      width: 100%;
+  animation: fadeIn 0.3s ease-in-out;
+  width: 100%;
   height: 100%;
 }
-
 
 .cartel-advertencia {
   padding: 5%;
   position: fixed;
   display: flex;
-   flex-direction: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10PX;
-    width: 70%;
+  width: 70%;
   height: auto;
   background: rgba(240, 196, 1, 0);
   border-radius: 12px;
-
-  font-size: 18px;
+  font-size: 80%;
   z-index: 9999;
   text-align: center;
-    animation: zoom 0.3s ease-in-out;
+  animation: zoom 0.3s ease-in-out;
 }
-
-
-
 
 /* ROJO */
 .cartel-rojo-estilo {
   background: rgb(255, 70, 70);
   color: white;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 .cartel-rojo-estilo p b {
   color: white;
@@ -692,7 +779,7 @@ animation: orobrillo 4s linear infinite;
 .cartel-azul-estilo {
   background: rgb(70, 130, 255);
   color: white;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 .cartel-azul-estilo p b {
   color: white;
@@ -719,20 +806,19 @@ animation: orobrillo 4s linear infinite;
   background: rgb(255, 200, 0);
   color: white;
   border: 8px solid rgb(255, 242, 220);
-box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
+  box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
 }
 .cartel-naranja-estilo p b {
   color: white;
 }
-
 
 .cartas-requeridas {
   display: flex;
   flex-wrap: wrap;
   gap:10px;
   justify-content: center;
-
 }
+
 .cartel-advertencia p b{
   color: rgb(125, 125, 125);
 }
@@ -744,20 +830,19 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
 .carta-mini {
   width: 60px;
   height: 85px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   position: relative;
   border-radius: 4px;
-
+  transition: filter 0.3s ease;
 }
 
-.mini-overlay {
-  inset: 0;
-  background: rgba(255, 255, 255, 0.678);
-  border-radius: 3px;
-  border: 3px dashed #ffffff;
-
+.carta-mini.bloqueada {
+  filter: grayscale(100%) brightness(0.7);
+  opacity: 0.4;
 }
+
 .alerta-desbloqueo {
   height: 90PX;
   width: 300px;
@@ -775,10 +860,10 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
 
 /* AMARILLO (DEFAULT) */
 .alerta-amarillo {
-        background-image: url(../assets/icon_legendaria.webp);
-    background-size: contain;
-    background-position: right;
-    background-repeat: no-repeat;
+  background-image: url(../assets/icon_legendaria.webp);
+  background-size: contain;
+  background-position: right;
+  background-repeat: no-repeat;
 }
 
 /* ROJO */
@@ -793,19 +878,16 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
 
 /* VERDE */
 .alerta-verde {
-
-    background-image: url(../assets/icon_portal.webp);
-    background-size: contain;
-    background-position:right;
-    background-repeat: no-repeat;
+  background-image: url(../assets/icon_portal.webp);
+  background-size: contain;
+  background-position:right;
+  background-repeat: no-repeat;
 }
-
 
 .alerta-desbloqueo.visible {
   right: 0;
   opacity: 1;
 }
-
 
 .alerta-desbloqueo .mensaje {
   font-family: Arial, Helvetica, sans-serif !important;
@@ -815,7 +897,6 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
   align-items: center;
 }
 
-
 .alerta-desbloqueo .circulo-imagen {
   width: 80px;
   height: 80px;
@@ -823,7 +904,6 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
   align-items: center;
   justify-content: center;
   display: flex;
-
 }
 
 .alerta-desbloqueo .circulo-imagen img {
@@ -839,7 +919,6 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
   left: 0;
   width: 100vw;
   height: 100vh;
-
   opacity: 0;
   z-index: 99999998;
   pointer-events: none;
@@ -851,39 +930,36 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
   opacity: 1;
 }
 
-
-/* estrella: el contenedor, su posición se mueve por transform */
+/* 🔥 CHISPAS - ESTILOS BASE (sin colores fijos) */
 .estrella {
   position: absolute;
   left: 0;
   top: 0;
   border-radius: 50%;
   will-change: transform, opacity;
-  background: radial-gradient(circle, #fff 0%, #ffe600 60%, #ffae00 100%);
-  box-shadow: 0 0 18px 6px rgba(255, 236, 0, 0.85);
+  /* 👇 ELIMINAMOS background y box-shadow fijos - ahora se aplican en JS */
   pointer-events: none;
   overflow: visible;
 }
 
-/* cola: elemento dentro de la estrella, su extremo izquierdo coincide con el centro visual de la estrella */
+/* 🔥 COLA - ESTILO BASE (sin color fijo) */
 .estrella .cola {
   position: absolute;
   left: 50%;
   top: 50%;
   transform-origin: 0 50%;
   height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,220,0.95), rgba(255,255,220,0.25), transparent);
+  /* 👇 ELIMINAMOS background fijo - ahora se aplica en JS */
   border-radius: 2px;
   pointer-events: none;
   will-change: width, transform, opacity;
 }
 
-
 .flash-luz {
   position: fixed;
   top: -250px;
   right: -250px;
-  width: 600px;       /* podés agrandar el área del flash */
+  width: 600px;
   height: 600px;
   background: radial-gradient(
     circle at top right,
@@ -898,7 +974,7 @@ box-shadow: 0px 0px 20px 4px rgb(255, 162, 0);
 }
 
 .flash-luz.visible {
-animation: flashAnim 1.3s ease-out forwards;
+  animation: flashAnim 1.3s ease-out forwards;
 }
 
 @keyframes flashAnim {
@@ -906,13 +982,11 @@ animation: flashAnim 1.3s ease-out forwards;
     opacity: 1;
     transform: scale(0);
   }
-
   100% {
     opacity: 0;
     transform: scale(5);
   }
 }
-
 /* ------------------------------------pantalla de cargando la primera vez que abre legendaria-------------------------------------- */
 /* Overlay de carta legendaria */
 .overlay-revelado {
@@ -1219,6 +1293,16 @@ background-color:rgb(240, 196, 1);
 background-color:rgba(0, 0, 0, 0.545);
 }
 
+.Qrdimensional{
+background-color:rgba(0, 0, 0, 0.545);
+backdrop-filter: blur(5px);
+  width: 90%;
+  height: 90%;
+  border-radius: 50% !important;
+}
+
+
+
 /* HAZ DE LUZ */
 .QRRARO::before {
   content: "";
@@ -1297,6 +1381,13 @@ overflow: visible;
   height: 450px;
 }
 
+.stickercircular{
+  border-radius: 50% !important;
+    width: 309px !important;
+  height: 309px !important;
+}
+
+
 @keyframes zoom{
   0%{
     transform: scale(0.9);
@@ -1348,6 +1439,33 @@ overflow: hidden;
 .sombra {z-index: 19;}
 .bordecarta{z-index:14;}
 
+
+.PORTAL{
+  z-index: 10;
+   animation: GIRAR 5s reverse linear infinite;
+}
+.FONDOPORTAL{
+  z-index: 11;
+}
+.figuraPORTAL{
+  z-index: 12;
+  animation: flotarDIMENSIONAL 0.6S ease-out ;
+}
+.nombrePORTAL{
+  z-index: 13;
+}
+
+
+
+@keyframes flotarDIMENSIONAL{
+  0%{
+    transform: rotate(540deg) scale(0);
+    filter: blur(5px) brightness(10);
+  }
+  100%{
+    transform:rotate(0deg)  scale(1);
+  }
+}
 
 .michi{
   background-size: cover;
@@ -1855,7 +1973,7 @@ animation: sobreflotar 1.2s ease-in-out alternate infinite, brillosobres 1.8s ea
 
 
 
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 1000px){
 
   .iconomenu:nth-child(1){
 display: block;
@@ -1944,15 +2062,26 @@ top: 90%;
 .CONTENEDORESBOTONESMENU{
   height: 60%;
   transform: translateY(-10%);
-
 }
-
 
 .botonesmenu{
+  padding: 0% 10%;
   gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px; /* Limita el crecimiento en pantallas grandes */
+  margin: 0 auto; /* Centra el contenedor */
 }
+
 .iconomenu{
- width: 38vw;             
+  width: 38vw;
+  max-width: 180px; /* CLAVE: Evita que crezcan demasiado */
+  aspect-ratio: 1 / 1; /* CLAVE: Mantiene cuadrados siempre */
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  flex-shrink: 0; /* Evita que se compriman */
 }
 
   .carta-wrapper {

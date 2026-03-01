@@ -614,8 +614,7 @@ function generarContenidoCartel(listaIds) {
       const bloqueada = cartaWrapper.querySelector('.overlay-bloqueo') ? true : false;
 
       html += `
-        <div class="carta-mini" style="${fondo}">
-          ${bloqueada ? "<div class='mini-overlay'></div>" : ""}
+        <div class="carta-mini ${bloqueada ? 'bloqueada' : ''}" style="${fondo}">
         </div>`;
     }
   });
@@ -623,7 +622,6 @@ function generarContenidoCartel(listaIds) {
   html += "</div>";
   return html;
 }
-
 
 
 // CREA EL CARTEL NEGRO CON TEXTO
@@ -644,27 +642,44 @@ function mostrarCartelEnOverlay(htmlContenido, color = "amarillo") {
         .addEventListener('click', () => overlayFondo.remove());
 }
 
-
-
 /* ==========================================================
    ANIMACIÓN DE DESBLOQUEO (FLASH + CHISPAS + ALERTA)
    ========================================================== */
 
 function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
 
+  /* ----- COLORES POR TIPO DE CARTEL ----- */
+  const coloresChispas = {
+    amarillo: ['#FFD700', '#FFA500', '#FFFF00', '#FFE135'],
+    rojo: ['#FF0000', '#FF4500', '#DC143C', '#FF6347'],
+    azul: ['#00BFFF', '#1E90FF', '#4169E1', '#87CEEB'],
+    verde: ['#00FF00', '#32CD32', '#7FFF00', '#90EE90'],
+    naranja: ['#FF8C00', '#FF6347', '#FF7F50', '#FFA07A']
+  };
+
+  const coloresActuales = coloresChispas[colorCartel] || coloresChispas.amarillo;
+
+  /* ----- COLORES PARA EL FLASH DE LUZ ----- */
+  const coloresFlash = {
+    amarillo: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 200, 0, 0.7) 40%, rgba(255, 170, 0, 0) 80%)',
+    rojo: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 60, 60, 0.7) 40%, rgba(255, 0, 0, 0) 80%)',
+    azul: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(70, 130, 255, 0.7) 40%, rgba(0, 100, 255, 0) 80%)',
+    verde: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(0, 255, 100, 0.7) 40%, rgba(0, 200, 0, 0) 80%)',
+    naranja: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 140, 0, 0.7) 40%, rgba(255, 100, 0, 0) 80%)'
+  };
+
   /* ----- FLASH DE LUZ ----- */
   const flash = document.createElement('div');
   flash.className = 'flash-luz';
+  flash.style.background = coloresFlash[colorCartel] || coloresFlash.amarillo;
   document.body.appendChild(flash);
   setTimeout(() => flash.classList.add('visible'), 50);
   setTimeout(() => flash.remove(), 1000);
-
 
   /* ----- FONDO OSCURO ----- */
   const fondo = document.createElement('div');
   fondo.className = 'fondoexplosion';
   document.body.appendChild(fondo);
-
 
   /* ----- CHISPAS ----- */
   const NUM_ESTRELLAS = 30;
@@ -683,8 +698,15 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
     star.style.left = `0px`;
     star.style.top = `0px`;
 
+    // 🎨 ASIGNAR COLOR ALEATORIO DEL ARRAY DE COLORES
+    const colorChispa = coloresActuales[Math.floor(Math.random() * coloresActuales.length)];
+    star.style.background = `radial-gradient(circle, #fff 0%, ${colorChispa} 60%, ${colorChispa} 100%)`;
+    star.style.boxShadow = `0 0 18px 6px ${colorChispa}`;
+
     const cola = document.createElement('div');
     cola.className = 'cola';
+    // 🎨 LA COLA TAMBIÉN USA EL MISMO COLOR
+    cola.style.background = `linear-gradient(90deg, ${colorChispa}, rgba(255,255,255,0.25), transparent)`;
     star.appendChild(cola);
 
     const jitterX = -(Math.random() * 12);
@@ -708,7 +730,8 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
       ax: 0,
       size,
       ttl,
-      born: performance.now()
+      born: performance.now(),
+      color: colorChispa
     });
 
     fondo.appendChild(star);
@@ -756,8 +779,6 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
   }
   requestAnimationFrame(raf);
 
-
-
   /* ----- MENSAJE POR COLOR ----- */
   const mensajesColor = {
     amarillo: "",
@@ -769,7 +790,6 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
   const alerta = document.createElement('div');
   alerta.className = `alerta-desbloqueo alerta-${colorCartel}`;
   alerta.innerHTML = `
-
     </div>
   `;
 
