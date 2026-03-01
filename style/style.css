@@ -135,6 +135,7 @@ body{
  .michi,
  .bordecarta,
  .contenedorQUEESyNOTICIAS,
+ .contenedorQUEESyNOTICIASgaleria,
  .carruseldeexpansiones-btn{
   position: absolute;
 }
@@ -1627,15 +1628,11 @@ display: none;
 
 
   /*--------------------------------------------------------NOTICIAS-------------------------------------------------------------------*/
-
-
-.contenedorQUEESyNOTICIAS{
+.contenedorQUEESyNOTICIAS,
+.contenedorQUEESyNOTICIASgaleria{
    overflow-y: auto;
   overflow-x: hidden;
-  top: 10%;
 width: 100%;
-height: 80vh;
- 
     -webkit-mask-image: linear-gradient(
     to bottom,
     rgba(0,0,0,0) 0%,      /* totalmente transparente arriba */
@@ -1645,7 +1642,6 @@ height: 80vh;
   );
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
-
   mask-image: linear-gradient(
     to bottom,
     rgba(0,0,0,0) 0%,
@@ -1655,6 +1651,14 @@ height: 80vh;
   );
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
+}
+
+.contenedorQUEESyNOTICIAS{
+  height: 90vh;
+}
+.contenedorQUEESyNOTICIASgaleria{
+  top: 10%;
+height: 80vh;
 }
 
 .imagenbannernoticia{
