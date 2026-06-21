@@ -57,7 +57,7 @@
 </a> 
 <a onclick="mostrarRegalos()"
         style="background-image: url(./assets/boton_regalos_pequeño.webp);"
-   class="botoninstagram lazy-michi" > <p>Regalos</p>
+   class="botoninstagram lazy-michi" > <span id="badgeRegalos" class="badge-nuevo oculto"></span> <p>Regalos</p>
 </a> 
 <a onclick="mostrarDonar()"
         style="background-image: url(./assets/boton_donar_pequeño.webp);"
@@ -68,10 +68,10 @@
 </div>
 <div class="CONTENEDORESBOTONESMENU">
       <div class="botonesmenu">
-      <a onclick="mostrarGaleria()" class="iconomenu lazy-michi" style="background-image: url(./assets/galeriacartasicon.webp);"></a>
+      <a onclick="mostrarGaleria()" class="iconomenu lazy-michi" style="background-image: url(./assets/galeriacartasicon.webp);"><span id="badgeGaleria" class="badge-nuevo oculto"></span></a>
+      <a onclick="mostrarSobres()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_tienda.webp);"><span id="badgeSobres" class="badge-nuevo oculto"></span></a>
       <a onclick="mostrarQuees()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_QUE_ES.webp);"></a>
-      <a onclick="mostrarNoticias()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_NOTICIAS_NUEVO.webp);"></a>
-      <a  class="iconomenu lazy-michi" style="background-image: url(./assets/boton_tienda.webp); filter: grayscale(1);"></a>
+      <a onclick="mostrarNoticias()" class="iconomenu lazy-michi" style="background-image: url(./assets/boton_NOTICIAS.webp);"><span id="badgeNoticias" class="badge-nuevo oculto"></span></a>
     </div>
 </div>
 <DIV class="infoandroid" data-lazy="true"></DIV>
@@ -82,7 +82,7 @@
   </button>
 
 
-    <p class="descripcionbanner"> <b>SE RECOMIENDA DESACTIVAR EL "MODO OSCURO" DEL DISPOSITIVO PARA UNA MEJOR EXPERIENCIA. <br> </b>MICHI-BOX V5.1.0 Idea, diseño y realización: José Ignacio Pyptyk.</p>
+    <p class="descripcionbanner"> </b>MICHI-BOX V5.1.0 Idea, diseño y realización: José Ignacio Pyptyk.</p>
   </div>
   <!------------------------------------------------------------------------>
 
@@ -109,12 +109,17 @@
 
   <!-----------------------------------REGALOS HTML------------------------------------->
     <div id="regalosContainer" >
-    <iframe src="regalos.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    <iframe id="iframeRegalos" src="regalos.html" style="width: 100%; height: 100%; border: none;"></iframe>
   </div>
 
     <!-----------------------------------DONAR HTML------------------------------------->
     <div id="donarContainer" >
     <iframe src="donar.html" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
+
+    <!-----------------------------------SOBRES HTML------------------------------------->
+    <div id="sobresContainer" >
+    <iframe id="iframeSobres" src="sobres.html" style="width: 100%;height: 100%; border: none;"></iframe>
   </div>
 
 </main>
@@ -179,6 +184,15 @@
 
   // Llamada inicial al cargar la página
   document.addEventListener("DOMContentLoaded", actualizarBotonInstalacion);
+
+  // 🔔 Inicializar badges de novedad al cargar (Sobres y Noticias se pueden
+  // chequear apenas carga, ya que dependen solo de localStorage. Galería y
+  // Regalos se auto-actualizan cuando sus respectivos iframes terminan de
+  // cargar, ver galeria.html y regalos.html).
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof actualizarBadgeSobres === 'function') actualizarBadgeSobres();
+    if (typeof actualizarBadgeNoticias === 'function') actualizarBadgeNoticias();
+  });
 </script>
 
 <script src="sketch/sketch.js"></script>

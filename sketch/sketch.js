@@ -27,6 +27,297 @@ function mostrarOverlayRevelado(item, esPorCodigo = false) {
 }
 
 // ========================================================================================
+// 🎁 SOBRES DIGITALES
+// ========================================================================================
+// Función llamada desde sobres.html (vía iframe) para desbloquear UNA carta
+// "en silencio": sin el popup grande de carta, sin pantalla negra. Solo:
+// - cambia a la expansión correspondiente
+// - hace una animación liviana en el grid
+// - remueve el overlay de bloqueo y guarda el progreso
+// - hace scroll hasta la carta
+// - dispara el chequeo de desbloqueos automáticos (combos, cantidad, rareza)
+//
+// Si la carta ya estaba desbloqueada, no hace nada (devuelve false).
+// ========================================================================================
+function desbloquearCartaSilenciosa(pass) {
+  const wrapper = document.querySelector(`.carta-wrapper[data-pass="${pass}"]`);
+  if (!wrapper) return false;
+
+  const overlay = wrapper.querySelector('.overlay-bloqueo');
+  if (!overlay) return false; // ya estaba desbloqueada, no se toca
+
+  // Cambiar a la expansión correspondiente
+  const contenedor = wrapper.closest('.cartasgaleriacontainer');
+  if (contenedor) {
+    const expansionNum = contenedor.getAttribute('data-expansion');
+    if (expansionNum && typeof mostrarExpansion === 'function') {
+      mostrarExpansion(expansionNum);
+    }
+  }
+
+  // Animación liviana de desaparición del candado
+  overlay.classList.add('overlay-desbloqueo-sobre');
+
+  setTimeout(() => {
+    overlay.remove();
+    if (typeof saveProgress === 'function') saveProgress();
+    otorgarMonedaSiEsLegendaria(wrapper); // 🪙 por si en el futuro algún sobre llega a incluir legendarias
+    if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria(); // 🔔 esta carta queda como "nueva sin ver"
+
+    // Resalte breve en la carta para que se note cuál apareció
+    wrapper.classList.add('carta-nueva-sobre');
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    setTimeout(() => wrapper.classList.remove('carta-nueva-sobre'), 1500);
+
+    // Revisar si esto desbloquea alguna carta por combo/cantidad/rareza
+    if (typeof chequearDesbloqueosAutomaticos === 'function') {
+      setTimeout(chequearDesbloqueosAutomaticos, 300);
+    }
+  }, 600);
+
+  return true;
+}
+
+// ========================================================================================
+// 🪙 Moneda de regalo al desbloquear una carta LEGENDARIA (una sola vez por carta)
+// ========================================================================================
+// Se llama justo después de remover el overlay-bloqueo de CUALQUIER carta, sin importar
+// el camino por el que se desbloqueó (código QR, combo de fusión, cantidad, rareza).
+// Si la carta no es legendaria (clase "oro"), o ya se le entregó su moneda antes, no hace
+// nada. Usa una clave propia en localStorage (separada de "michi.unlocked") para llevar
+// registro de qué legendarias ya pagaron su moneda.
+// ========================================================================================
+function otorgarMonedaSiEsLegendaria(wrapper) {
+  if (!wrapper) return;
+
+  const boton = wrapper.querySelector('.cartaejemplo');
+  if (!boton || !boton.classList.contains('oro')) return; // solo legendarias
+
+  const pass = wrapper.getAttribute('data-pass');
+  if (!pass) return;
+
+  const clave = 'moneda_legendaria_' + pass;
+  if (localStorage.getItem(clave) === 'true') return; // ya se entregó esa moneda
+
+  localStorage.setItem(clave, 'true');
+
+  if (typeof agregarMonedas === 'function') {
+    agregarMonedas(1);
+  }
+
+  // Pequeño aviso visual, con delay para no pisarse con la animación grande
+  // de desbloqueo (flash + chispas) que ya dispara mostrarAlertaDesbloqueo().
+  setTimeout(() => mostrarCartelMonedas(1), 3500);
+}
+
+// ========================================================================================
+// 🪙 Cartel de "+X monedas" — usado por TODAS las formas de ganar monedas
+// (botón de regalo en regalos.html, desbloqueo de legendarias, y cualquier
+// mecánica futura). Centralizado acá para que el cartel sea siempre idéntico.
+// ========================================================================================
+function mostrarCartelMonedas(cantidad) {
+  const mensaje = document.createElement('div');
+  mensaje.className = 'mensajeMonedas';
+  mensaje.innerHTML = `
+    <div class="mensajeMonedas-img"></div>
+    <p>+${cantidad} ${cantidad === 1 ? '' : ''}</p>
+  `;
+  document.body.appendChild(mensaje);
+  setTimeout(() => mensaje.remove(), 2200);
+}
+
+// ========================================================================================
+// 🔔 BADGES DE "¡NUEVO!" — avisos visuales de contenido sin ver
+// ========================================================================================
+// Tres criterios distintos según el tipo de contenido:
+// 1) GALERÍA (granular): cada carta desbloqueada que todavía no se abrió en grande
+//    queda en localStorage como "no vista" (clave michi.vistas). El botón del menú
+//    se prende mientras exista AL MENOS UNA así, y se apaga sola a medida que el
+//    usuario va tocando cada carta nueva.
+// 2) REGALOS (por contenido + visita): se prende si hay algún botonCopiar/botonMonedas
+//    sin canjear, y se apaga apenas el usuario entra a Regalos (no hace falta que
+//    canjee todo). Si en el futuro agregás una oferta nueva y querés que el aviso
+//    vuelva a aparecer para todos, cambiá la clave "badge_visto_regalos" por otra
+//    (ej: "badge_visto_regalos_v2").
+// 3) SOBRES / NOTICIAS (primera vez): no tienen ítems individuales, así que el aviso
+//    es simplemente "todavía no entraste acá ni una vez" — se apaga para siempre la
+//    primera vez que se abren.
+// ========================================================================================
+
+// --- Cartas: registro de cuáles ya se vieron en detalle ---
+function marcarCartaComoVista(pass) {
+  if (!pass) return;
+  try {
+    const vistas = JSON.parse(localStorage.getItem('michi.vistas') || '[]');
+    if (!vistas.includes(pass)) {
+      vistas.push(pass);
+      localStorage.setItem('michi.vistas', JSON.stringify(vistas));
+    }
+  } catch (e) {
+    console.error('marcarCartaComoVista error', e);
+  }
+}
+
+function cartaFueVista(pass) {
+  try {
+    const vistas = JSON.parse(localStorage.getItem('michi.vistas') || '[]');
+    return vistas.includes(pass);
+  } catch (e) {
+    return false;
+  }
+}
+
+// Pinta/saca el "¡NUEVO!" en cada carta de la grilla (corre dentro de galeria.html)
+function actualizarBadgesCartasNuevas() {
+  document.querySelectorAll('.carta-wrapper').forEach(wrapper => {
+    const pass = wrapper.getAttribute('data-pass');
+    const bloqueada = !!wrapper.querySelector('.overlay-bloqueo');
+    const yaVista = cartaFueVista(pass);
+    let badge = wrapper.querySelector('.badge-nuevo-carta');
+
+    if (!bloqueada && pass && !yaVista) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'badge-nuevo-carta';
+        wrapper.appendChild(badge);
+      }
+    } else if (badge) {
+      badge.remove();
+    }
+  });
+}
+
+// Se llama desde galeria.html cada vez que algo se desbloquea o se ve una carta.
+// Actualiza la grilla local Y el puntito en el botón del menú de index.html.
+function refrescarBadgesGaleria() {
+  actualizarBadgesCartasNuevas();
+  if (window.parent && typeof window.parent.actualizarBadgeGaleria === 'function') {
+    window.parent.actualizarBadgeGaleria();
+  }
+}
+
+// --- Botón "Galería" del menú principal (vive en index.html) ---
+function actualizarBadgeGaleria() {
+  const badge = document.getElementById('badgeGaleria');
+  if (!badge) return;
+
+  const iframe = document.getElementById('iframeGaleria');
+  const doc = iframe && (iframe.contentDocument || iframe.contentWindow.document);
+  if (!doc) { badge.classList.add('oculto'); return; }
+
+  let vistas = [];
+  try {
+    vistas = JSON.parse(localStorage.getItem('michi.vistas') || '[]');
+  } catch (e) {}
+
+  const hayNuevas = Array.from(doc.querySelectorAll('.carta-wrapper')).some(w => {
+    const bloqueada = !!w.querySelector('.overlay-bloqueo');
+    const pass = w.getAttribute('data-pass');
+    return !bloqueada && pass && !vistas.includes(pass);
+  });
+
+  badge.classList.toggle('oculto', !hayNuevas);
+}
+
+// --- Botón "Regalos" (vive en index.html) ---
+function actualizarBadgeRegalos() {
+  const badge = document.getElementById('badgeRegalos');
+  if (!badge) return;
+
+  const iframe = document.getElementById('iframeRegalos');
+  const doc = iframe && (iframe.contentDocument || iframe.contentWindow.document);
+  const hayPendientes = doc ? doc.querySelectorAll('.botonCopiar, .botonMonedas').length > 0 : false;
+  const visto = localStorage.getItem('badge_visto_regalos') === 'true';
+
+  badge.classList.toggle('oculto', !hayPendientes || visto);
+}
+
+// --- Botón "Sobres" (vive en index.html) — aviso de "primera vez" ---
+function actualizarBadgeSobres() {
+  const badge = document.getElementById('badgeSobres');
+  if (!badge) return;
+  const visto = localStorage.getItem('badge_visto_sobres') === 'true';
+  badge.classList.toggle('oculto', visto);
+}
+
+// --- Botón "Noticias" (vive en index.html) — aviso de "primera vez" ---
+function actualizarBadgeNoticias() {
+  const badge = document.getElementById('badgeNoticias');
+  if (!badge) return;
+  const visto = localStorage.getItem('badge_visto_noticias') === 'true';
+  badge.classList.toggle('oculto', visto);
+}
+
+// Inyecta los estilos de animación que usa desbloquearCartaSilenciosa.
+// Se hace por JS (en vez de tocar style.css) para que este cambio sea
+// autocontenido y no dependa de editar el CSS del proyecto.
+function inyectarEstilosSobre() {
+  if (document.getElementById('estilos-sobre-digital')) return;
+
+  const style = document.createElement('style');
+  style.id = 'estilos-sobre-digital';
+  style.textContent = `
+    @keyframes sobreDesbloqueoFade {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.3); }
+    }
+    .overlay-desbloqueo-sobre {
+      animation: sobreDesbloqueoFade 0.6s ease forwards;
+    }
+    @keyframes cartaNuevaGlow {
+      0% { box-shadow: 0 0 0px 0px rgba(255,215,0,0); }
+      30% { box-shadow: 0 0 25px 10px rgba(255,215,0,0.9); }
+      100% { box-shadow: 0 0 0px 0px rgba(255,215,0,0); }
+    }
+    .carta-nueva-sobre {
+      animation: cartaNuevaGlow 1.5s ease-in-out;
+      border-radius: 8px;
+    }
+  `;
+  document.head.appendChild(style);
+}
+inyectarEstilosSobre();
+
+// ========================================================================================
+// 💰 MONEDAS - moneda de cambio para comprar sobres digitales
+// ========================================================================================
+// Se guarda en localStorage igual que el progreso de cartas (michi.unlocked).
+// Estas funciones quedan disponibles globalmente en la ventana de index.html, así que:
+// - sobres.html las usa vía window.parent.obtenerMonedas() / gastarMonedas() / agregarMonedas()
+// - el día de mañana, cualquier forma de GANAR monedas (canjear un código especial,
+//   premio diario, recompensa por video, etc.) solo tiene que llamar a agregarMonedas(n)
+//   desde donde sea (incluso podés probarlo a mano desde la consola del navegador).
+// ========================================================================================
+const CLAVE_MONEDAS = 'michi.monedas';
+
+function obtenerMonedas() {
+  try {
+    return parseInt(localStorage.getItem(CLAVE_MONEDAS) || '0', 10) || 0;
+  } catch (e) {
+    console.error('obtenerMonedas error', e);
+    return 0;
+  }
+}
+
+function agregarMonedas(cantidad) {
+  const nuevoTotal = Math.max(0, obtenerMonedas() + cantidad);
+  try {
+    localStorage.setItem(CLAVE_MONEDAS, String(nuevoTotal));
+  } catch (e) {
+    console.error('agregarMonedas error', e);
+  }
+  return nuevoTotal;
+}
+
+// Intenta gastar "cantidad" de monedas. Devuelve true si pudo, false si no alcanzaba.
+function gastarMonedas(cantidad) {
+  if (obtenerMonedas() < cantidad) return false;
+  agregarMonedas(-cantidad);
+  return true;
+}
+
+// ========================================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   const botones = document.querySelectorAll(".botonCopiar");
@@ -104,6 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ------------------------- Galería de cartas -------------------------
 function mostrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'block';
+  if (typeof actualizarBadgeGaleria === 'function') actualizarBadgeGaleria();
 }
 function cerrarGaleria() {
   document.getElementById('galeriaContainer').style.display = 'none';
@@ -120,6 +412,8 @@ function cerrarQuees() {
 
 function mostrarRegalos() {
   document.getElementById('regalosContainer').style.display = 'block';
+  localStorage.setItem('badge_visto_regalos', 'true'); // 🔔 se apaga apenas entra, aunque no canjee todo
+  if (typeof actualizarBadgeRegalos === 'function') actualizarBadgeRegalos();
 }
 function cerrarRegalos() {
   document.getElementById('regalosContainer').style.display = 'none';
@@ -135,12 +429,24 @@ function cerrarDonar() {
 // ------------------------- Noticias -------------------------
 function mostrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'block';
+  localStorage.setItem('badge_visto_noticias', 'true'); // 🔔 aviso de "primera vez"
+  if (typeof actualizarBadgeNoticias === 'function') actualizarBadgeNoticias();
 }
 
 function cerrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'none';
   // Marcamos que ya se vieron las noticias
   localStorage.setItem("noticiasVistas", "true");
+}
+
+// ------------------------- Sobres digitales -------------------------
+function mostrarSobres() {
+  document.getElementById('sobresContainer').style.display = 'block';
+  localStorage.setItem('badge_visto_sobres', 'true'); // 🔔 aviso de "primera vez"
+  if (typeof actualizarBadgeSobres === 'function') actualizarBadgeSobres();
+}
+function cerrarSobres() {
+  document.getElementById('sobresContainer').style.display = 'none';
 }
 
 // ------------------------- Mostrar noticias al abrir la app -------------------------
@@ -371,6 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Cargar progreso guardado
   loadProgress();
+  if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria(); // 🔔 pintar "¡NUEVO!" de sesiones anteriores
 
   // Bloquear zoom global
   document.addEventListener('gesturestart', e => e.preventDefault());
@@ -464,6 +771,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (overlay) {
             overlay.remove();
             saveProgress();
+            otorgarMonedaSiEsLegendaria(wrapper); // 🪙
 
                // 🔥 Cambiar a la expansión del contenedor padre
       const contenedor = wrapper.closest(".cartasgaleriacontainer");
@@ -479,6 +787,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = boton?.getAttribute("data-target");
             const item = document.getElementById(id);
             if (item) {
+              // 🔔 Esta carta se abre en grande automáticamente, así que ya cuenta como "vista"
+              if (typeof marcarCartaComoVista === 'function') marcarCartaComoVista(pass);
+              if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
+
               carouselItems.forEach(i => i.style.display = "none");
               item.style.display = "flex";
               fondonegro.style.display = "block";
@@ -527,6 +839,11 @@ if (carouselContainer) {
     const item = document.getElementById(id);
 
     if (item) {
+      // 🔔 El usuario la abrió en grande: queda marcada como "vista"
+      const pass = wrapper.getAttribute('data-pass');
+      if (typeof marcarCartaComoVista === 'function') marcarCartaComoVista(pass);
+      if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
+
       // Ocultar otras cartas y mostrar la seleccionada
       carouselItems.forEach(i => i.style.display = "none");
       item.style.display = "flex";
@@ -855,6 +1172,7 @@ const colorCartel =
 
 overlay.remove();
 saveProgress();
+otorgarMonedaSiEsLegendaria(wrapper); // 🪙
 
 // Activar animación con color correcto
 setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
@@ -878,6 +1196,7 @@ const colorCartel =
 
 overlay.remove();
 saveProgress();
+otorgarMonedaSiEsLegendaria(wrapper); // 🪙
 
 setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
           }
@@ -910,6 +1229,7 @@ const colorCartel =
 overlay.remove();
 saveProgress();
 cambios = true;
+otorgarMonedaSiEsLegendaria(wrapper); // 🪙
 
 setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
 
@@ -919,7 +1239,15 @@ setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
 
     // ahora chequeamos cantidad y rarezas
     chequearDesbloqueosPorCantidadORareza();
+
+    // 🔔 cualquier carta que se haya desbloqueado acá (combo/cantidad/rareza) queda "nueva"
+    if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
   }
+
+  // 🔓 Exponerla globalmente: así desbloquearCartaSilenciosa() (usada por
+  // los sobres digitales) también puede disparar el chequeo de legendarias
+  // por combo/cantidad/rareza, no solo el canje por código QR.
+  window.chequearDesbloqueosAutomaticos = chequearDesbloqueosAutomaticos;
 
   // Ejecutar al cargar la página
   window.addEventListener('DOMContentLoaded', () => {
@@ -1037,13 +1365,4 @@ setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
       contenedorLineas.addEventListener('touchend', resetLineas);
           contenedorLineas.addEventListener('touchcancel', resetLineas);
     });
-
-
-
-
-
-
 });
-
-
-

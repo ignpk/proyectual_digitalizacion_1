@@ -50,7 +50,8 @@ body{
 #queesContainer,
 #noticiasContainer,
 #regalosContainer,
-#donarContainer{
+#donarContainer,
+#sobresContainer{
   display: none; 
   position: fixed;
   top: 0;
@@ -81,6 +82,7 @@ body{
 #regalosContainer,
 #donarContainer,
 #noticiasContainer,
+#sobresContainer,
 .lineascolores{
   width: 100%;
   height: 100%;
@@ -359,7 +361,6 @@ transform: translateY(8px);
   flex-wrap: wrap;
 }
 .iconomenu{
-  overflow: hidden;
  width: 20vw;             
   max-width: 150px;        
   aspect-ratio: 1 / 1; 
@@ -425,9 +426,63 @@ height: 80px;
 pointer-events: none;
 
 }
-  /*-----------------------------Menu app-------------------------------*/
+  /*-----------------------------cartel NUEVO  en los botones-------------------------------*/
 
+/* Badge en los botones del menú (Galería, Sobres, Noticias, Regalos) */
+.iconomenu,
+.botoninstagram {
+  position: relative;
+}
 
+.badge-nuevo {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ffd700;
+  color: #222;
+  font-size: 0.55rem;
+  font-weight: bold;
+  padding: 3px 7px;
+  border-radius: 10px;
+  border: 2px solid #fff7c2;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+  z-index: 20;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: badgePulso 1.4s ease-in-out infinite;
+}
+.badge-nuevo::after {
+  content: "¡NUEVO!";
+}
+.badge-nuevo.oculto {
+  display: none;
+}
+
+/* Badge sobre la miniatura de cada carta nueva sin abrir, en la grilla */
+.badge-nuevo-carta {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ffd700;
+  color: #222;
+  font-size: 0.5rem;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 8px;
+  border: 1.5px solid #fff7c2;
+  box-shadow: 0 0 10px rgb(0, 0, 0);
+  z-index: 15;
+  pointer-events: none;
+  animation: badgePulso 1.4s ease-in-out infinite;
+}
+.badge-nuevo-carta::after {
+  content: "¡NUEVO!";
+}
+
+@keyframes badgePulso {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
 /*-------------------------------------------------------------------*/
 
 
@@ -612,7 +667,7 @@ background-color: rgba(255, 255, 255, 0);
 .overlay-bloqueo.overespecial.cartel-verde {
     background-color: rgba(92,26,126,1);
   background-image: url(../assets/cartas/MENU_DIMENSION.webp);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -624,8 +679,8 @@ background-color: rgba(255, 255, 255, 0);
 .overlay-bloqueo.overespecial.cartel-naranja {
   position: absolute;
   background-color: rgba(92,26,126,1);
-  background-image: url(../assets/cartas/MENU_LEGENDARIO.webp);
-  background-size: contain;
+  background-image: url(../assets/cartas/MENU_LEGENDARIO_moneda.webp);
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -835,7 +890,7 @@ animation: azulbrillo 4s linear infinite;
 .carta-mini {
   width: 60px;
   height: 85px;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
@@ -1623,11 +1678,241 @@ display: none;
 
 
 
-  /*--------------------------------------------------------TIENDA--------------------------------------------------------------------*/
+
+    /* ==============================================================================================================
+       ----------------------------------------------SOBRES DIGITALES-------------------------------------------------
+       ============================================================================================================== */
+    body.sobresbackground {
+      background: radial-gradient(circle at top, #2a1a3d 0%, #0d0714 70%);
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      font-family: inherit;
+    }
+
+    .vista-sobres {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 8% 5% 10%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .vista-sobres.oculto {
+      display: none;
+      overflow: hidden;
+    }
+
+    .titulo-sobres {
+      color: #fff;
+      font-size: 200%;
+      letter-spacing: 1px;
+      text-shadow: 0 0 12px rgba(255, 200, 0, 0.6);
+      margin-bottom: 6%;
+              font-family: "Covered By Your Grace", cursive !important;
+                  transform: rotate(-3deg);
+    }
+
+    /* ----- Grid de selección de expansión ----- */
+    .grid-sobres {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      height: auto;
+
+    }
+
+    .item-sobre {
+      background-color: rgba(255, 255, 255, 0.189);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      aspect-ratio: 3 / 4;
+      border: 3px dashed rgba(255, 255, 255, 0.459);
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+   margin: 15px;
+    }
 
 
+    .item-sobre span {
+      width: auto;
+      background-color: rgb(108, 0, 174);
+      border-radius: 10px;
+    border: 3px solid rgb(159, 159, 159);
+      position: absolute;
+      bottom: -17px;
+      color: #fff;
+      font-size: 60%;
+      font-weight: bold;
+      text-shadow: 0 0 6px #000;
+      letter-spacing: 0.5px;
+      padding: 10px;
+    }
 
-  /*--------------------------------------------------------NOTICIAS-------------------------------------------------------------------*/
+    .item-sobre.bloqueado {
+      filter: grayscale(1) brightness(0.5);
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ----- Vista de sobre individual ----- */
+    .sobre-digital {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      width: 85%;
+      animation: flotarSobre 2.2s ease-in-out infinite;
+    }
+
+    .sobre-digital img {
+      width: 100%;
+      display: block;
+      filter: drop-shadow(0 0 25px rgba(255, 217, 0, 0.706));
+    }
+
+    .sobre-digital.abriendo {
+      animation: sacudirSobre 1.3s ease-in-out forwards;
+    }
+
+    @keyframes flotarSobre {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes sacudirSobre {
+      0% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1)}
+      10% { transform:  rotate(2deg); }
+      20% { transform:  rotate(-2deg); }
+      30% { transform:  rotate(4deg); filter: brightness(1) }
+      40% { transform:  rotate(-4deg); }
+      50% { transform:  rotate(6deg);  }
+      60% { transform:  rotate(-5deg); }
+      70% { transform: scale(1) rotate(6deg);  }
+      80% { transform:  rotate(-5deg); filter: brightness(10)  blur(5px); }
+      90% { transform:  rotate(4deg); opacity: 1; }
+      100% { transform: scale(2) rotate(0deg); filter: brightness(50) blur(10px) opacity(0)}
+    }
+
+    .ayuda-sobre {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 110%;
+      margin-top: 8%;
+    }
+
+   /* Capa superior: sobre abierto + resultado, por encima de TODO lo demás */
+.capa-sobre-abierto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999; /* por encima del .contenedorbotoncerrar exterior (9 / 999 en mobile) */
+  background: radial-gradient(circle at top, #2a1a3d 0%, #0d0714 70%);
+}
+
+    /* ----- Resultado del sobre ----- */
+    .cartas-resultado {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 480px;
+    }
+
+    .carta-resultado {
+      width: 110px;
+      animation: apareceCartaResultado 1.3s ease backwards;
+    }
+
+    @keyframes apareceCartaResultado {
+      0% { opacity: 0; transform: translateY(50%); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .carta-resultado-img {
+      width: 100px;
+      height: 147px;
+      border-radius: 5px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 0 18px rgba(255, 217, 0, 0.549);
+    }
+
+    .carta-resultado-nombre {
+      color: #fff;
+      font-size: 0.65rem;
+      margin: 6px 0 2px;
+      min-height: 1.6em;
+    }
+
+    .carta-resultado-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .carta-resultado-badge.nueva {
+      background: #ffd700;
+      color: #222;
+    }
+
+    .carta-resultado-badge.repetida {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ccc;
+    }
+
+  
+        /* ==============================================================================================================
+       ---------------------------------------------MONEDAS-----------------------------------------------
+       ============================================================================================================== */
+.saldo-monedas {
+
+  width: 100px;
+  height: 50px;
+  display: flex;
+  gap: 10px;
+top: 2%;
+left: 5%;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  margin-bottom: 4%;
+  position: absolute;
+  z-index: 99999999;
+  display: flex;
+}
+.saldo-monedas span{
+    font-size: 250%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Covered By Your Grace", cursive !important;
+}
+
+.mensaje-sin-monedas {
+  color: rgb(255, 120, 120);
+  font-weight: bold;
+  font-size: 90%;
+  margin-top: 6%;
+}
+
+        /* ==============================================================================================================
+       ----------------------------------------------NOTICIAS-------------------------------------------------
+       ============================================================================================================== */
 .contenedorQUEESyNOTICIAS,
 .contenedorQUEESyNOTICIASgaleria{
    overflow-y: auto;
@@ -1674,9 +1959,14 @@ height: 80vh;
   text-align: center;
 }
 
-  /*-----------------------------regalos------------------------------*/
 
 
+
+
+
+    /* ==============================================================================================================
+       ----------------------------------------------REGALOS-------------------------------------------------
+       ============================================================================================================== */
 
 .opcionesdecompra{
   justify-content: center;
@@ -1754,7 +2044,8 @@ border: 3px solid rgb(86, 214, 27);
 
 
 /* 🌟 Estilo del botón original */
-.botonCopiar {
+.botonCopiar,
+.botonMonedas {
     font-size: 60%;
     font-weight: bold;
       width: 120px;
@@ -1808,6 +2099,55 @@ background-repeat: no-repeat;
   animation:fadeIn 1s ease-in-out, zoomprimeravez 1s ease-in-out;
 }
 
+
+.mensajeMonedas {
+    position: relative;  
+
+  width: 100px;
+  height: 50px;
+  z-index: 999999999;
+  border-radius: 14px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  top: 2%;
+left: 5%;
+animation: moneda 1s ease-in-out;
+}
+
+@keyframes moneda{
+  0%{
+    filter: opacity(0);
+    transform: scale(1);
+  }
+    50%{
+    filter: opacity(1);
+    transform: scale(1.5);
+  }
+    100%{
+    filter: opacity(1);
+    transform: scale(1);
+  }
+}
+
+.mensajeMonedas-img {
+  width: 50%;
+  height: 100%;
+  background-image: url(../assets/moneda_saldo.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.mensajeMonedas p {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 250%;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    font-family: "Covered By Your Grace", cursive !important;
+}
 
   /*-----------------------------BOTONES DE INTERRACCION------------------------------*/
 

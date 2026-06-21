@@ -31,6 +31,15 @@
 
 <div class="opcionesdecompra">
 
+    <!-- 🪙 REGALO DE MONEDAS (canje único, no entrega carta, entrega saldo) -->
+    <div class="compra">
+  <div class="imagenproducto" style="background-image: url(./assets/TICKET_MONEDA.webp);">  </div>
+<DIV class="textoyboton">
+  <p> <b>¡10 MONEDAS DE REGALO! </b> <br> Para abrir tus primeros sobres digitales </p>
+    <button class="botonMonedas" data-monedas="10" data-id="bienvenida"> CANJEAR </button>
+</DIV>
+</div>
+
     <div class="compra">
   <div class="imagenproducto" style="background-image: url(./assets/ticket_sanvalentin_2026.webp);">  </div>
 <DIV class="textoyboton">
@@ -56,29 +65,7 @@
 </DIV>
 </div>
 
-  <div class="compra">
-  <div class="imagenproducto" style="background-image: url(./assets/TICKET_dorado.webp);">  </div>
-<DIV class="textoyboton">
-  <p> <b>1 TICKET DORADO </b> <br> Válido por una carta legendaria </p>
-    <button class="botonCopiar" data-codigo="036SUPERHEROESMICHIBOXSECRET"> CANJEAR </button>
-</DIV>
-</div>
 
-  <div class="compra">
-  <div class="imagenproducto" style="background-image: url(./assets/TICKET\ 02_mt.webp);">  </div>
-<DIV class="textoyboton">
-  <p> <b> 1 TICKET </b> Válido por una carta RARA <br> de MAULLIDO TROPICAL </p>
-    <button class="botonCopiar" data-codigo="0550MBMTHU888555TH"> CANJEAR </button>
-</DIV>
-</div>
-
-  <div class="compra">
-  <div class="imagenproducto" style="background-image: url(./assets/TICKET\ 01.webp);">  </div>
-<DIV class="textoyboton">
-  <p> <b> 1 TICKET </b>  Válido  por una carta <br> RARA de MICHI BOX</p>
-    <button class="botonCopiar" data-codigo="020AMB0562HGHYUD5"> CANJEAR </button>
-</DIV>
-</div>
 
 
 </div>
@@ -124,6 +111,56 @@
     if (window.parent && typeof window.parent.cerrarRegalos === 'function') {
       window.parent.cerrarRegalos();
     }
+  }
+</script>
+
+<script>
+  // ===========================================================
+  // 🪙 REGALO DE MONEDAS (canje único)
+  // -----------------------------------------------------------
+  // No usa el sistema de códigos de la galería (botonCopiar):
+  // llama directo a window.parent.agregarMonedas() y se bloquea
+  // con su propio flag en localStorage, separado del de las cartas.
+  //
+  // 👉 Para agregar otro regalo de monedas en el futuro, copiá el
+  //    bloque <div class="compra">...</div> de arriba, cambiá el
+  //    data-monedas (cantidad) y el data-id (debe ser único, es lo
+  //    que se usa para que no se pueda canjear dos veces).
+  // ===========================================================
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".botonMonedas").forEach(boton => {
+      const cantidad = parseInt(boton.getAttribute("data-monedas"), 10) || 0;
+      const id = boton.getAttribute("data-id") || "default";
+      const clave = "monedas_canjeado_" + id;
+
+      if (localStorage.getItem(clave) === "true") {
+        desactivarBotonMonedas(boton);
+      }
+
+      boton.addEventListener("click", () => {
+        if (localStorage.getItem(clave) === "true") return;
+
+        if (window.parent && typeof window.parent.agregarMonedas === "function") {
+          window.parent.agregarMonedas(cantidad);
+        }
+
+        localStorage.setItem(clave, "true");
+        desactivarBotonMonedas(boton);
+        mostrarCartelMonedas(cantidad); // 🪙 mismo cartel que usan las legendarias
+      });
+    });
+
+    // 🔔 Avisar al menú principal si hay (o no) regalos sin canjear
+    if (window.parent && typeof window.parent.actualizarBadgeRegalos === "function") {
+      window.parent.actualizarBadgeRegalos();
+    }
+  });
+
+  function desactivarBotonMonedas(boton) {
+    boton.textContent = "CANJEADO";
+    boton.classList.remove("botonMonedas");
+    boton.classList.add("botonCanjeado");
+    boton.disabled = true;
   }
 </script>
 

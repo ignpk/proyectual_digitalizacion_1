@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Sobres Digitales - Michi Box</title>
+
+  <!-- Mismos estilos base que el resto de la app -->
+  <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="style/style.css" />
+
+</head>
+<body class="noticiasbackground">
+<main>
+
+
+  <!-- Botón de cerrar EXTERIOR: solo visible/clickeable cuando estamos en la grilla de selección -->
+  <DIV class="contenedorbotoncerrar">
+    <a id="botonCerrarSobres" class="botonatrasexpansiones">X</a>
+  </DIV>
+
+  <!-- VISTA 1: selección de expansión -->
+  <!-- El scroll vive en el div de afuera (contenedorQUEESyNOTICIAS, igual que en
+       regalos.html). El de adentro (vista-sobres) solo maneja el layout centrado
+       y puede crecer todo lo que haga falta cuando se agreguen más sobres. -->
+            <div class="saldo-monedas"> <img src="assets/moneda_saldo.webp" alt=""> <span id="cantidadMonedas">0</span></div>
+  <div id="vistaSeleccion" class="contenedorQUEESyNOTICIAS">
+    <div class="separacion"></div>
+    <div class="vista-sobres">
+
+      <p class="titulo-sobres">SOBRES DIGITALES</p>
+      <div id="gridSobres" class="grid-sobres"></div>
+    </div>
+    <div class="separacion"></div>
+  </div>
+
+
+  <!-- =====================================================================
+       CAPA SUPERIOR: se monta POR ENCIMA de todo (incluido el botón "X"
+       exterior) cuando se elige un sobre. Tiene su propio botón de cerrar,
+       que queda apilado arriba del de la grilla de selección.
+       ===================================================================== -->
+  <div id="capaSobreAbierto" class="capa-sobre-abierto oculto">
+
+    <DIV class="contenedorbotoncerrar">
+      <a id="botonVolverSeleccion" class="botonatrasexpansiones">X</a>
+    </DIV>
+
+    <!-- VISTA 2: sobre cerrado, listo para abrir -->
+
+    <section id="vistaSobre" class="vista-sobres oculto" style="height: 100vh;animation: slideDown 0.8s ease-out, fadeIn 0.5s ease-in-out;">
+              
+      <p class="titulo-sobres" id="nombreExpansionSobre"></p>
+      <button id="botonAbrirSobre" class="sobre-digital" >
+        <img id="imagenSobre" src="" alt="Sobre digital" />
+      </button>
+      <p class="ayuda-sobre" style="font-size: 90%;"> <b>Tocá el sobre para comprarlo </b> <br> Contiene 3 cartas — cuesta <span id="costoSobreTexto">1</span> 🪙</p>
+      <p id="mensajeSinMonedas" class="mensaje-sin-monedas oculto" style="position: absolute; background-color: red; color: white; padding: 10px; border-radius: 10px; border: 3px solid rgb(152, 152, 152);">No tenés monedas suficientes</p>
+    </section>
+
+    <!-- VISTA 3: resultado del sobre -->
+    <section id="vistaResultado" class="vista-sobres oculto" style="height: 100vh;">
+      <p class="titulo-sobres" style="animation: fadeIn 0.3s ease-in-out;">¡OBTUVISTE!</p>
+      <div id="cartasResultado" class="cartas-resultado"></div>
+    </section>
+
+  </div>
+
+</main>
+
+<script>
+  /* ===========================================================
+     CONFIGURACIÓN DE SOBRES POR EXPANSIÓN
+     -----------------------------------------------------------
+     👉 Para agregar una expansión nueva en el futuro (por ejemplo
+        cuando "Rasguño Dimensional" esté lista), copiá un bloque,
+        ajustá los datos y poné disponible: true. No hace falta
+        tocar el resto del código.
+     =========================================================== */
+  const SOBRES_CONFIG = [
+    {
+      id: "michibox",
+      expansion: "1",
+      nombre: "MICHI BOX",
+      imagenSobre: "./assets/expansion001B_sobre.webp",
+      disponible: true,
+      costo: 2 // 🪙 monedas que cuesta abrir este sobre
+    },
+    {
+      id: "tropical",
+      expansion: "2",
+      nombre: "MAULLIDO TROPICAL",
+      imagenSobre: "./assets/expansion002B_sobre.webp",
+      disponible: true,
+      costo: 2
+    },
+    {
+      id: "dimensional",
+      expansion: "3",
+      nombre: "RASGUÑO DIMENSIONAL",
+      imagenSobre: "./assets/expansion003_sobre.webp",
+      disponible: false, // 🔒 cambiar a true cuando la expansión esté lista
+      costo: 2
+    },
+    {
+      id: "cromatica",
+      expansion: "4",
+      nombre: "EXPLOSIÓN CROMÁTICA",
+      imagenSobre: "./assets/expansion004_sobre.webp",
+      disponible: false, // 🔒 cambiar a true cuando la expansión esté lista
+      costo: 2
+    }
+    // 👉 Próxima expansión: copiar este bloque acá abajo.
+  ];
+
+  const PROBABILIDAD_RARA = 0.10; // 10% rara / 90% normal
+
+  let expansionActual = null;
+  let yaAbriendo = false;
+
+  // -----------------------------------------------------------
+  // Acceso al iframe de la galería (mismo patrón que regalos.html)
+  // -----------------------------------------------------------
+  function obtenerDocGaleria() {
+    const iframe = window.parent && window.parent.document.getElementById('iframeGaleria');
+    if (!iframe) return null;
+    return iframe.contentDocument || iframe.contentWindow.document;
+  }
+
+  function obtenerVentanaGaleria() {
+    const iframe = window.parent && window.parent.document.getElementById('iframeGaleria');
+    return iframe ? iframe.contentWindow : null;
+  }
+
+  // -----------------------------------------------------------
+  // 💰 Acceso al monedero (las funciones reales viven en sketch.js,
+  // cargado por index.html — acá solo las llamamos vía window.parent)
+  // -----------------------------------------------------------
+  function obtenerMonedasActuales() {
+    return (window.parent && typeof window.parent.obtenerMonedas === 'function')
+      ? window.parent.obtenerMonedas()
+      : 0;
+  }
+
+  function gastarMonedasActuales(cantidad) {
+    return (window.parent && typeof window.parent.gastarMonedas === 'function')
+      ? window.parent.gastarMonedas(cantidad)
+      : false;
+  }
+
+  function devolverMonedas(cantidad) {
+    if (window.parent && typeof window.parent.agregarMonedas === 'function') {
+      window.parent.agregarMonedas(cantidad);
+    }
+  }
+
+  function actualizarSaldoMonedas() {
+    const el = document.getElementById('cantidadMonedas');
+    if (el) el.textContent = obtenerMonedasActuales();
+  }
+
+  // -----------------------------------------------------------
+  // Construye el pool de cartas válidas de una expansión,
+  // separadas en normales y raras. Excluye SIEMPRE:
+  // - cartas sin data-pass
+  // - cartas con requisitos especiales (fusión / cantidad / rareza)
+  // - legendarias (oro)
+  // - stickers/objetos dimensionales (para expansión 3 a futuro)
+  // -----------------------------------------------------------
+  function construirPool(docGaleria, expansionId) {
+    const contenedor = docGaleria.querySelector(`.cartasgaleriacontainer[data-expansion="${expansionId}"]`);
+    if (!contenedor) return { normales: [], raras: [] };
+
+    const wrappers = Array.from(contenedor.querySelectorAll('.carta-wrapper'));
+    const normales = [];
+    const raras = [];
+
+    wrappers.forEach(w => {
+      const pass = w.getAttribute('data-pass');
+      if (!pass || pass.trim() === '') return;
+
+      if (w.hasAttribute('data-requiere')) return;
+      if (w.hasAttribute('data-requiere-cantidad')) return;
+      if (w.hasAttribute('data-requiere-rareza')) return;
+      if (w.classList.contains('STICKERDIMENSION')) return;
+
+      const boton = w.querySelector('.cartaejemplo');
+      if (!boton) return;
+
+      if (boton.classList.contains('comun')) normales.push(w);
+      else if (boton.classList.contains('plata')) raras.push(w);
+      // 'oro' (legendarias) y cualquier otra rareza quedan excluidas siempre
+    });
+
+    return { normales, raras };
+  }
+
+  // -----------------------------------------------------------
+  // Elige 3 cartas respetando 90% normal / 10% rara,
+  // evitando repetir la misma carta dentro del mismo sobre.
+  // -----------------------------------------------------------
+  function elegirTresCartas(pool) {
+    const elegidas = [];
+    const usados = new Set();
+    let intentos = 0;
+
+    while (elegidas.length < 3 && intentos < 60) {
+      intentos++;
+      const quiereRara = Math.random() < PROBABILIDAD_RARA;
+      let candidatos = quiereRara ? pool.raras : pool.normales;
+
+      if (candidatos.length === 0) {
+        candidatos = quiereRara ? pool.normales : pool.raras;
+      }
+      if (candidatos.length === 0) break;
+
+      const candidato = candidatos[Math.floor(Math.random() * candidatos.length)];
+      const pass = candidato.getAttribute('data-pass');
+
+      if (usados.has(pass)) continue;
+      usados.add(pass);
+      elegidas.push(candidato);
+    }
+
+    return elegidas;
+  }
+
+  // -----------------------------------------------------------
+  // Extrae miniatura, nombre y si ya estaba desbloqueada
+  // (snapshot tomado ANTES de modificar nada)
+  // -----------------------------------------------------------
+  function datosDeCarta(docGaleria, wrapper) {
+    const boton = wrapper.querySelector('.cartaejemplo');
+    const pass = wrapper.getAttribute('data-pass');
+    const fondo = (boton && (boton.dataset.style || boton.getAttribute('style'))) || '';
+    const yaLaTenias = !wrapper.querySelector('.overlay-bloqueo');
+
+    let nombre = '';
+    const targetId = boton && boton.getAttribute('data-target');
+    if (targetId) {
+      const item = docGaleria.getElementById(targetId);
+      const texto = item && item.querySelector('.textorareza');
+      if (texto) nombre = texto.textContent.trim().split('\n')[0].trim();
+    }
+
+    return { pass, fondo, yaLaTenias, nombre };
+  }
+
+  // -----------------------------------------------------------
+  // UI: cambio de vistas
+  // -----------------------------------------------------------
+  // "vistaSeleccion" vive afuera de la capa (es la grilla normal).
+  // "vistaSobre" y "vistaResultado" viven DENTRO de #capaSobreAbierto,
+  // que se monta por encima de todo (incluido el botón "X" exterior).
+  // -----------------------------------------------------------
+  function mostrarVista(idVista) {
+    const capa = document.getElementById('capaSobreAbierto');
+    const seleccion = document.getElementById('vistaSeleccion');
+
+    if (idVista === 'vistaSeleccion') {
+      capa.classList.add('oculto');
+      seleccion.classList.remove('oculto');
+      actualizarSaldoMonedas(); // 🪙 refrescar saldo cada vez que volvemos a la grilla
+      return;
+    }
+
+    // Vamos a mostrar algo dentro de la capa (sobre o resultado)
+    capa.classList.remove('oculto');
+
+    ['vistaSobre', 'vistaResultado'].forEach(v => {
+      document.getElementById(v).classList.toggle('oculto', v !== idVista);
+    });
+  }
+
+  function renderGridSobres() {
+    const grid = document.getElementById('gridSobres');
+    grid.innerHTML = '';
+
+    SOBRES_CONFIG.forEach(cfg => {
+      const item = document.createElement('button');
+      item.className = 'item-sobre' + (cfg.disponible ? '' : ' bloqueado');
+      item.style.backgroundImage = `url(${cfg.imagenSobre})`;
+
+      const label = document.createElement('span');
+      label.textContent = cfg.disponible ? cfg.nombre : 'PRÓXIMAMENTE';
+      item.appendChild(label);
+
+      if (cfg.disponible) {
+        item.addEventListener('click', () => seleccionarExpansion(cfg));
+      }
+
+      grid.appendChild(item);
+    });
+  }
+
+  function seleccionarExpansion(cfg) {
+    expansionActual = cfg;
+    document.getElementById('nombreExpansionSobre').textContent = cfg.nombre;
+    document.getElementById('imagenSobre').src = cfg.imagenSobre;
+    document.getElementById('botonAbrirSobre').classList.remove('abriendo');
+    document.getElementById('costoSobreTexto').textContent = cfg.costo || 1;
+    document.getElementById('mensajeSinMonedas').classList.add('oculto');
+    actualizarSaldoMonedas();
+    mostrarVista('vistaSobre');
+  }
+
+  // -----------------------------------------------------------
+  // Apertura del sobre
+  // -----------------------------------------------------------
+  function abrirSobre(cfg) {
+    const docGaleria = obtenerDocGaleria();
+    const winGaleria = obtenerVentanaGaleria();
+
+    if (!docGaleria || !winGaleria) {
+      alert('No se pudo acceder a la galería. Probá de nuevo.');
+      devolverMonedas(cfg.costo || 1); // 🪙 se devuelve la moneda, no se consumió el sobre
+      actualizarSaldoMonedas();
+      resetearBotonSobre();
+      return;
+    }
+
+    const pool = construirPool(docGaleria, cfg.expansion);
+
+    if (pool.normales.length === 0 && pool.raras.length === 0) {
+      alert('Esta expansión todavía no tiene cartas configuradas.');
+      devolverMonedas(cfg.costo || 1); // 🪙 se devuelve la moneda
+      actualizarSaldoMonedas();
+      resetearBotonSobre();
+      return;
+    }
+
+    const elegidas = elegirTresCartas(pool);
+    const datos = elegidas.map(w => datosDeCarta(docGaleria, w));
+
+    mostrarResultado(datos);
+
+    setTimeout(() => {
+      redirigirAGaleria(cfg, datos, winGaleria);
+    }, 2600);
+  }
+
+  function resetearBotonSobre() {
+    yaAbriendo = false;
+    document.getElementById('botonAbrirSobre').classList.remove('abriendo');
+  }
+
+  function mostrarResultado(datos) {
+    const cont = document.getElementById('cartasResultado');
+    cont.innerHTML = '';
+
+    datos.forEach((d, i) => {
+      const div = document.createElement('div');
+      div.className = 'carta-resultado';
+      div.style.animationDelay = `${i * 0.2}s`;
+      div.innerHTML = `
+        <div class="carta-resultado-img" style="${d.fondo}"></div>
+        <p class="carta-resultado-nombre">${d.nombre || ''}</p>
+        <span class="carta-resultado-badge ${d.yaLaTenias ? 'repetida' : 'nueva'}">
+          ${d.yaLaTenias ? 'YA LA TIENES' : '¡NUEVA!'}
+        </span>
+      `;
+      cont.appendChild(div);
+    });
+
+    mostrarVista('vistaResultado');
+  }
+
+  // -----------------------------------------------------------
+  // Redirección final: abre la galería, va a la expansión correcta
+  // y desbloquea en su lugar (sin el popup grande de carta)
+  // -----------------------------------------------------------
+  function redirigirAGaleria(cfg, datos, winGaleria) {
+    if (window.parent && typeof window.parent.mostrarGaleria === 'function') {
+      window.parent.mostrarGaleria();
+    }
+    if (window.parent && typeof window.parent.cerrarSobres === 'function') {
+      window.parent.cerrarSobres();
+    }
+
+    if (typeof winGaleria.mostrarExpansion === 'function') {
+      winGaleria.mostrarExpansion(cfg.expansion);
+    }
+
+    const nuevas = datos.filter(d => !d.yaLaTenias);
+    nuevas.forEach((d, i) => {
+      setTimeout(() => {
+        if (typeof winGaleria.desbloquearCartaSilenciosa === 'function') {
+          winGaleria.desbloquearCartaSilenciosa(d.pass);
+        }
+      }, i * 700);
+    });
+
+    // Reset interno para la próxima vez que se abra el sobre
+    setTimeout(() => {
+      resetearBotonSobre();
+      mostrarVista('vistaSeleccion');
+    }, 1000);
+  }
+
+  // -----------------------------------------------------------
+  // Eventos
+  // -----------------------------------------------------------
+  document.getElementById('botonVolverSeleccion').addEventListener('click', () => {
+    mostrarVista('vistaSeleccion');
+  });
+
+  document.getElementById('botonCerrarSobres').addEventListener('click', () => {
+    if (window.parent && typeof window.parent.cerrarSobres === 'function') {
+      window.parent.cerrarSobres();
+    }
+    setTimeout(() => mostrarVista('vistaSeleccion'), 300);
+  });
+
+  document.getElementById('botonAbrirSobre').addEventListener('click', () => {
+    if (yaAbriendo || !expansionActual) return;
+
+    const costo = expansionActual.costo || 1;
+    const mensajeSinMonedas = document.getElementById('mensajeSinMonedas');
+
+    if (obtenerMonedasActuales() < costo) {
+      mensajeSinMonedas.classList.remove('oculto');
+      return;
+    }
+
+    // 🪙 Cobramos antes de animar. Si algo falla más adelante (no se
+    // encuentra la galería, pool vacío) la moneda se devuelve sola.
+    const cobrado = gastarMonedasActuales(costo);
+    if (!cobrado) {
+      mensajeSinMonedas.classList.remove('oculto');
+      return;
+    }
+
+    mensajeSinMonedas.classList.add('oculto');
+    actualizarSaldoMonedas();
+
+    yaAbriendo = true;
+    const boton = document.getElementById('botonAbrirSobre');
+    boton.classList.add('abriendo');
+
+    setTimeout(() => abrirSobre(expansionActual), 1800);
+  });
+
+  renderGridSobres();
+  actualizarSaldoMonedas();
+</script>
+
+</body>
+</html>
