@@ -1696,9 +1696,9 @@ display: none;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 8% 5% 10%;
       box-sizing: border-box;
       text-align: center;
+
     }
 
     .vista-sobres.oculto {
@@ -1707,11 +1707,11 @@ display: none;
     }
 
     .titulo-sobres {
+      height: 70px;
       color: #fff;
       font-size: 200%;
-      letter-spacing: 1px;
-      text-shadow: 0 0 12px rgba(255, 200, 0, 0.6);
-      margin-bottom: 6%;
+      text-shadow: 0 0 12px rgba(255, 213, 0, 0.6);
+
               font-family: "Covered By Your Grace", cursive !important;
                   transform: rotate(-3deg);
     }
