@@ -99,6 +99,7 @@
       disponible: true,
       costo: 2
     },
+    /*
     {
       id: "dimensional",
       expansion: "3",
@@ -114,11 +115,14 @@
       imagenSobre: "./assets/expansion004_sobre.webp",
       disponible: false, // 🔒 cambiar a true cuando la expansión esté lista
       costo: 2
-    }
+    }*/
     // 👉 Próxima expansión: copiar este bloque acá abajo.
   ];
 
-  const PROBABILIDAD_RARA = 0.10; // 10% rara / 90% normal
+  // --- Probabilidades de rareza ---
+  const PROBABILIDAD_SUPER_RARA = 0.03; // 3%  → azul  (solo salen de sobres, nunca por QR)
+  const PROBABILIDAD_RARA       = 0.10; // 10% → plata
+  // el restante 87% son normales (comun)
 
   let expansionActual = null;
   let yaAbriendo = false;
@@ -166,19 +170,20 @@
 
   // -----------------------------------------------------------
   // Construye el pool de cartas válidas de una expansión,
-  // separadas en normales y raras. Excluye SIEMPRE:
+  // separadas en normales, raras y super raras. Excluye SIEMPRE:
   // - cartas sin data-pass
   // - cartas con requisitos especiales (fusión / cantidad / rareza)
   // - legendarias (oro)
-  // - stickers/objetos dimensionales (para expansión 3 a futuro)
+  // - stickers/objetos dimensionales
   // -----------------------------------------------------------
   function construirPool(docGaleria, expansionId) {
     const contenedor = docGaleria.querySelector(`.cartasgaleriacontainer[data-expansion="${expansionId}"]`);
-    if (!contenedor) return { normales: [], raras: [] };
+    if (!contenedor) return { normales: [], raras: [], superRaras: [] };
 
     const wrappers = Array.from(contenedor.querySelectorAll('.carta-wrapper'));
-    const normales = [];
-    const raras = [];
+    const normales   = [];
+    const raras      = [];
+    const superRaras = []; // 🔵 azul — solo salen de sobres, nunca por QR
 
     wrappers.forEach(w => {
       const pass = w.getAttribute('data-pass');
@@ -192,17 +197,20 @@
       const boton = w.querySelector('.cartaejemplo');
       if (!boton) return;
 
-      if (boton.classList.contains('comun')) normales.push(w);
+      if      (boton.classList.contains('comun')) normales.push(w);
       else if (boton.classList.contains('plata')) raras.push(w);
-      // 'oro' (legendarias) y cualquier otra rareza quedan excluidas siempre
+      else if (boton.classList.contains('azul'))  superRaras.push(w);
+      // 'oro' (legendarias) quedan excluidas siempre
     });
 
-    return { normales, raras };
+    return { normales, raras, superRaras };
   }
 
   // -----------------------------------------------------------
-  // Elige 3 cartas respetando 90% normal / 10% rara,
+  // Elige 3 cartas con tres niveles de rareza,
   // evitando repetir la misma carta dentro del mismo sobre.
+  // Si un nivel no tiene cartas en esa expansión, cae al
+  // nivel inferior automáticamente.
   // -----------------------------------------------------------
   function elegirTresCartas(pool) {
     const elegidas = [];
@@ -211,13 +219,22 @@
 
     while (elegidas.length < 3 && intentos < 60) {
       intentos++;
-      const quiereRara = Math.random() < PROBABILIDAD_RARA;
-      let candidatos = quiereRara ? pool.raras : pool.normales;
 
-      if (candidatos.length === 0) {
-        candidatos = quiereRara ? pool.normales : pool.raras;
+      const dado = Math.random();
+      let candidatos;
+
+      if (dado < PROBABILIDAD_SUPER_RARA) {
+        // 3% → super rara (azul); fallback a rara si no hay
+        candidatos = pool.superRaras.length > 0 ? pool.superRaras : pool.raras;
+      } else if (dado < PROBABILIDAD_SUPER_RARA + PROBABILIDAD_RARA) {
+        // 10% → rara (plata); fallback a normal si no hay
+        candidatos = pool.raras.length > 0 ? pool.raras : pool.normales;
+      } else {
+        // 87% → normal (comun); fallback a rara si no hay
+        candidatos = pool.normales.length > 0 ? pool.normales : pool.raras;
       }
-      if (candidatos.length === 0) break;
+
+      if (candidatos.length === 0) continue;
 
       const candidato = candidatos[Math.floor(Math.random() * candidatos.length)];
       const pass = candidato.getAttribute('data-pass');
@@ -326,7 +343,7 @@
 
     const pool = construirPool(docGaleria, cfg.expansion);
 
-    if (pool.normales.length === 0 && pool.raras.length === 0) {
+    if (pool.normales.length === 0 && pool.raras.length === 0 && pool.superRaras.length === 0) {
       alert('Esta expansión todavía no tiene cartas configuradas.');
       devolverMonedas(cfg.costo || 1); // 🪙 se devuelve la moneda
       actualizarSaldoMonedas();

@@ -88,7 +88,6 @@ body{
   height: 100%;
 }
 
-
 .medio,
 .circle1,
 .circle2,
@@ -642,6 +641,23 @@ background-color: rgba(255, 255, 255, 0);
   pointer-events: none;
 }
 
+
+/* 🔵 SUPER RARAS — visible y clickeable como overespecial,
+   pero el pool de sobres la incluye porque NO usa data-requiere-X */
+.overlay-bloqueo.oversuper {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 10;
+  pointer-events: all;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  background-color: rgba(92, 26, 126, 1);
+  background-image: url(../assets/cartas/MENU_SUPER_RARA.webp); /* cambiá por el que quieras */
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 /* 👑 OVERLAY VISIBLE SOLO para LEGENDARIAS (mantiene color violeta) */
 .overlay-bloqueo.overespecial {
   position: absolute;
@@ -838,10 +854,11 @@ animation: azulbrillo 4s linear infinite;
 /* AZUL */
 .cartel-azul-estilo {
   background: rgb(70, 130, 255);
-  color: white;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: white;
+  border: 8px solid rgb(255, 242, 220);
+  box-shadow: 0px 0px 20px 4px rgb(136, 146, 255);
 }
-.cartel-azul-estilo p b {
+.cartel-azul-estilo p {
   color: white;
 }
 

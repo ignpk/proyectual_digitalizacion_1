@@ -29,24 +29,13 @@ function mostrarOverlayRevelado(item, esPorCodigo = false) {
 // ========================================================================================
 // 🎁 SOBRES DIGITALES
 // ========================================================================================
-// Función llamada desde sobres.html (vía iframe) para desbloquear UNA carta
-// "en silencio": sin el popup grande de carta, sin pantalla negra. Solo:
-// - cambia a la expansión correspondiente
-// - hace una animación liviana en el grid
-// - remueve el overlay de bloqueo y guarda el progreso
-// - hace scroll hasta la carta
-// - dispara el chequeo de desbloqueos automáticos (combos, cantidad, rareza)
-//
-// Si la carta ya estaba desbloqueada, no hace nada (devuelve false).
-// ========================================================================================
 function desbloquearCartaSilenciosa(pass) {
   const wrapper = document.querySelector(`.carta-wrapper[data-pass="${pass}"]`);
   if (!wrapper) return false;
 
   const overlay = wrapper.querySelector('.overlay-bloqueo');
-  if (!overlay) return false; // ya estaba desbloqueada, no se toca
+  if (!overlay) return false;
 
-  // Cambiar a la expansión correspondiente
   const contenedor = wrapper.closest('.cartasgaleriacontainer');
   if (contenedor) {
     const expansionNum = contenedor.getAttribute('data-expansion');
@@ -55,22 +44,19 @@ function desbloquearCartaSilenciosa(pass) {
     }
   }
 
-  // Animación liviana de desaparición del candado
   overlay.classList.add('overlay-desbloqueo-sobre');
 
   setTimeout(() => {
     overlay.remove();
     if (typeof saveProgress === 'function') saveProgress();
-    otorgarMonedaSiEsLegendaria(wrapper); // 🪙 por si en el futuro algún sobre llega a incluir legendarias
-    if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria(); // 🔔 esta carta queda como "nueva sin ver"
+    otorgarMonedaSiEsLegendaria(wrapper);
+    if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
 
-    // Resalte breve en la carta para que se note cuál apareció
     wrapper.classList.add('carta-nueva-sobre');
     wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     setTimeout(() => wrapper.classList.remove('carta-nueva-sobre'), 1500);
 
-    // Revisar si esto desbloquea alguna carta por combo/cantidad/rareza
     if (typeof chequearDesbloqueosAutomaticos === 'function') {
       setTimeout(chequearDesbloqueosAutomaticos, 300);
     }
@@ -82,23 +68,17 @@ function desbloquearCartaSilenciosa(pass) {
 // ========================================================================================
 // 🪙 Moneda de regalo al desbloquear una carta LEGENDARIA (una sola vez por carta)
 // ========================================================================================
-// Se llama justo después de remover el overlay-bloqueo de CUALQUIER carta, sin importar
-// el camino por el que se desbloqueó (código QR, combo de fusión, cantidad, rareza).
-// Si la carta no es legendaria (clase "oro"), o ya se le entregó su moneda antes, no hace
-// nada. Usa una clave propia en localStorage (separada de "michi.unlocked") para llevar
-// registro de qué legendarias ya pagaron su moneda.
-// ========================================================================================
 function otorgarMonedaSiEsLegendaria(wrapper) {
   if (!wrapper) return;
 
   const boton = wrapper.querySelector('.cartaejemplo');
-  if (!boton || !boton.classList.contains('oro')) return; // solo legendarias
+  if (!boton || !boton.classList.contains('oro')) return;
 
   const pass = wrapper.getAttribute('data-pass');
   if (!pass) return;
 
   const clave = 'moneda_legendaria_' + pass;
-  if (localStorage.getItem(clave) === 'true') return; // ya se entregó esa moneda
+  if (localStorage.getItem(clave) === 'true') return;
 
   localStorage.setItem(clave, 'true');
 
@@ -106,15 +86,11 @@ function otorgarMonedaSiEsLegendaria(wrapper) {
     agregarMonedas(1);
   }
 
-  // Pequeño aviso visual, con delay para no pisarse con la animación grande
-  // de desbloqueo (flash + chispas) que ya dispara mostrarAlertaDesbloqueo().
   setTimeout(() => mostrarCartelMonedas(1), 3500);
 }
 
 // ========================================================================================
-// 🪙 Cartel de "+X monedas" — usado por TODAS las formas de ganar monedas
-// (botón de regalo en regalos.html, desbloqueo de legendarias, y cualquier
-// mecánica futura). Centralizado acá para que el cartel sea siempre idéntico.
+// 🪙 Cartel de "+X monedas"
 // ========================================================================================
 function mostrarCartelMonedas(cantidad) {
   const mensaje = document.createElement('div');
@@ -128,24 +104,9 @@ function mostrarCartelMonedas(cantidad) {
 }
 
 // ========================================================================================
-// 🔔 BADGES DE "¡NUEVO!" — avisos visuales de contenido sin ver
-// ========================================================================================
-// Tres criterios distintos según el tipo de contenido:
-// 1) GALERÍA (granular): cada carta desbloqueada que todavía no se abrió en grande
-//    queda en localStorage como "no vista" (clave michi.vistas). El botón del menú
-//    se prende mientras exista AL MENOS UNA así, y se apaga sola a medida que el
-//    usuario va tocando cada carta nueva.
-// 2) REGALOS (por contenido + visita): se prende si hay algún botonCopiar/botonMonedas
-//    sin canjear, y se apaga apenas el usuario entra a Regalos (no hace falta que
-//    canjee todo). Si en el futuro agregás una oferta nueva y querés que el aviso
-//    vuelva a aparecer para todos, cambiá la clave "badge_visto_regalos" por otra
-//    (ej: "badge_visto_regalos_v2").
-// 3) SOBRES / NOTICIAS (primera vez): no tienen ítems individuales, así que el aviso
-//    es simplemente "todavía no entraste acá ni una vez" — se apaga para siempre la
-//    primera vez que se abren.
+// 🔔 BADGES DE "¡NUEVO!"
 // ========================================================================================
 
-// --- Cartas: registro de cuáles ya se vieron en detalle ---
 function marcarCartaComoVista(pass) {
   if (!pass) return;
   try {
@@ -168,7 +129,6 @@ function cartaFueVista(pass) {
   }
 }
 
-// Pinta/saca el "¡NUEVO!" en cada carta de la grilla (corre dentro de galeria.html)
 function actualizarBadgesCartasNuevas() {
   document.querySelectorAll('.carta-wrapper').forEach(wrapper => {
     const pass = wrapper.getAttribute('data-pass');
@@ -188,8 +148,6 @@ function actualizarBadgesCartasNuevas() {
   });
 }
 
-// Se llama desde galeria.html cada vez que algo se desbloquea o se ve una carta.
-// Actualiza la grilla local Y el puntito en el botón del menú de index.html.
 function refrescarBadgesGaleria() {
   actualizarBadgesCartasNuevas();
   if (window.parent && typeof window.parent.actualizarBadgeGaleria === 'function') {
@@ -197,7 +155,6 @@ function refrescarBadgesGaleria() {
   }
 }
 
-// --- Botón "Galería" del menú principal (vive en index.html) ---
 function actualizarBadgeGaleria() {
   const badge = document.getElementById('badgeGaleria');
   if (!badge) return;
@@ -220,7 +177,6 @@ function actualizarBadgeGaleria() {
   badge.classList.toggle('oculto', !hayNuevas);
 }
 
-// --- Botón "Regalos" (vive en index.html) ---
 function actualizarBadgeRegalos() {
   const badge = document.getElementById('badgeRegalos');
   if (!badge) return;
@@ -233,7 +189,6 @@ function actualizarBadgeRegalos() {
   badge.classList.toggle('oculto', !hayPendientes || visto);
 }
 
-// --- Botón "Sobres" (vive en index.html) — aviso de "primera vez" ---
 function actualizarBadgeSobres() {
   const badge = document.getElementById('badgeSobres');
   if (!badge) return;
@@ -241,7 +196,6 @@ function actualizarBadgeSobres() {
   badge.classList.toggle('oculto', visto);
 }
 
-// --- Botón "Noticias" (vive en index.html) — aviso de "primera vez" ---
 function actualizarBadgeNoticias() {
   const badge = document.getElementById('badgeNoticias');
   if (!badge) return;
@@ -249,9 +203,6 @@ function actualizarBadgeNoticias() {
   badge.classList.toggle('oculto', visto);
 }
 
-// Inyecta los estilos de animación que usa desbloquearCartaSilenciosa.
-// Se hace por JS (en vez de tocar style.css) para que este cambio sea
-// autocontenido y no dependa de editar el CSS del proyecto.
 function inyectarEstilosSobre() {
   if (document.getElementById('estilos-sobre-digital')) return;
 
@@ -280,14 +231,7 @@ function inyectarEstilosSobre() {
 inyectarEstilosSobre();
 
 // ========================================================================================
-// 💰 MONEDAS - moneda de cambio para comprar sobres digitales
-// ========================================================================================
-// Se guarda en localStorage igual que el progreso de cartas (michi.unlocked).
-// Estas funciones quedan disponibles globalmente en la ventana de index.html, así que:
-// - sobres.html las usa vía window.parent.obtenerMonedas() / gastarMonedas() / agregarMonedas()
-// - el día de mañana, cualquier forma de GANAR monedas (canjear un código especial,
-//   premio diario, recompensa por video, etc.) solo tiene que llamar a agregarMonedas(n)
-//   desde donde sea (incluso podés probarlo a mano desde la consola del navegador).
+// 💰 MONEDAS
 // ========================================================================================
 const CLAVE_MONEDAS = 'michi.monedas';
 
@@ -310,7 +254,6 @@ function agregarMonedas(cantidad) {
   return nuevoTotal;
 }
 
-// Intenta gastar "cantidad" de monedas. Devuelve true si pudo, false si no alcanzaba.
 function gastarMonedas(cantidad) {
   if (obtenerMonedas() < cantidad) return false;
   agregarMonedas(-cantidad);
@@ -325,7 +268,6 @@ document.addEventListener("DOMContentLoaded", () => {
   botones.forEach(boton => {
     const codigo = boton.getAttribute("data-codigo");
 
-    // 🔸 Si el código ya fue canjeado antes, mostrar el botón gris
     if (localStorage.getItem("canjeado_" + codigo) === "true") {
       desactivarBoton(boton);
     }
@@ -335,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       navigator.clipboard.writeText(codigo).then(() => {
 
-        // 🔹 Cerrar regalos y abrir galería
         if (window.parent && typeof window.parent.cerrarRegalos === "function") {
           window.parent.cerrarRegalos();
         }
@@ -344,7 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
           window.parent.mostrarGaleria();
         }
 
-        // 🔹 Esperar 1 segundo antes de canjear el código
         setTimeout(() => {
           const iframeGaleria = window.parent.document.getElementById("iframeGaleria");
           if (!iframeGaleria) return;
@@ -357,27 +297,24 @@ document.addEventListener("DOMContentLoaded", () => {
             inputCodigo.value = codigo;
             botonVerificar.click();
 
-            // 🔓 Mostrar overlay de revelado si la carta desbloqueada es legendaria
             setTimeout(() => {
               const cartaLegendaria = docGaleria.querySelector(`.carta-wrapper[data-pass="${codigo}"]`);
               if (cartaLegendaria) {
                 const id = cartaLegendaria.querySelector(".cartaejemplo")?.getAttribute("data-target");
                 const item = docGaleria.getElementById(id);
-                if (item) mostrarOverlayRevelado(item, true); // 👈 se pasa "true" si es por código
+                if (item) mostrarOverlayRevelado(item, true);
               }
             }, 1000);
 
-            // 5️⃣ Marcar como canjeado
             localStorage.setItem("canjeado_" + codigo, "true");
             desactivarBoton(boton);
 
-            // 6️⃣ Mostrar mensaje visual
             const mensaje = document.createElement("div");
             mensaje.classList.add("mensajeCanjeado");
             window.parent.document.body.appendChild(mensaje);
             setTimeout(() => mensaje.remove(), 2000);
           }
-        }, 1000); // ⏳ Espera 1 segundo antes de canjear
+        }, 1000);
       });
     });
   });
@@ -412,7 +349,7 @@ function cerrarQuees() {
 
 function mostrarRegalos() {
   document.getElementById('regalosContainer').style.display = 'block';
-  localStorage.setItem('badge_visto_regalos', 'true'); // 🔔 se apaga apenas entra, aunque no canjee todo
+  localStorage.setItem('badge_visto_regalos', 'true');
   if (typeof actualizarBadgeRegalos === 'function') actualizarBadgeRegalos();
 }
 function cerrarRegalos() {
@@ -429,20 +366,19 @@ function cerrarDonar() {
 // ------------------------- Noticias -------------------------
 function mostrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'block';
-  localStorage.setItem('badge_visto_noticias', 'true'); // 🔔 aviso de "primera vez"
+  localStorage.setItem('badge_visto_noticias', 'true');
   if (typeof actualizarBadgeNoticias === 'function') actualizarBadgeNoticias();
 }
 
 function cerrarNoticias() {
   document.getElementById('noticiasContainer').style.display = 'none';
-  // Marcamos que ya se vieron las noticias
   localStorage.setItem("noticiasVistas", "true");
 }
 
 // ------------------------- Sobres digitales -------------------------
 function mostrarSobres() {
   document.getElementById('sobresContainer').style.display = 'block';
-  localStorage.setItem('badge_visto_sobres', 'true'); // 🔔 aviso de "primera vez"
+  localStorage.setItem('badge_visto_sobres', 'true');
   if (typeof actualizarBadgeSobres === 'function') actualizarBadgeSobres();
 }
 function cerrarSobres() {
@@ -454,7 +390,6 @@ window.addEventListener("load", () => {
   const esPWA = window.matchMedia('(display-mode: standalone)').matches 
                 || window.navigator.standalone === true;
 
-  // Solo si está en PWA instalada y no vio noticias antes
   if (esPWA && !localStorage.getItem("noticiasVistas")) {
     mostrarNoticias();
   }
@@ -464,12 +399,10 @@ window.addEventListener("load", () => {
 let saveProgressTimer = null;
 
 function saveProgress() {
-  // Cancelar guardado anterior pendiente
   if (saveProgressTimer) {
     clearTimeout(saveProgressTimer);
   }
   
-  // Programar nuevo guardado en 500ms
   saveProgressTimer = setTimeout(() => {
     try {
       const desbloqueadas = Array.from(document.querySelectorAll('.carta-wrapper'))
@@ -506,7 +439,6 @@ const overlay = document.getElementById("overlay");
 const cerrar = document.getElementById("cerrar-overlay");
 const resultado = document.getElementById("resultado");
 
-// ⚠️ SOLO ejecutar si los elementos existen (estamos en galeria.html)
 if (btnAbrir && overlay && cerrar && resultado) {
   btnAbrir.addEventListener("click", () => {
     overlay.style.display = "flex";
@@ -577,19 +509,17 @@ function moverCarruseldeExpansiones(direccion) {
   carrusel.style.transform = `translateX(-${indiceCarruseldeExpansiones * 100}%)`;
 }
 
-// Mostrar la expansión seleccionada y ocultar las demás
 function mostrarExpansion(numero) {
   const expansiones = document.querySelectorAll('.cartasgaleriacontainer');
   expansiones.forEach(expansion => {
     if (expansion.getAttribute('data-expansion') === numero) {
-      expansion.style.display = 'block'; // mostrar la elegida
+      expansion.style.display = 'block';
     } else {
-      expansion.style.display = 'none'; // ocultar las demás
+      expansion.style.display = 'none';
     }
   });
 }
 
-// Mostrar expansión 1 por defecto al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
   mostrarExpansion("1");
 });
@@ -602,63 +532,49 @@ const lazyLoadObserver = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       const el = entry.target;
       
-      // Evitar cargar múltiples veces
       if (el.dataset.loaded === "true") return;
       
-      // 1️⃣ CARGAR BACKGROUND-IMAGE (para divs con data-style)
       if (el.dataset.style) {
         el.setAttribute('style', el.dataset.style);
       }
       
-      // 2️⃣ CARGAR SRC (para imágenes <img> con data-src)
       if (el.tagName === 'IMG' && el.dataset.src) {
         el.src = el.dataset.src;
         
-        // Opcional: agregar clase cuando cargue
         el.onload = () => {
           el.classList.add('loaded');
         };
         
-        // Manejo de error
         el.onerror = () => {
           console.error(`Error cargando imagen: ${el.dataset.src}`);
           el.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
         };
       }
       
-      // Marcar como cargado
       el.dataset.loaded = "true";
       
-      // Dejar de observar este elemento
       lazyLoadObserver.unobserve(el);
     }
   });
 }, {
-  // Configuración optimizada
-  rootMargin: '100px',  // Cargar 100px antes de ser visible
-  threshold: 0.01       // Activar cuando 1% sea visible
+  rootMargin: '100px',
+  threshold: 0.01
 });
 
-// Observar todos los elementos lazy
 document.querySelectorAll('.lazy-michi, [data-lazy="true"]').forEach(el => {
-  // Si tiene style, guardarlo en data-style
   if (!el.dataset.style && el.hasAttribute('style')) {
     el.dataset.style = el.getAttribute('style');
     el.removeAttribute('style');
   }
   
-// Si es IMG con src, guardarlo en data-src
 if (el.tagName === 'IMG' && el.hasAttribute('src') && !el.dataset.src) {
-  // Solo procesar si el src NO es ya el placeholder
   if (!el.src.startsWith('data:image')) {
     el.dataset.src = el.src;
     el.removeAttribute('src');
-    // Agregar placeholder transparente
     el.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   }
 }
   
-  // Observar el elemento
   if (el.dataset.style || (el.tagName === 'IMG' && el.dataset.src)) {
     lazyLoadObserver.observe(el);
   }
@@ -666,20 +582,16 @@ if (el.tagName === 'IMG' && el.hasAttribute('src') && !el.dataset.src) {
 
 // ------------------------- DOMContentLoaded -------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // ⚠️ VERIFICAR si estamos en galeria.html
   const carouselItems = document.querySelectorAll(".carousel-item");
   const fondonegro = document.querySelector(".fondonegro");
   
-  // Solo ejecutar si existen elementos de la galería
   if (carouselItems.length === 0 || !fondonegro) {
-    return; // Salir si no estamos en galeria.html
+    return;
   }
 
-  // Cargar progreso guardado
   loadProgress();
-  if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria(); // 🔔 pintar "¡NUEVO!" de sesiones anteriores
+  if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
 
-  // Bloquear zoom global
   document.addEventListener('gesturestart', e => e.preventDefault());
   let lastTouchEnd = 0;
   document.addEventListener('touchend', event => {
@@ -691,7 +603,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.touches.length > 1) event.preventDefault();
   }, { passive: false });
 
-  // Pantalla negra
   function mostrarPantallaNegra() {
     const pantallaNegra = document.getElementById('pantallaNegra');
     if (pantallaNegra) {
@@ -709,7 +620,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Alertas personalizadas
   function mostrarAlerta(mensaje, tipo) {
     const modal = document.getElementById("alertaModal");
     const texto = document.getElementById("textoAlerta");
@@ -738,7 +648,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-// Bloqueo de cartas
   document.querySelectorAll(".tarjeta").forEach(t => t.classList.add("flip"));
   
   const codigoGlobal = document.getElementById("codigoGlobal");
@@ -753,7 +662,6 @@ document.addEventListener("DOMContentLoaded", () => {
   carouselItems.forEach(item => item.style.display = "none");
   fondonegro.style.display = "none";
 
-// Cartel amarillo y requisitos activos
   let cartelActivo = null;
   let requisitosActivos = [];
   
@@ -773,7 +681,6 @@ document.addEventListener("DOMContentLoaded", () => {
             saveProgress();
             otorgarMonedaSiEsLegendaria(wrapper); // 🪙
 
-               // 🔥 Cambiar a la expansión del contenedor padre
       const contenedor = wrapper.closest(".cartasgaleriacontainer");
       if (contenedor) {
         const expansionNum = contenedor.getAttribute("data-expansion");
@@ -787,7 +694,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = boton?.getAttribute("data-target");
             const item = document.getElementById(id);
             if (item) {
-              // 🔔 Esta carta se abre en grande automáticamente, así que ya cuenta como "vista"
               if (typeof marcarCartaComoVista === 'function') marcarCartaComoVista(pass);
               if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
 
@@ -818,39 +724,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   
-// Abrir cartas desbloqueadas - CON EVENT DELEGATION (1 solo listener)
-// ⚠️ SOLO ejecutar si estamos en galeria.html
 const carouselContainer = document.querySelector('.carousel-container');
 if (carouselContainer) {
   carouselContainer.addEventListener('click', e => {
-    // Buscar si se hizo click en un botón de carta
     const boton = e.target.closest('.cartaejemplo');
-    if (!boton) return; // Si no es una carta, ignorar
+    if (!boton) return;
     
     e.stopPropagation();
 
     const wrapper = boton.closest('.carta-wrapper');
     if (!wrapper) return;
     
-    // Solo abrir si no está bloqueada
     if (wrapper.querySelector('.overlay-bloqueo')) return;
     
     const id = boton.getAttribute('data-target');
     const item = document.getElementById(id);
 
     if (item) {
-      // 🔔 El usuario la abrió en grande: queda marcada como "vista"
       const pass = wrapper.getAttribute('data-pass');
       if (typeof marcarCartaComoVista === 'function') marcarCartaComoVista(pass);
       if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
 
-      // Ocultar otras cartas y mostrar la seleccionada
       carouselItems.forEach(i => i.style.display = "none");
       item.style.display = "flex";
       fondonegro.style.display = "block";
       document.body.style.overflow = "hidden";
 
-      // 🪄 Mostrar overlay de revelado si es legendaria
       mostrarOverlayRevelado(item);
     }
   });
@@ -858,7 +757,6 @@ if (carouselContainer) {
 
 
 
-  // Cerrar carrusel
   const cerrarCarrusel = () => {
     carouselItems.forEach(item => {
       item.style.display = "none";
@@ -881,28 +779,25 @@ if (carouselContainer) {
    SISTEMA DE CARTEL DE BLOQUEO + ANIMACIÓN DE DESBLOQUEO
    ========================================================== */
 
-// CLICK EN CARTAS BLOQUEADAS - CON EVENT DELEGATION
 const galeriaContainer = document.getElementById('GALERIA');
 if (galeriaContainer) {
   galeriaContainer.addEventListener('click', e => {
-    // Buscar si se hizo click en un overlay bloqueado
-    const overlay = e.target.closest('.overlay-bloqueo.overespecial');
-    if (!overlay) return; // Si no es un overlay bloqueado, ignorar
+    // Escucha clicks en legendarias (overespecial) Y super raras (oversuper)
+    const overlay = e.target.closest('.overlay-bloqueo.overespecial, .overlay-bloqueo.oversuper');
+    if (!overlay) return;
     
     e.stopPropagation();
 
     const mensajePersonalizado = overlay.getAttribute('data-cartel');
     const requisitos = overlay.getAttribute('data-requiere');
 
-    // Detectar color por clase del overlay
     const color =
       overlay.classList.contains("cartel-rojo") ? "rojo" :
       overlay.classList.contains("cartel-azul") ? "azul" :
       overlay.classList.contains("cartel-verde") ? "verde" :
       overlay.classList.contains("cartel-naranja") ? "naranja" :
-      "amarillo"; // por defecto
+      "amarillo";
 
-    // Construcción del contenido HTML
     let contenidoFinal = "";
 
     if (mensajePersonalizado) {
@@ -918,7 +813,6 @@ if (galeriaContainer) {
   });
 }
 
-// Genera el HTML que muestra miniaturas de cartas requeridas
 function generarContenidoCartel(listaIds) {
   let html = "<div class='cartas-requeridas'>";
 
@@ -941,7 +835,6 @@ function generarContenidoCartel(listaIds) {
 }
 
 
-// CREA EL CARTEL NEGRO CON TEXTO
 function mostrarCartelEnOverlay(htmlContenido, color = "amarillo") {
   const overlayFondo = document.createElement('div');
   overlayFondo.className = 'overlay-fondo';
@@ -965,7 +858,6 @@ function mostrarCartelEnOverlay(htmlContenido, color = "amarillo") {
 
 function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
 
-  /* ----- COLORES POR TIPO DE CARTEL ----- */
   const coloresChispas = {
     amarillo: ['#FFD700', '#FFA500', '#FFFF00', '#FFE135'],
     rojo: ['#FF0000', '#FF4500', '#DC143C', '#FF6347'],
@@ -976,7 +868,6 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
 
   const coloresActuales = coloresChispas[colorCartel] || coloresChispas.amarillo;
 
-  /* ----- COLORES PARA EL FLASH DE LUZ ----- */
   const coloresFlash = {
     amarillo: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 200, 0, 0.7) 40%, rgba(255, 170, 0, 0) 80%)',
     rojo: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 60, 60, 0.7) 40%, rgba(255, 0, 0, 0) 80%)',
@@ -985,7 +876,6 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
     naranja: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.9) 0%, rgba(255, 140, 0, 0.7) 40%, rgba(255, 100, 0, 0) 80%)'
   };
 
-  /* ----- FLASH DE LUZ ----- */
   const flash = document.createElement('div');
   flash.className = 'flash-luz';
   flash.style.background = coloresFlash[colorCartel] || coloresFlash.amarillo;
@@ -993,12 +883,10 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
   setTimeout(() => flash.classList.add('visible'), 50);
   setTimeout(() => flash.remove(), 1000);
 
-  /* ----- FONDO OSCURO ----- */
   const fondo = document.createElement('div');
   fondo.className = 'fondoexplosion';
   document.body.appendChild(fondo);
 
-  /* ----- CHISPAS ----- */
   const NUM_ESTRELLAS = 30;
   const stars = [];
 
@@ -1015,14 +903,12 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
     star.style.left = `0px`;
     star.style.top = `0px`;
 
-    // 🎨 ASIGNAR COLOR ALEATORIO DEL ARRAY DE COLORES
     const colorChispa = coloresActuales[Math.floor(Math.random() * coloresActuales.length)];
     star.style.background = `radial-gradient(circle, #fff 0%, ${colorChispa} 60%, ${colorChispa} 100%)`;
     star.style.boxShadow = `0 0 18px 6px ${colorChispa}`;
 
     const cola = document.createElement('div');
     cola.className = 'cola';
-    // 🎨 LA COLA TAMBIÉN USA EL MISMO COLOR
     cola.style.background = `linear-gradient(90deg, ${colorChispa}, rgba(255,255,255,0.25), transparent)`;
     star.appendChild(cola);
 
@@ -1096,19 +982,9 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
   }
   requestAnimationFrame(raf);
 
-  /* ----- MENSAJE POR COLOR ----- */
-  const mensajesColor = {
-    amarillo: "",
-    rojo: "",
-    azul: "",
-    verde: ""
-  };
-
   const alerta = document.createElement('div');
   alerta.className = `alerta-desbloqueo alerta-${colorCartel}`;
-  alerta.innerHTML = `
-    </div>
-  `;
+  alerta.innerHTML = `</div>`;
 
   document.body.appendChild(alerta);
 
@@ -1131,21 +1007,16 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
 
 
 
-  // Desbloqueo por cantidad O por rareza específica (separado por expansión)
   function chequearDesbloqueosPorCantidadORareza() {
     document.querySelectorAll('.cartasgaleriacontainer').forEach(expansion => {
-  // Cantidad de cartas desbloqueadas dentro de la expansión
   const todasCartas = Array.from(expansion.querySelectorAll('.carta-wrapper'))
     .filter(wrapper => {
       const boton = wrapper.querySelector('.cartaejemplo');
-      // Excluye las legendarias (oro)
       return boton && !boton.classList.contains('oro');
     });
 
   const desbloqueadas = todasCartas.filter(wrapper => !wrapper.querySelector('.overlay-bloqueo')).length;
 
-
-      // Conteo de rarezas por expansión
       const normalesTotal = expansion.querySelectorAll('.carta-wrapper .cartaejemplo.comun').length;
       const rarasTotal = expansion.querySelectorAll('.carta-wrapper .cartaejemplo.plata').length;
       const normalesBloqueadas = expansion.querySelectorAll('.overlay-bloqueo.overnormal').length;
@@ -1154,16 +1025,13 @@ function mostrarAlertaDesbloqueo(colorCartel = "amarillo") {
       const normalesDesbloqueadas = normalesTotal - normalesBloqueadas;
       const rarasDesbloqueadas = rarasTotal - rarasBloqueadas;
 
-      // Recorremos cartas que piden cantidad o rareza dentro de la expansión
       expansion.querySelectorAll('.carta-wrapper[data-requiere-cantidad], .carta-wrapper[data-requiere-rareza]').forEach(wrapper => {
         const overlay = wrapper.querySelector('.overlay-bloqueo');
         if (!overlay) return;
 
-        // Desbloqueo por cantidad
         if (wrapper.hasAttribute('data-requiere-cantidad')) {
           const cantidadNecesaria = parseInt(wrapper.getAttribute('data-requiere-cantidad'), 10);
           if (desbloqueadas >= cantidadNecesaria) {
-          // Detectar color antes de remover
 const colorCartel =
   overlay.classList.contains("cartel-rojo") ? "rojo" :
   overlay.classList.contains("cartel-azul") ? "azul" :
@@ -1174,12 +1042,10 @@ overlay.remove();
 saveProgress();
 otorgarMonedaSiEsLegendaria(wrapper); // 🪙
 
-// Activar animación con color correcto
 setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
           }
         }
 
-        // Desbloqueo por rareza
         if (wrapper.hasAttribute('data-requiere-rareza')) {
           const rarezas = wrapper.getAttribute('data-requiere-rareza').split(',');
           let desbloquear = true;
@@ -1205,7 +1071,6 @@ setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
     });
   }
 
-  // Chequea y desbloquea cartas automáticamente según requisitos
   function chequearDesbloqueosAutomaticos() {
     const cartasBloqueadas = document.querySelectorAll('.carta-wrapper .overlay-bloqueo.overespecial, .carta-wrapper .overlay-bloqueo.overraro');
     let cambios = false;
@@ -1237,19 +1102,13 @@ setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
     });
     if (cambios) chequearDesbloqueosAutomaticos();
 
-    // ahora chequeamos cantidad y rarezas
     chequearDesbloqueosPorCantidadORareza();
 
-    // 🔔 cualquier carta que se haya desbloqueado acá (combo/cantidad/rareza) queda "nueva"
     if (typeof refrescarBadgesGaleria === 'function') refrescarBadgesGaleria();
   }
 
-  // 🔓 Exponerla globalmente: así desbloquearCartaSilenciosa() (usada por
-  // los sobres digitales) también puede disparar el chequeo de legendarias
-  // por combo/cantidad/rareza, no solo el canje por código QR.
   window.chequearDesbloqueosAutomaticos = chequearDesbloqueosAutomaticos;
 
-  // Ejecutar al cargar la página
   window.addEventListener('DOMContentLoaded', () => {
     chequearDesbloqueosAutomaticos();
   });
@@ -1289,12 +1148,30 @@ setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
             c.style.left = `${x - rect.left}px`;
             c.style.top = `${y - rect.top}px`;
           });
+
+          // 🎴 Efecto parallax multicapa — data-parallax="N" en cada capa.
+          // Cuanto mayor N, más "sale" esa capa hacia el espectador.
+          // Ejemplo de uso en HTML:
+          //   <img class="sombra lazy-michi" data-parallax="20" .../>  ← capa baja
+          //   <img class="sombra lazy-michi" data-parallax="40" .../>  ← capa alta
+          const offsetX = (x - cx) / rect.width;
+          const offsetY = (y - cy) / rect.height;
+          carta.querySelectorAll('[data-parallax]').forEach(capa => {
+            const intensidad = parseFloat(capa.dataset.parallax) || 20;
+            capa.style.transition = 'none';
+            capa.style.transform = `translate(${-offsetX * intensidad}px, ${-offsetY * intensidad}px)`;
+          });
         };
         const end = () => {
           if (!isDragging) return;
           isDragging = false;
           carta.style.transition = "transform 0.3s ease";
           carta.style.transform = "rotateX(0deg) rotateY(0deg)";
+          // 🎴 Resetear todas las capas parallax a posición original
+          carta.querySelectorAll('[data-parallax]').forEach(capa => {
+            capa.style.transition = 'transform 0.3s ease';
+            capa.style.transform = 'translate(0px, 0px)';
+          });
         };
         carta.addEventListener("mouseenter", start);
         carta.addEventListener("mousemove", move);
@@ -1363,6 +1240,6 @@ setTimeout(() => mostrarAlertaDesbloqueo(colorCartel), 3000);
       contenedorLineas.addEventListener('touchmove', moverLineas, { passive: true });
       contenedorLineas.addEventListener('mouseleave', resetLineas);
       contenedorLineas.addEventListener('touchend', resetLineas);
-          contenedorLineas.addEventListener('touchcancel', resetLineas);
+      contenedorLineas.addEventListener('touchcancel', resetLineas);
     });
 });
