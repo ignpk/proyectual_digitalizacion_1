@@ -495,7 +495,7 @@ position: absolute;
   height: 100PX;
   background-color: rgba(255, 0, 0, 0);
   z-index: 99999;
-    
+    display: none;
 }
 
 #codigoGlobal {
